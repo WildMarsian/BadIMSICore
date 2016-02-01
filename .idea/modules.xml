@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BadIMSICore/BadIMSICore.iml" filepath="$PROJECT_DIR$/BadIMSICore/BadIMSICore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BadIMSIServer/BadIMSIServer.iml" filepath="$PROJECT_DIR$/BadIMSIServer/BadIMSIServer.iml" />
+    </modules>
+  </component>
+</project>
