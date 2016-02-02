@@ -1,27 +1,6 @@
 #!/usr/bin/python3.4 -tt
 # -*- coding: utf-8 -*-
 
-# pytail - a python "port" of logtail2
-# Copyright (C) 2011 Brad Greenlee <brad@footle.org>
-#
-# Derived from logcheck <http://logcheck.org>
-# Copyright (C) 2003 Jonathan Middleton <jjm@ixtab.org.uk>
-# Copyright (C) 2001 Paul Slootman <paul@debian.org>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 from __future__ import print_function
 from os import stat
 from os.path import exists, getsize
@@ -30,7 +9,7 @@ import glob
 import gzip
 from optparse import OptionParser
 
-__version__ = '0.6.1'
+__version__ = '1.0'
 
 text_type = str
 
@@ -280,10 +259,10 @@ def main():
     if options.every_n:
         options.every_n = int(options.every_n)
     pytail = PyTail(args[0],
-                      offset_file=options.offset_file,
-                      paranoid=options.paranoid,
-                      every_n=options.every_n,
-                      copytruncate=not options.no_copytruncate)
+                            offset_file=options.offset_file,
+                            paranoid=options.paranoid,
+                            every_n=options.every_n,
+                            copytruncate=not options.no_copytruncate)
 
     for line in pytail:
         sys.stdout.write(line)
