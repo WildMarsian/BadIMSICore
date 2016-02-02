@@ -1,5 +1,7 @@
 #!/usr/bin/python3.4
 
+#Usage: BadSMSInterceptor.py -i <inputlog>
+
 from PyTail import PyTail
 import sys
 import getopt
