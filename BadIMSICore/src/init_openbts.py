@@ -60,5 +60,5 @@ def launch_openbts():
             return True
         else:
             return False
-
-launch_openbts()
+if __name__ == '__main__':
+    launch_openbts()
