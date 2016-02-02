@@ -16,5 +16,8 @@ for line in PyTail("smqueue.txt"):
         # If the count is even, that means it's a duplicate
         if count % 2 == 0:
             # We remove that extra carrier return for pretty printing
-            parsed_entry = line_words[last_index_of_smqueue_line][:-1]
-            print(parsed_entry)
+            parsed_entry_delimiter = line_words[last_index_of_smqueue_line - 1]
+            #print(parsed_entry_delimiter)
+            # Print instance of smqueue
+            parsed_entry_instance = line_words[7]
+            print(parsed_entry_instance + ": "+line.split(parsed_entry_delimiter)[2][:-1])
