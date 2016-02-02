@@ -19,6 +19,7 @@ def parse(filename, filter):
 
 # subprocess.call('echo $HOME', shell=True)
 
+# parameters
 filename = "/home/nicolas/Bureau/capture-test1.pcap"
 filter = "gsmtap.chan_type == 1"
 parse(filename, filter)
