@@ -33,6 +33,7 @@ class PyTail(object):
     on_update     Execute this function when offset data is written (default False)
     copytruncate  Support copytruncate-style log rotation (default: True)
     """
+
     def __init__(self, filename, offset_file=None, paranoid=False, copytruncate=True,
                  every_n=0, on_update=False):
         self.filename = filename
@@ -53,8 +54,7 @@ class PyTail(object):
             (self._offset_file_inode, self._offset) = \
                 [int(line.strip()) for line in offset_fh]
             offset_fh.close()
-            if self._offset_file_inode != stat(self.filename).st_ino or \
-                            stat(self.filename).st_size < self._offset:
+            if self._offset_file_inode != stat(self.filename).st_ino or stat(self.filename).st_size < self._offset:
                 # The inode has changed or filesize has reduced so the file
                 # might have been rotated.
                 # Look for the rotated file and process that if we find it.
@@ -117,7 +117,7 @@ class PyTail(object):
             try:
                 return ''.join(lines)
             except TypeError:
-                return ''.join(force_text(line) for line in lines)
+                return ''.join(line for line in lines)
         else:
             return None
 
@@ -153,7 +153,7 @@ class PyTail(object):
         Update the offset file with the current inode and offset.
         """
         if self.on_update:
-            self.on_update()
+            self.on_update = not self.on_update
         offset = self._filehandle().tell()
         inode = stat(self.filename).st_ino
         fh = open(self._offset_file, "w")
@@ -259,10 +259,10 @@ def main():
     if options.every_n:
         options.every_n = int(options.every_n)
     pytail = PyTail(args[0],
-                            offset_file=options.offset_file,
-                            paranoid=options.paranoid,
-                            every_n=options.every_n,
-                            copytruncate=not options.no_copytruncate)
+                    offset_file=options.offset_file,
+                    paranoid=options.paranoid,
+                    every_n=options.every_n,
+                    copytruncate=not options.no_copytruncate)
 
     for line in pytail:
         sys.stdout.write(line)
