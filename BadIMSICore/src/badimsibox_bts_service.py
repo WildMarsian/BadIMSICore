@@ -13,8 +13,8 @@ except RuntimeError as err:
 else:
     fifo_out = open(std_out_file, 'w')
     fifo_in = open(std_in_file, 'r')
-    p = subprocess.popen(["bc"], stdout=fifo_out, stdin=fifo_in, stderr=fifo_out)
-    p.comunicate()
+    p = subprocess.Popen(["bc"], stdout=fifo_out, stdin=fifo_in, stderr=fifo_out)
+    p.communicate()
 
 fifo_out.close()
 fifo_in.close()
