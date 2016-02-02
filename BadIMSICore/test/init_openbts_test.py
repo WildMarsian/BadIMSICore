@@ -1,18 +1,15 @@
 import unittest
 
-from src.init_openbts import InitOpenBTS
+from unittest import TestCase
 
-class init_openbts_test(unittest.TestCase):
+from init_openbts import InitOpenBTS
 
-    def init_sipauthserve_success_test(self):
+
+class init_openbts_test(TestCase):
+
+    def test_init_sipauthserve(self):
         o = InitOpenBTS()
-        sortie = o.init_sipauthserve()
-        self.assertEquals(True,sortie)
-
-    def init_sipauthserve_fail_test(self):
-        o = InitOpenBTS()
-        sortie = o.init_sipauthserve()
-        self.assertEquals(False,sortie)
+        self.assertEquals(False,o.init_sipauthserve())
 
 if __name__ == '__main__':
     unittest.main()
