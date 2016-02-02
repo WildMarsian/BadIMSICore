@@ -1,6 +1,8 @@
 #!/usr/bin/python3.4
 
-from PyTail import PyTail
+#Usage: bad_sms_interceptor.py -i <inputlog>
+
+from pytail import PyTail
 import sys
 import getopt
 
@@ -11,11 +13,11 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], "hi", ["help", "input="])
     except getopt.GetoptError as err:
         print(err)
-        print("Usage: BadSMSInterceptor.py -i <input>")
+        print("Usage: bad_sms_interceptor.py -i <input>")
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            print("Usage: BadSMSInterceptor.py -i <input>")
+            print("Usage: bad_sms_interceptor.py -i <input>")
             sys.exit(0)
         elif opt in ("-i", "--input"):
             input_log = args[0]
