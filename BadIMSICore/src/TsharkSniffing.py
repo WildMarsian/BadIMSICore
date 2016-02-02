@@ -1,77 +1,66 @@
 import os
 import subprocess
-import time
 
 tshark = '/usr/bin/tshark'
 
 
-class TShark:
-    def __init__(self, pcap_file, xml_file, iface, net_filter):
-        '''
-        pcap_file:  path on disk to save the pcap file
-        xml_file:   path on disk to save the xml file
-        iface:      interface which we want to listen
-        net_filter: filter
-        '''
-        self.pcap_file = pcap_file
-        self.iface = iface
-        self.xml_file = xml_file
-        self.proc = None
-        self.net_filter = net_filter
-
+class TsharkSniffing:
+    def __init__(self):
         if not os.path.isfile(tshark):
             raise 'Cannot find tshark in ' + tshark
 
-    def start(self):
-        '''
-        '''
-        pargs = [tshark, '-i', self.iface]
+    def live_listening(self, iface, net_filter):
+        if iface == '':
+            raise 'Interface not defined'
+
+        pargs = [tshark, '-i', iface]
         pargs.extend(['-T', 'pdml'])
-        if self.net_filter != "":
-            pargs.extend(['-R', self.net_filter])
+
+        if net_filter != "":
+            pargs.extend(['-R', net_filter])
 
         print(pargs)
-        self.proc = subprocess.Popen(pargs)
+        proc = subprocess.Popen(pargs)
 
-        return self.proc.communicate()
+        return proc.communicate()
 
-    def stop(self):
-        if self.proc != None and self.proc.poll() == None:
-            self.proc.terminate()
-            time.sleep(5)
+    def read_from_pcap(self, input_pcap_filename, iface, net_filter):
+        if iface == '':
+            raise 'Interface not defined'
+        if not os.path.isfile(input_pcap_filename):
+            raise 'Input PCAP file not found'
 
-    def write(self):
-        '''
-        Print statistics and details on packet capture
-        '''
-        output = open(self.xml_file, 'w')
+        pargs = [tshark, '-i', iface]
+        pargs.extend(['-r', input_pcap_filename])
+        pargs.extend(['-T', 'pdml'])
 
-        proc = subprocess.Popen(
-                [
-                    tshark, '-i', 'eth0',
-                    '-T', 'pdml', '-r',
-                    self.pcap_file,
-                    '-R', self.net_filter,
-                    '-2'
-                ]
-                ,
-                stdout=output
-        )
+        if net_filter != '':
+            pargs.extend(['-R', net_filter])
+
+        proc = subprocess.Popen(pargs)
+
+        return proc.communicate()
+
+    def write_to_xml(self, input_pcap_filename, output_xml_filename, iface, net_filter):
+        if iface == '':
+            raise 'Interface not defined'
+        if not os.path.isfile(input_pcap_filename):
+            raise 'Input PCAP file not found'
+        output = open(output_xml_filename, 'w')
+
+        pargs = [tshark, '-i', iface, '-2']
+        pargs.extend(['-r', input_pcap_filename])
+        pargs.extend(['-T', 'pdml'])
+
+        if net_filter != '':
+            pargs.extend(['-R', net_filter])
+
+        proc = subprocess.Popen(pargs, stdout=output)
+
         return proc.communicate()
 
 
-print("1)Live listening\n2) Read from file")
-choice = input()
-
-pcap_input_file = ''
-iface = 'eth0'
-xml_output_file = ''
-
-if choice == '2':
-    print("Input file (PCAP extension) :")
-    pcap_input_file = input()
-    print("Output file (XML extension) :")
-    xml_output_file = input()
+tshark_proc = TsharkSniffing()
 
 print("Interface :")
 _iface = input()
@@ -79,12 +68,21 @@ _iface = input()
 print("Filter ('gsmtap.chan_type == 1' or 'gsmtap.chan_type == 2' :")
 _net_filter = input()
 
-tshark_proc = TShark(pcap_input_file, xml_output_file, _iface, _net_filter)
+print("1)Live listening\n2) Read from file and show into the standard output" +
+      "\n3)Read from file and write into a another file :")
+choice = input()
 
 if choice == '1':
-    tshark_proc.start()
+    tshark_proc.live_listening(_iface, _net_filter)
+
 elif choice == '2':
-    tshark_proc.write()
+    print("PCAP file name :")
+    input_pcap_file_name = input()
+    tshark_proc.read_from_pcap(input_pcap_file_name, _iface, _net_filter)
 
-
-tshark_proc.stop()
+elif choice == '3':
+    print("PCAP file name :")
+    input_pcap_filename = input()
+    print("XML file name :")
+    output_xml_filename = input()
+    tshark_proc.write_to_xml(input_pcap_filename, output_xml_filename, _iface, _net_filter)

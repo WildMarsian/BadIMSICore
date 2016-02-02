@@ -1,6 +1,6 @@
 #!/usr/bin/python3.4
 
-#Usage: bad_sms_interceptor.py -i <inputlog>
+# Usage: bad_sms_interceptor.py -i <inputlog>
 
 from pytail import PyTail
 import sys
@@ -40,6 +40,8 @@ def main():
                 parsed_entry_delimiter = line_words[last_index_of_smqueue_line - 1]
                 # Print instance of smqueue
                 parsed_entry_instance = line_words[7]
-                print(parsed_entry_instance + ": "+line.split(parsed_entry_delimiter)[2][:-1])
+                print(parsed_entry_instance + ": " + line.split(parsed_entry_delimiter)[2][:-1])
+
+
 if __name__ == '__main__':
     main()
