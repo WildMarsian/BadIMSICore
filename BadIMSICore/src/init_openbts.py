@@ -1,16 +1,12 @@
-#/usr/bin/python
-
 import subprocess
-
-
 #to launch openBTS we need at least that sipauthserve and smqueue
 
 # launch the sipauthserve service
 def init_sipauthserve():
     sortie = subprocess.call(args="start sipauthserve",shell=True, stdout=subprocess.PIPE)
     if sortie == 0:
-        return 1
-    return 0
+        return True
+    return False
 
 # stop the sipauthserve service
 def stop_sipauthserve():
@@ -47,8 +43,7 @@ def init_openbts():
         return True
     return False
 
-
-
+# Main
 def launch_openbts():
     # Stop all the services first
     stop_sipauthserve()
@@ -66,7 +61,4 @@ def launch_openbts():
         else:
             return False
 
-
 launch_openbts()
-
-
