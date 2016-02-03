@@ -1,6 +1,6 @@
 #!/usr/bin/python3.4
 from optparse import OptionParser
-from badimsicore_bts_service import BadimsicoreBtsService
+from badimsicore_openbts import BadimsicoreBtsService
 
 
 class BadSMSSender:
