@@ -1,6 +1,6 @@
 #!/usr/bin/python3.4
 
-# Usage: bad_sms_interceptor.py -i <inputlog>
+# Usage: badimsicore_sms_interceptor.py -i <inputlog>
 
 from pytail import PyTail
 from optparse import OptionParser
