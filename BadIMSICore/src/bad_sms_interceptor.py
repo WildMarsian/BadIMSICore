@@ -14,6 +14,8 @@ class BadSMSInterceptor:
         # We use a counter to skip every other line since the log duplicates SMQueue entries
         count = 0
         sms_list = []
+        date_list = []
+        complete_list = [[], []]
         # There is 13 entries in SMQueue line log. With a list the last index is 12
         last_index_of_smqueue_line = 12
 
@@ -30,7 +32,10 @@ class BadSMSInterceptor:
                     # parsed_entry_instance = line_words[7]
                     # print(parsed_entry_instance + ": " + line.split(parsed_entry_delimiter)[2][:-1])
                     sms_list.append(line.split(parsed_entry_delimiter)[2][:-1])
-        return sms_list
+                    date_list.append(line_words[2] + " " + line_words[0] + " at " + line_words[3])
+        # Concatenate the date and the sms
+        complete_list = zip(date_list, sms_list)
+        return complete_list
 
 
 def main():
@@ -50,7 +55,9 @@ def main():
         else:
             assert False, "unhandled exception"
     badsmsinterceptor = BadSMSInterceptor()
-    print(badsmsinterceptor.intercept(input_log))
+    bad_list = badsmsinterceptor.intercept(input_log)
+    for x in bad_list:
+        print(x)
 
 if __name__ == '__main__':
     main()
