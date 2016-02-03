@@ -8,7 +8,6 @@ xmlfilename = sys.argv[1]
 tree = ET.parse(xmlfilename)
 space = ' '
 
-
 for node in tree.iter('proto'):
     name = node.attrib.get('name')
     if name == "gsm_a.ccch":
