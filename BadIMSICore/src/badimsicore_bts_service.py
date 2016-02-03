@@ -17,14 +17,8 @@ class BadimsicoreBtsService(Daemon):
         pid_file = os.path.join(exec_context, "badimsicore_bts.pid")
         return BadimsicoreBtsService(pid_file)
 
-    @staticmethod
     def send_command(command):
         openbts=["/OpenBts/OpenBtsDo", "-c"]
         p = subprocess.Popen(openbts.extend(command))
         return p.communicate()
 
-    @staticmethod
-    def send_sms(imsi_dest, msisdn_source, message):
-        command = []
-        command.append(imsi_dest).append(msisdn_source).append(message)
-        return BadimsicoreBtsService.send_command(command)
