@@ -1,11 +1,16 @@
 #!/usr/bin/python3.4
 from optparse import OptionParser
+import subprocess
 
 
 class BadSMSSender:
-    @staticmethod
-    def send_sms(recipient, sender, message):
+
+    def __init__(self):
+        self.path_to_openbtsdo = '/OpenBTS/OpenBTSDo'
+
+    def send_sms(self, recipient, sender, message):
         print("Sending to " + recipient + " from " + sender + ": " + message)
+        subprocess.call([self.path_to_openbtsdo, recipient, sender, message])
 
 
 def main():
