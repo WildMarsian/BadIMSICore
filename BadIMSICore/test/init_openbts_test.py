@@ -1,7 +1,7 @@
 import unittest
 
 from unittest import TestCase
-from init_openbts import InitOpenBTS
+from badimsicore_openbts_init import InitOpenBTS
 
 
 class InitOpenBTSTest(TestCase):
