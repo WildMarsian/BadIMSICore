@@ -17,6 +17,7 @@ class BadimsicoreBtsService(Daemon):
         pid_file = os.path.join(exec_context, "badimsicore_bts.pid")
         return BadimsicoreBtsService(pid_file)
 
+    @staticmethod
     def send_command(command):
         openbts=["/OpenBts/OpenBtsDo", "-c"]
         p = subprocess.Popen(openbts.extend(command))
