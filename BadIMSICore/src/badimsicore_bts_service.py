@@ -4,25 +4,27 @@ import subprocess
 from daemon import Daemon
 
 
-def get_badimsicore_bts_service():
-    std_out_file = "teststdout"
-    std_in_file = "teststdin"
-    std_err_file = "teststderr"
-
-    try:
-        os.mkfifo(std_out_file)
-        os.mkfifo(std_in_file)
-        os.mkfifo(std_err_file)
-
-        service = BadimsicoreBtsService("badimsicore_bts.pid", std_out_file, std_in_file, std_err_file)
-        service.start()
-
-    except IOError as ioErr:
-        print("IO error : unable tu create named pipe (might be impossible on windows) : %s\n", ioErr)
-
-
 class BadimsicoreBtsService(Daemon):
+    
+    def __init__(self, pidfile):
+        super(BadimsicoreBtsService, self).__init__(pidfile)
 
     def run(self):
-        p = subprocess.Popen("bc", stdout=self.stdout, stdin=self.stdin, stderr=self.stderr)
-        p.communicate()
+        subprocess.Popen(["/OpenBts/OpenBts"])
+
+    @staticmethod
+    def get_badimsicore_bts_service(exec_context):
+        pid_file = os.path.join(exec_context, "badimsicore_bts.pid")
+        return BadimsicoreBtsService(pid_file)
+
+    @staticmethod
+    def send_command(command):
+        openbts=["/OpenBts/OpenBtsDo", "-c"]
+        p = subprocess.Popen(openbts.extend(command))
+        return p.communicate()
+
+    @staticmethod
+    def send_sms(imsi_dest, msisdn_source, message):
+        command = []
+        command.append(imsi_dest).append(msisdn_source).append(message)
+        return BadimsicoreBtsService.send_command(command)
