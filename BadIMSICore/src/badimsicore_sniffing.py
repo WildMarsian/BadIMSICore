@@ -71,15 +71,19 @@ def write_to_pcap(output_pcap_filename, iface, net_filter):
 """
 
 """
- Write the trafic from an PCAP file to an XML file
+ Write the traffic from an PCAP file to an XML file
 """
 
 
 def write_to_xml(input_pcap_filename, output_xml_filename, iface, net_filter):
-    output = open(output_xml_filename, 'w')
+    try:
+        output = open(output_xml_filename, 'w')
+    except IOError as err:
+        print_error(err)
+        sys.exit(2)
 
-    if not os.path.isfile(output_xml_filename):
-        raise 'Input PCAP file not found'
+    if not os.path.exists(output_xml_filename) and os.path.isfile(output_xml_filename):
+        raise IOError('Input PCAP file not found')
 
     pargs = [tshark, '-i', iface, '-2']
     pargs.extend(['-r', input_pcap_filename])
@@ -114,6 +118,18 @@ def redirect_to_xml(output_xml_filename, iface, net_filter):
     proc = subprocess.Popen(pargs, stdout=output)
 
     return proc.communicate()
+
+"""
+Tests if the filename is to ext format.
+    :param   filename the filename to check
+    :returns    True if ext is valid
+    :returns    False otherwise
+"""
+
+
+def is_valid_extension(filename, ext):
+    filename, ext = os.path.splitext(filename)
+    return ext == '.xml'
 
 
 def main():
@@ -153,22 +169,20 @@ def main():
 
     if iface.__len__() != 0:
         if input_pcap_filename.__len__() != 0:
-            filename, ext = os.path.splitext(input_pcap_filename)
-            print(filename + " " + ext)
-            if ext != '.pcap':
+            if not is_valid_extension(input_pcap_filename, '.pcap'):
                 usage()
                 sys.exit(2)
         if output_filename.__len__() != 0:
-            filename, ext = os.path.splitext(output_filename)
-            print(filename + " " + ext)
-            if ext != '.xml':
+            if not is_valid_extension(output_filename, '.xml'):
                 usage()
                 sys.exit(2)
 
         # The user reads from a PCAP file and write to an XML file
         if input_pcap_filename.__len__() != 0 and output_filename.__len__() != 0:
             write_to_xml(input_pcap_filename, output_filename, iface, net_filter)
-
+        # The user reads from a PCAP file and write to the standard output
+        elif input_pcap_filename.__len__() != 0 and output_filename.__len__() == 0:
+            read_from_pcap(input_pcap_filename,iface,net_filter)
         # The user reads from the standard input and write to an XML file
         elif input_pcap_filename.__len__() == 0 and output_filename.__len__() != 0:
             redirect_to_xml(output_filename, iface, net_filter)
