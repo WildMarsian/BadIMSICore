@@ -3,8 +3,7 @@
 # Usage: bad_sms_interceptor.py -i <inputlog>
 
 from pytail import PyTail
-import sys
-import getopt
+from optparse import OptionParser
 
 
 class BadSMSInterceptor:
@@ -21,7 +20,7 @@ class BadSMSInterceptor:
         count = 0
         sms_list = []
         date_list = []
-        complete_list = [[], []]
+
         # There is 13 entries in SMQueue line log. With a list the last index is 12
         last_index_of_smqueue_line = 12
 
@@ -45,23 +44,13 @@ class BadSMSInterceptor:
 
 
 def main():
-    input_log = ''
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "hi", ["help", "input="])
-    except getopt.GetoptError as err:
-        print(err)
-        print("Usage: bad_sms_interceptor.py -i <input>")
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            print("Usage: bad_sms_interceptor.py -i <input>")
-            sys.exit(0)
-        elif opt in ("-i", "--input"):
-            input_log = args[0]
-        else:
-            assert False, "unhandled exception"
+    parser = OptionParser(usage='Usage: %prog -i <input>')
+    parser.add_option('-i', '--input', dest='input', help='Log file to be analyzed')
+    (options, args) = parser.parse_args()
+    if options.input is None:
+        parser.error("Input log file is missing")
     badsmsinterceptor = BadSMSInterceptor()
-    bad_list = badsmsinterceptor.intercept(input_log)
+    bad_list = badsmsinterceptor.intercept(options.input)
     for x in bad_list:
         print(x)
 
