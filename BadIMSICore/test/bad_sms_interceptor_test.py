@@ -2,7 +2,7 @@ import unittest
 import os
 
 from unittest import TestCase
-from bad_sms_interceptor import BadSMSInterceptor
+from badimsicore_sms_interceptor import BadSMSInterceptor
 
 
 class BadSMSInterceptorTest(TestCase):

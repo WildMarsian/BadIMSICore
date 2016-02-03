@@ -1,21 +1,26 @@
 #!/usr/bin/python3.4
 
-# Usage: bad_sms_interceptor.py -i <inputlog>
+# Usage: badimsicore_sms_interceptor.py -i <inputlog>
 
 from pytail import PyTail
-import sys
-import getopt
+from optparse import OptionParser
 
 
 class BadSMSInterceptor:
 
     @staticmethod
     def intercept(input_log):
+        """ Reads the log file and returns unread SMS with the date. The output is a zipped list
+        so care to cast the returned value with a list()
+        Keyword argument:
+        :param input_log -- The log to be analyzed and returned
+        :returns complete_list -- The zipped nested list of sms with date
+        """
         # We use a counter to skip every other line since the log duplicates SMQueue entries
         count = 0
         sms_list = []
         date_list = []
-        complete_list = [[], []]
+
         # There is 13 entries in SMQueue line log. With a list the last index is 12
         last_index_of_smqueue_line = 12
 
@@ -33,29 +38,19 @@ class BadSMSInterceptor:
                     # print(parsed_entry_instance + ": " + line.split(parsed_entry_delimiter)[2][:-1])
                     sms_list.append(line.split(parsed_entry_delimiter)[2][:-1])
                     date_list.append(line_words[2] + " " + line_words[0] + " at " + line_words[3])
-        # Concatenate the date and the sms
+        # Concatenate the date and the sms.
         complete_list = zip(date_list, sms_list)
         return complete_list
 
 
 def main():
-    input_log = ''
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "hi", ["help", "input="])
-    except getopt.GetoptError as err:
-        print(err)
-        print("Usage: bad_sms_interceptor.py -i <input>")
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            print("Usage: bad_sms_interceptor.py -i <input>")
-            sys.exit(0)
-        elif opt in ("-i", "--input"):
-            input_log = args[0]
-        else:
-            assert False, "unhandled exception"
+    parser = OptionParser(usage='Usage: %prog -i <input>')
+    parser.add_option('-i', '--input', dest='input', help='Log file to be analyzed')
+    (options, args) = parser.parse_args()
+    if options.input is None:
+        parser.error("Input log file is missing")
     badsmsinterceptor = BadSMSInterceptor()
-    bad_list = badsmsinterceptor.intercept(input_log)
+    bad_list = badsmsinterceptor.intercept(options.input)
     for x in bad_list:
         print(x)
 
