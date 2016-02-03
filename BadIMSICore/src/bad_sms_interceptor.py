@@ -11,6 +11,12 @@ class BadSMSInterceptor:
 
     @staticmethod
     def intercept(input_log):
+        """ Reads the log file and returns unread SMS with the date. The output is a zipped list
+        so care to cast the returned value with a list()
+        Keyword argument:
+        :param input_log -- The log to be analyzed and returned
+        :returns complete_list -- The zipped nested list of sms with date
+        """
         # We use a counter to skip every other line since the log duplicates SMQueue entries
         count = 0
         sms_list = []
@@ -33,7 +39,7 @@ class BadSMSInterceptor:
                     # print(parsed_entry_instance + ": " + line.split(parsed_entry_delimiter)[2][:-1])
                     sms_list.append(line.split(parsed_entry_delimiter)[2][:-1])
                     date_list.append(line_words[2] + " " + line_words[0] + " at " + line_words[3])
-        # Concatenate the date and the sms
+        # Concatenate the date and the sms.
         complete_list = zip(date_list, sms_list)
         return complete_list
 
