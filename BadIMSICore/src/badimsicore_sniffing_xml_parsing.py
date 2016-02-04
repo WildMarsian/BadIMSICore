@@ -2,19 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import xml.etree.ElementTree as ET
-import sys
-import re
+import bts
+import sys, re
 
 regex = re.compile(".*?\((.*?)\)")
-
-network_operators = {'01':'Orange', '02':'Orange', '09':'SFR', '10':'SFR', '11':'SFR', '15':'Free', '16':'Free', '20':'Bouygues Telecom', '21':'Bouygues Telecom' }
-'''
-codes = network_operators.keys()
-for code in codes:
-    print(network_operators[code])
-'''
+btsList = []
 
 # adding a bitset
+
 
 if len(sys.argv) == 2:
     xmlfilename = sys.argv[1]
@@ -24,6 +19,7 @@ if len(sys.argv) == 2:
 
     for packet in tree.getroot():
         print("packet ",cpt)
+        arfcns = []
 
         for proto in packet.iter('proto'):
             protoField = proto.attrib.get('name')
@@ -46,18 +42,21 @@ if len(sys.argv) == 2:
 
                     for fieldGsm_a_info in fieldGsm_a.iter('field'):
                         info = fieldGsm_a_info.attrib.get('show')
+                        # Type 3 and 4
+                        if (info is not None) and ("Cell Identity" in info):
+                            cellId = regex.match(info)
+                            print("         Cell Identity:",cellId.group(1))
                         if (info is not None) and ("Location Area Identification (LAI) - " in info):
                             tmp_lai = re.findall(r'\d+',info)
                             print("      MCC:",tmp_lai[0],",MNC:",tmp_lai[1],",LAC:",tmp_lai[2])
 
+                        # Type 1 and 2bis/2ter
                         if (info is not None) and ("List of ARFCNs" in info):
                             print("      ARFCNs: ",end="")
-                            arfcns = re.findall(r'\d+',info)
-                            for a in arfcns:
-                                print("     ",a,end="")
-                        if (info is not None) and ("Cell Identity" in info):
-                            cellId = regex.match(info)
-                            print("         Cell Identity:",cellId.group(1))
+                            arfcn = re.findall(r'\d+',info)
+                            for a in arfcn:
+                                arfcns.append(a)
+                            print(set(arfcns))
 
         cpt = cpt+1
 

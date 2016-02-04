@@ -1,7 +1,12 @@
 import subprocess
 #to launch openBTS we need at least that sipauthserve and smqueue
 
-class InitOpenBTS():
+class InitOpenBTS:
+
+    def __init__(self):
+        pass
+
+
     # launch the sipauthserve service
     def init_sipauthserve(self):
         sortie = subprocess.call(args="start sipauthserve",shell=True, stdout=subprocess.PIPE)
@@ -39,24 +44,24 @@ class InitOpenBTS():
             return True
         return False
 
-# Main
-def launch_openbts():
-    init_openbts = InitOpenBTS()
-    # Stop all the services first
-    init_openbts.stop_sipauthserve()
-    init_openbts.stop_smqueue()
-    # Launch the two required services
-    first = init_openbts.init_sipauthserve()
-    second = init_openbts.init_smqueue()
-    # checking if the two sub modules are enabled
-    if first == True and second == True:
-        third = init_openbts.init_transceiver()
-        fourth = init_openbts.init_openbts()
-        if(third==True and fourth==True):
-            # we can launch openbts command here
-            return True
-        else:
-            return False
+    def launch_openbts():
+        init_openbts = InitOpenBTS()
+        # Stop all the services first
+        init_openbts.stop_sipauthserve()
+        init_openbts.stop_smqueue()
+        # Launch the two required services
+        first = init_openbts.init_sipauthserve()
+        second = init_openbts.init_smqueue()
+        # checking if the two sub modules are enabled
+        if first == True and second == True:
+            third = init_openbts.init_transceiver()
+            fourth = init_openbts.init_openbts()
+            if(third==True and fourth==True):
+                # we can launch openbts command here
+                return True
+            else:
+                return False
 
 if __name__ == '__main__':
-    launch_openbts()
+    o = InitOpenBTS()
+    o.launch_openbts()
