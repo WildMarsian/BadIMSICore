@@ -44,24 +44,23 @@ class InitOpenBTS:
             return True
         return False
 
-    def launch_openbts():
-        init_openbts = InitOpenBTS()
-        # Stop all the services first
-        init_openbts.stop_sipauthserve()
-        init_openbts.stop_smqueue()
-        # Launch the two required services
-        first = init_openbts.init_sipauthserve()
-        second = init_openbts.init_smqueue()
-        # checking if the two sub modules are enabled
-        if first == True and second == True:
-            third = init_openbts.init_transceiver()
-            fourth = init_openbts.init_openbts()
-            if(third==True and fourth==True):
-                # we can launch openbts command here
-                return True
-            else:
-                return False
+def launch_openbts():
+    # Stop all the services first
+    o = InitOpenBTS()
+    o.stop_sipauthserve()
+    o.stop_smqueue()
+    # Launch the two required services
+    first = o.init_sipauthserve()
+    second = o.init_smqueue()
+    # checking if the two sub modules are enabled
+    if first == True and second == True:
+        third = o.init_transceiver()
+        fourth = o.init_openbts()
+        if(third==True and fourth==True):
+            # we can launch openbts command here
+            return True
+        else:
+            return False
 
 if __name__ == '__main__':
-    o = InitOpenBTS()
-    o.launch_openbts()
+    launch_openbts()
