@@ -38,6 +38,7 @@ class InitOpenBTS():
         if sortie == 0:
             return True
         return False
+
 # Main
 def launch_openbts():
     init_openbts = InitOpenBTS()
@@ -56,5 +57,6 @@ def launch_openbts():
             return True
         else:
             return False
+
 if __name__ == '__main__':
     launch_openbts()
