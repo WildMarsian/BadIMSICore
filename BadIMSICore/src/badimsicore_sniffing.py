@@ -128,8 +128,8 @@ Tests if the filename is to ext format.
 
 
 def is_valid_extension(filename, ext):
-    filename, ext = os.path.splitext(filename)
-    return ext == '.xml'
+    filename, extension = os.path.splitext(filename)
+    return extension == ext
 
 
 def main():
