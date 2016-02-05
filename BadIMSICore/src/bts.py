@@ -17,4 +17,13 @@ class BTS:
         self.MNC = MNC
         self.LAC = LAC
         self.CI = CI
-        self.ARFCNs = ARFCNs
+        self.ARFCNs = sorted(ARFCNs)
+
+    def __str__(self):
+        s = ""
+        for arfcn in self.ARFCNs:
+            s += arfcn+", "
+        return "BTS: "+self.MNC+" "+self.MCC+" "+self.LAC+" "+self.CI+" -- "+s
+
+    def __eq__(self, other):
+        return self.MCC == other.MCC and self.MNC == other.MNC and self.LAC == other.LAC and self.ARFCNs == other.ARFCNs and self.CI == other.CI
