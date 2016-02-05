@@ -30,8 +30,7 @@ class BadimsicoreBtsConfig:
     def write_badimsicore_bts_config(self):
         newdat = []
         for k, v in self.data.items():
-            newdat.append(tuple(k) + v)
-        print(newdat)
+            newdat.append(tuple([k]) + v)
         c = self.conn.cursor()
         c.execute("DELETE FROM CONFIG;")
         c.executemany("INSERT INTO CONFIG VALUES (?, ?, ?, ?, ?);", newdat)
