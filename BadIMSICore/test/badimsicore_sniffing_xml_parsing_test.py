@@ -9,6 +9,7 @@ class XMLParsingTest(TestCase):
     def test_file_format_failed(self):
         return self.assertEquals(False, is_valid_extension('myfile.txt', '.xml'))
 
+
 if __name__ == '__main__':
     unittest.main()
 
