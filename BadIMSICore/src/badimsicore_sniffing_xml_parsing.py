@@ -5,11 +5,9 @@ import xml.etree.ElementTree as ET
 import bts
 import sys, re
 
+
 regex = re.compile(".*?\((.*?)\)")
 btsList = []
-
-# adding a bitset
-
 
 if len(sys.argv) == 2:
     xmlfilename = sys.argv[1]
@@ -17,48 +15,50 @@ if len(sys.argv) == 2:
     space = ' '
     cpt = 1
 
-    for packet in tree.getroot():
-        print("packet ",cpt)
-        arfcns = []
+    type1 = False
+    type3 = False
+    type4 = False
 
+    arfcns = []
+
+    for packet in tree.getroot():
         for proto in packet.iter('proto'):
             protoField = proto.attrib.get('name')
-            if protoField == "gsmtap":
-                print(" gsmtap")
-                for fieldGsmtap in proto.iter('field'):
-                    fieldName = fieldGsmtap.attrib.get('name')
-                    if "gsmtap.snr_db" in fieldName:
-                        if fieldName is not None:
-                            ratio = re.findall(r'\d+',fieldGsmtap.attrib.get('showname'))
-                            print("     Noise:", ratio[0])
-
             if protoField == "gsm_a.ccch":
-                print(" gsm_a.ccch")
-
                 for fieldGsm_a in proto.iter('field'):
                     fieldSystemType = fieldGsm_a.attrib.get('showname')
-                    if fieldSystemType is not None and (("System Information Type" in fieldSystemType)):
-                        print("     ",fieldSystemType)
-
                     for fieldGsm_a_info in fieldGsm_a.iter('field'):
                         info = fieldGsm_a_info.attrib.get('show')
-                        # Type 3 and 4
-                        if (info is not None) and ("Cell Identity" in info):
-                            cellId = regex.match(info)
-                            print("         Cell Identity:",cellId.group(1))
-                        if (info is not None) and ("Location Area Identification (LAI) - " in info):
-                            tmp_lai = re.findall(r'\d+',info)
-                            print("      MCC:",tmp_lai[0],",MNC:",tmp_lai[1],",LAC:",tmp_lai[2])
-
-                        # Type 1 and 2bis/2ter
+                        # For Type 1 packets
                         if (info is not None) and ("List of ARFCNs" in info):
-                            print("      ARFCNs: ",end="")
                             arfcn = re.findall(r'\d+',info)
                             for a in arfcn:
                                 arfcns.append(a)
-                            print(set(arfcns))
+                            type1 = True
+                        # For Type 4 packets
+                        if (info is not None) and ("Location Area Identification (LAI) - " in info):
+                            tmp_lai = re.findall(r'\d+',info)
+                            type4 = True
 
-        cpt = cpt+1
+                        # For Type 3 packets
+                        if (info is not None) and ("Cell Identity" in info):
+                            cellId = regex.match(info)
+                            type3 = True
+
+            if (type1 == True) and (type3 == True) and (type4 == True):
+                if(len(set(arfcns)) > 0):
+                    btsObj = bts.BTS(tmp_lai[0],tmp_lai[1],tmp_lai[2],cellId.group(1),set(arfcns))
+                    if btsObj not in btsList:
+                        btsList.append(btsObj)
+                    type1 = False
+                    type3 = False
+                    type4 = False
+                    arfcns = []
+
+        cpt = cpt + 1
+
+    for eachBts in (btsList):
+        print(eachBts)
 
 else:
     print("You must put a xml file in args")
