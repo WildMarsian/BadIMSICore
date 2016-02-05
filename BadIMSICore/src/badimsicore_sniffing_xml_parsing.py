@@ -8,8 +8,6 @@ import sys, re, os
 """
     This script takes an xml file and parse it. It returns a list of BTS.
 """
-
-
 regex = re.compile(".*?\((.*?)\)")
 """
     BTS list
