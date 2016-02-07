@@ -35,6 +35,16 @@ public class PythonCaller {
         while ((line = bfr.readLine()) != null) {
             System.out.println(line);
         }
+
+        int val = 0;
+        try {
+            val = pr.waitFor();
+            System.out.println("Exit value: "+val);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public static String getCleanPath() {
@@ -45,7 +55,6 @@ public class PythonCaller {
     }
 
     public static void main(String[] args) {
-
         if(args.length == 0) {
             noArgsError();
         }
