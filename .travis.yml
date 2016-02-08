@@ -13,7 +13,7 @@ addons:
       - git
       - python-software-properties
       - python3.4
-      - pip
+#      - pip
 
 before_install:
   - sudo apt-get update
@@ -25,12 +25,13 @@ before_script:
   - echo $LD_LIBRARY_PATH
 
 
-install:
-
+# install:
 
 script:
-  - pwd
-  - nosetests -v -s $PWD/BadIMSICore/test/*.py
+  - sudo apt-get install -y python-pip python3-pip
+  - sudo pip install nose
+  - cd $PWD/BadIMSICore/
+  - nosetests -v -s test/*.py
   # - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
 
 
