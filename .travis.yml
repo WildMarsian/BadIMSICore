@@ -1,5 +1,5 @@
 language: python
-#sudo: required
+sudo: required
 python:
   - "3.4"
 
@@ -39,9 +39,9 @@ script:
 notifications:
 
   email:
-    - andrebreton93@gmail.com
-    - thibaut.j.garcia@gmail.com
-    - biodivmaster@gmail.com
-    - zakaria.djebloune@gmail.com
-    - alisterwan@gmail.com
+    #- andrebreton93@gmail.com
+    #- thibaut.j.garcia@gmail.com
+    #- biodivmaster@gmail.com
+    #- zakaria.djebloune@gmail.com
+    #- alisterwan@gmail.com
     - nicolas77.dossantos@gmail.com
