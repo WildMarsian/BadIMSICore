@@ -24,7 +24,9 @@ before_script:
   - echo "Build starting on " `date`
   - export LD_LIBRARY_PATH=/usr/local/lib
 
-install: true
+install:
+  - sudo apt-get install -y python3.4
+
 
 script:
   - python3.4 -m unittest BadIMSICore/test/test_badimisicore_sniffing.py
