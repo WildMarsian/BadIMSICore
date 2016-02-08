@@ -12,11 +12,12 @@ addons:
     packages:
       - git
       - python-software-properties
-      - pip
+      # - pip
       #- nose
 
 before_install:
-  - apt-get update && apt-get upgrade
+  - sudo apt-get update
+  - sudo apt-get upgrade -y
 
 
 before_script:
