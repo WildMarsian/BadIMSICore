@@ -1,0 +1,36 @@
+language: python
+sudo: required
+python:
+  - "3.4"
+
+virtualenv:
+  system_site_packages: true
+
+branches:
+  only:
+    - beta
+
+addons:
+  apt:
+    packages:
+      - git
+      - python-software-properties
+
+before_install:
+  - sudo apt-get update
+
+
+before_script:
+  - echo "Build starting on " `date`
+  - export LD_LIBRARY_PATH=/usr/local/lib
+
+
+script:
+  - python3.4 BadIMSIBox/test/init_openbts_test.py
+  - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
+
+
+notifications:
+
+  email:
+    - nicolas77.dossantos@gmail.com
