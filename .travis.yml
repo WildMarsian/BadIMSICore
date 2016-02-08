@@ -1,5 +1,5 @@
 language: python
-sudo: required
+#sudo: required
 python:
   - "3.4"
 
@@ -15,9 +15,9 @@ addons:
       # - pip
       #- nose
 
-before_install:
-  - sudo apt-get update
-  - sudo apt-get upgrade -y
+#before_install:
+  #- sudo apt-get update
+  #- sudo apt-get upgrade -y
 
 
 before_script:
