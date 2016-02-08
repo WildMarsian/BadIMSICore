@@ -1,7 +1,6 @@
 language: python
 sudo: required
 python:
-  - "2.7"
   - "3.4"
 
 branches:
@@ -14,6 +13,7 @@ addons:
       - git
       - python-software-properties
       - python3.4
+      - pip
 
 before_install:
   - sudo apt-get update
@@ -22,13 +22,15 @@ before_install:
 before_script:
   - echo "Build starting on " `date`
   - export LD_LIBRARY_PATH=/usr/local/lib
+  - echo $LD_LIBRARY_PATH
+
 
 install:
-  # - sudo apt-get install -y python3.4
 
 
 script:
-  - python3.4 -m unittest BadIMSICore/test/test_badimisicore_sniffing.py
+  - pwd
+  - nosetests -v -s $PWD/BadIMSICore/test/*.py
   # - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
 
 
