@@ -5,10 +5,6 @@ import xml.etree.ElementTree as ET
 import bts
 import sys, re, os
 
-"""
-    This script takes an xml file and parse it. It returns a list of BTS.
-"""
-
 
 regex = re.compile(".*?\((.*?)\)")
 """
@@ -79,7 +75,6 @@ def parse_xml_file(xmlfilename):
 
 def main():
     if len(sys.argv) == 2:
-
         xmlfilename = sys.argv[1]
         if is_valid_extension(xmlfilename,'.xml'):
             list_bts = parse_xml_file(xmlfilename)
