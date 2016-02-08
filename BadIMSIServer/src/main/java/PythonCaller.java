@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Objects;
 
 
 /**
@@ -14,7 +15,7 @@ public class PythonCaller {
     private String[] scriptPath;
 
     public PythonCaller(String[] scriptPath) {
-        this.scriptPath = scriptPath;
+        this.scriptPath = Objects.requireNonNull(scriptPath);
     }
 
     public int process() throws IOException {
@@ -27,6 +28,7 @@ public class PythonCaller {
             sb.append(scriptPath[i]);
             sb.append(" ");
         }
+
         System.out.println(sb.toString());
 
         Process pr = rt.exec(sb.toString());
