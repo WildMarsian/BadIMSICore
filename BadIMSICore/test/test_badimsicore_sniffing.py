@@ -1,3 +1,5 @@
+import os
+
 from unittest import TestCase
 from badimsicore_sniffing import read_from_pcap, redirect_to_xml, write_to_xml, live_listening, is_valid_extension
 
@@ -15,11 +17,15 @@ class BadimsicoreSniffingTest(TestCase):
         self.assertFalse(ret)
 
     def test_read_from_pcap(self):
-        input_file = 'resources/clean/capture.pcap'
+        capture = 'test/resources/clean/capture.pcap'
+        input_file = os.path.abspath(capture)
+        print(input_file)
         read_from_pcap(input_file, 'eth0', 'gsmtap.chan_type == 1')
 
     def test_write_to_xml(self):
-        input_file = 'resources/clean/capture.pcap'
-        output_file = 'resources/capture.xml'
+        capture = 'test/resources/clean/capture.pcap'
+        captured = 'test/resources/capture.xml'
+        input_file = os.path.abspath(capture)
+        output_file = os.path.abspath(captured)
         write_to_xml(input_file, output_file, 'eth0', 'gsmtap.chan_type == 1')
 
