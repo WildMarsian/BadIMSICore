@@ -1,5 +1,5 @@
 language: python
-sudo: required
+#sudo: required
 python:
   - "3.4"
 
@@ -13,34 +13,34 @@ addons:
       - git
       - python-software-properties
       - pip
-      - nose
+      #- nose
 
 before_install:
-  - sudo apt-get update
+  - apt-get update && apt-get upgrade
 
 
 before_script:
   - echo "Build starting on " `date`
-  - export LD_LIBRARY_PATH=/usr/local/lib
-  - echo $LD_LIBRARY_PATH
+  # - export LD_LIBRARY_PATH=/usr/local/lib
+  # - echo $LD_LIBRARY_PATH
 
 
 # install:
 
 script:
   # - sudo apt-get install -y python-pip python3-pip
-  - pip install nose
+  # - pip install nose
   - cd $PWD/BadIMSICore/
-  - nosetests -v -s test/*.py
+  - nosetests -v -s test/badimsicore_openbts_init_test.py
   # - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
 
 
 notifications:
 
   email:
-    # - andrebreton93@gmail.com
-    # - thibaut.j.garcia@gmail.com
-    # - biodivmaster@gmail.com
-    #- zakaria.djebloune@gmail.com
-    # - alisterwan@gmail.com
+    - andrebreton93@gmail.com
+    - thibaut.j.garcia@gmail.com
+    - biodivmaster@gmail.com
+    - zakaria.djebloune@gmail.com
+    - alisterwan@gmail.com
     - nicolas77.dossantos@gmail.com
