@@ -4,9 +4,6 @@ python:
   - "2.7"
   - "3.4"
 
-virtualenv:
-  system_site_packages: true
-
 branches:
   only:
     - beta
@@ -16,6 +13,7 @@ addons:
     packages:
       - git
       - python-software-properties
+      - python3.4
 
 before_install:
   - sudo apt-get update
@@ -26,7 +24,7 @@ before_script:
   - export LD_LIBRARY_PATH=/usr/local/lib
 
 install:
-  - sudo apt-get install -y python3.4
+  # - sudo apt-get install -y python3.4
 
 
 script:
