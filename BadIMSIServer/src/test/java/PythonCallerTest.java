@@ -15,6 +15,13 @@ public class PythonCallerTest {
     }
 
     @Test
+    public void testSuccessArgs() {
+        String[] args = new String[1];
+        args[0] = "../../BadIMSICore/badimsicore_openbts_init.py";
+        PythonCaller pc = new PythonCaller(args);
+    }
+
+    @Test
     public void testCommandFailed() throws IOException {
         String[] args = new String[1];
         args[0] = "../../BadIMSICore/badimsicore_openbts_init.py";
