@@ -24,13 +24,19 @@ before_script:
   - echo "Build starting on " `date`
   - export LD_LIBRARY_PATH=/usr/local/lib
 
+install: true
 
 script:
-  - python3.4 BadIMSIBox/test/init_openbts_test.py
-  - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
+  - python3.4 -m unittest BadIMSICore/test/test_badimisicore_sniffing.py
+  # - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
 
 
 notifications:
 
   email:
+    # - andrebreton93@gmail.com
+    # - thibaut.j.garcia@gmail.com
+    # - biodivmaster@gmail.com
+    # - zakaria.djebloune@gmail.com
+    # - alisterwan@gmail.com
     - nicolas77.dossantos@gmail.com

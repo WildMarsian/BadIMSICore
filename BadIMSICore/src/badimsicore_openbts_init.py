@@ -1,3 +1,5 @@
+#!/usr/bin/python3.4
+
 import subprocess
 #to launch openBTS we need at least that sipauthserve and smqueue
 
