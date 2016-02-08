@@ -12,8 +12,8 @@ addons:
     packages:
       - git
       - python-software-properties
-      - python3.4
-#      - pip
+      - pip
+      - nose
 
 before_install:
   - sudo apt-get update
@@ -28,8 +28,8 @@ before_script:
 # install:
 
 script:
-  - sudo apt-get install -y python-pip python3-pip
-  - sudo pip install nose
+  # - sudo apt-get install -y python-pip python3-pip
+  - pip install nose
   - cd $PWD/BadIMSICore/
   - nosetests -v -s test/*.py
   # - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
@@ -41,6 +41,6 @@ notifications:
     # - andrebreton93@gmail.com
     # - thibaut.j.garcia@gmail.com
     # - biodivmaster@gmail.com
-    # - zakaria.djebloune@gmail.com
+    #- zakaria.djebloune@gmail.com
     # - alisterwan@gmail.com
     - nicolas77.dossantos@gmail.com
