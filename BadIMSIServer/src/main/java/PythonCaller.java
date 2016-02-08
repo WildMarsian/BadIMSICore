@@ -6,7 +6,7 @@ import java.net.URL;
 
 
 /**
- * Python Caller, for
+ * Python Caller is a class that calls python code and return the result in the stdout.
  */
 public class PythonCaller {
 
@@ -17,7 +17,7 @@ public class PythonCaller {
         this.scriptPath = scriptPath;
     }
 
-    public void process() throws IOException {
+    public int process() throws IOException {
         Runtime rt = Runtime.getRuntime();
 
         StringBuilder sb = new StringBuilder();
@@ -36,15 +36,14 @@ public class PythonCaller {
             System.out.println(line);
         }
 
-        int val = 0;
+        int val = 1;
         try {
             val = pr.waitFor();
-            System.out.println("Exit value: "+val);
+            return val;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
+            return -1;
     }
 
     public static String getCleanPath() {
@@ -60,10 +59,11 @@ public class PythonCaller {
         }
 
         if(args.length > 0) {
-            System.out.println(getCleanPath());
+            //System.out.println(getCleanPath());
             PythonCaller pc = new PythonCaller(args);
             try {
-                pc.process();
+                int exitValue = pc.process();
+                System.out.println("Exit value : "+exitValue);
 
             } catch (IOException e) {
                 errorOnScript(args);
