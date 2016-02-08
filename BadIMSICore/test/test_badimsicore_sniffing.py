@@ -1,5 +1,3 @@
-import unittest
-
 from unittest import TestCase
 from badimsicore_sniffing import read_from_pcap, redirect_to_xml, write_to_xml, live_listening, is_valid_extension
 
@@ -25,5 +23,5 @@ class BadimsicoreSniffingTest(TestCase):
         write_to_xml(input_file, output_file, 'eth0', 'gsmtap.chan_type == 1')
 
 
-if __name__ == '__main__':
-    unittest.main()
+#if __name__ == '__main__':
+#    unittest.main()
