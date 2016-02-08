@@ -16,16 +16,17 @@ addons:
       - python-software-properties
       - tshark
 
-#before_install:
+before_install:
+  - sudo apt-get update
 
+install:
+  - sudo apt-get install -y tshark
 
 before_script:
   - echo "Build starting on " `date`
   # - export LD_LIBRARY_PATH=/usr/local/lib
   # - echo $LD_LIBRARY_PATH
 
-
-# install:
 
 script:
 # Go to the BadIMSICore to localize all sources
