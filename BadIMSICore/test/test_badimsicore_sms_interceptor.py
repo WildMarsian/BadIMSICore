@@ -5,8 +5,7 @@ from unittest import TestCase
 from badimsicore_sms_interceptor import BadSMSInterceptor
 
 exec_path = os.path.dirname(__file__)
-filename = os.path.join(exec_path, 'resources/clean/smqueue.txt')
-offset_file = os.path.abspath(filename)
+offset_file = os.path.abspath(os.path.join(exec_path, 'resources/clean/smqueue.txt.offset'))
 
 
 class BadSMSInterceptorTest(TestCase):
@@ -29,9 +28,13 @@ class BadSMSInterceptorTest(TestCase):
         #bsi = BadSMSInterceptor()
         self.bsi.intercept(self.input_file)
         returned_list = self.bsi.intercept(self.input_file)
-        size = returned_list.__len__()
+        size = list(returned_list).__len__()
         self.assertEqual(0, size)
         pass
+
+    def tearDown(self):
+        if os.path.exists(offset_file):
+            os.remove(offset_file)
 
 if __name__ == '__main__':
     unittest.main()

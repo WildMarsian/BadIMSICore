@@ -57,5 +57,9 @@ class BadimsiCoreOpenbtsconfigTest(TestCase):
         self.assertEquals(results, modified_ref)
         pass
 
+    def tearDown(self):
+        if os.path.exists(self.target_openbts_db):
+            os.remove(self.target_openbts_db)
+
 if __name__ == '__main__':
     unittest.main()

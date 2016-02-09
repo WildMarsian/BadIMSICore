@@ -52,5 +52,11 @@ class BadimsicoreSniffingTest(TestCase):
         write_to_xml(self.input_file, output_file, self.iface, self.net_filter2)
         # self.assertEqual(size_captured2, os.path.getsize(captured2))
 
+    def tearDown(self):
+        if os.path.exists(self.captured1):
+            os.remove(self.captured1)
+
+        if os.path.exists(self.captured2):
+            os.remove(self.captured2)
 
 # TODO : put tests from test_badimsicore_sniffing_xml_parsing.py
