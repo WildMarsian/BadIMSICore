@@ -10,8 +10,10 @@ class BadimsicoreSniffingTest(TestCase):
         self.exec_path = os.path.dirname(__file__)
         capture = os.path.join(self.exec_path, 'resources/clean/capture.pcap')
         self.input_file = os.path.abspath(capture)
-        self.captured1 = os.path.join(self.exec_path, 'resources/capture1.xml')
-        self.captured2 = os.path.join(self.exec_path, 'resources/capture2.xml')
+        captured1 = os.path.join(self.exec_path, 'resources/capture1.xml')
+        self.captured1 = os.path.abspath(captured1)
+        captured2 = os.path.join(self.exec_path, 'resources/capture2.xml')
+        self.captured2 = os.path.abspath(captured2)
         self.iface = 'eth0'
         self.net_filter1 = 'gsmtap.chan_type == 1'
         self.net_filter2 = 'gsmtap.chan_type == 2'
@@ -41,15 +43,14 @@ class BadimsicoreSniffingTest(TestCase):
         read_from_pcap(self.input_file, self.iface, self.net_filter1)
 
     def test_write_to_xml(self):
-        output_file = os.path.abspath(self.captured1)
         # size_captured1 = 2170117
         # size_captured2 = 20325682
         print("\ninput : "+self.input_file)
-        print("output : "+output_file)
-        write_to_xml(self.input_file, output_file, self.iface, self.net_filter1)
+        print("output : "+self.captured1)
+        write_to_xml(self.input_file, self.captured1, self.iface, self.net_filter1)
         # self.assertEqual(size_captured1, os.path.getsize(captured1))
-        output_file = os.path.abspath(self.captured2)
-        write_to_xml(self.input_file, output_file, self.iface, self.net_filter2)
+        print("output : "+self.captured2)
+        write_to_xml(self.input_file, self.captured2, self.iface, self.net_filter2)
         # self.assertEqual(size_captured2, os.path.getsize(captured2))
 
     def tearDown(self):
