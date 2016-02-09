@@ -1,5 +1,6 @@
 import unittest
 import shutil
+import os
 
 from unittest import TestCase
 from badimsicore_openbts_config import BadimsicoreBtsConfig
@@ -9,41 +10,50 @@ modified_ref = [('CLI.Interface', '128.128.128.128', 0, 0, 'Interface for use in
 
 
 class BadimsiCoreOpenbtsconfigTest(TestCase):
+    def setUp(self):
+        self.exec_path = os.path.dirname(__file__)
+        filename = os.path.join(self.exec_path, 'resources/clean/OpenBTS.db')
+        self.base_openbts_db = os.path.abspath(filename)
+        filename = os.path.join(self.exec_path, 'resources/OpenBTS.db')
+        self.target_openbts_db = os.path.abspath(filename)
+
+        shutil.copy(self.base_openbts_db, self.target_openbts_db)
+        self.config = BadimsicoreBtsConfig(self.target_openbts_db)
 
     def test_read_db(self):
-        shutil.copy("resources/clean/OpenBTS.db", "resources/OpenBTS.db")
-        config = BadimsicoreBtsConfig("resources/OpenBTS.db")
+        # shutil.copy(self.base_openbts_db, self.target_openbts_db)
+        # config = BadimsicoreBtsConfig(self.target_openbts_db)
         pass
 
     def test_read_coherence(self):
-        shutil.copy("resources/clean/OpenBTS.db", "resources/OpenBTS.db")
-        config = BadimsicoreBtsConfig("resources/OpenBTS.db")
-        assert config.read_badimsicore_bts_config() == unmodified_ref
+        #shutil.copy(self.base_openbts_db, self.target_openbts_db)
+        #config = BadimsicoreBtsConfig(self.target_openbts_db)
+        assert self.config.read_badimsicore_bts_config() == unmodified_ref
         pass
 
     def test_get_conf(self):
-        config = BadimsicoreBtsConfig("resources/OpenBTS.db")
-        config.set_config("10", "AA")
-        config.set_config("2", "B")
-        config.set_config("3", "C")
-        self.assertEquals(config.get_config("10"), "AA")
-        self.assertEquals(config.get_config("2"), "B")
-        self.assertEquals(config.get_config("3"), "C")
+        # config = BadimsicoreBtsConfig(self.target_openbts_db)
+        self.config.set_config("10", "AA")
+        self.config.set_config("2", "B")
+        self.config.set_config("3", "C")
+        self.assertEquals(self.config.get_config("10"), "AA")
+        self.assertEquals(self.config.get_config("2"), "B")
+        self.assertEquals(self.config.get_config("3"), "C")
 
     def test_write_db(self):
-        shutil.copy("resources/clean/OpenBTS.db", "resources/OpenBTS.db")
-        config = BadimsicoreBtsConfig("resources/OpenBTS.db")
-        config.read_badimsicore_bts_config()
-        old = config.get_config('CLI.Interface')
+        # shutil.copy("resources/clean/OpenBTS.db", "resources/OpenBTS.db")
+        # config = BadimsicoreBtsConfig("resources/OpenBTS.db")
+        self.config.read_badimsicore_bts_config()
+        old = self.config.get_config('CLI.Interface')
         self.assertEquals(old, ('127.0.0.1', 0, 0, 'Interface for use in communicating between CLI and OpenBTS, use "any" for all interfaces, otherwise, a comma separated list of interfaces'))
         list_old = list(old)
         list_old[0] = '128.128.128.128'
         old = tuple(list_old)
-        config.set_config('CLI.Interface', old)
-        config.write_badimsicore_bts_config()
-        results = config.read_badimsicore_bts_config()
-        print(results)
-        print(modified_ref)
+        self.config.set_config('CLI.Interface', old)
+        self.config.write_badimsicore_bts_config()
+        results = self.config.read_badimsicore_bts_config()
+        # print(results)
+        # print(modified_ref)
         self.assertEquals(results, modified_ref)
         pass
 

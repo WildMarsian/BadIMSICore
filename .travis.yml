@@ -14,10 +14,10 @@ addons:
     packages:
       - git
       - python-software-properties
-      - tshark
+      #- tshark
 
 before_install:
-  - sudo apt-get update
+  #- sudo apt-get update
 
 install:
   - sudo apt-get install -y tshark
@@ -26,12 +26,11 @@ before_script:
   - echo "Build starting on " `date`
   # - export LD_LIBRARY_PATH=/usr/local/lib
   # - echo $LD_LIBRARY_PATH
-  - export PYTHONPATH=${PYTHONPATH}:$PWD/BadIMSICore/
 
 
 script:
 # Go to the BadIMSICore to localize all sources
-  # - cd $PWD/BadIMSICore/
+  - cd $PWD/BadIMSICore/
 # For the moment, unit tests files are hardcoded
   - nosetests -v -s test/test_badimsicore_openbts_init.py
   - nosetests -v -s test/test_badimsicore_sniffing.py
