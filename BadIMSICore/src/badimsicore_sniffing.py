@@ -35,19 +35,20 @@ Reads a PCAP file and displays it in the standard output.
 
 
 def read_from_pcap(input_pcap_filename, iface, net_filter):
-    if iface == '':
+    if len(iface) == 0:
         raise 'Interface not defined'
     if not os.path.isfile(input_pcap_filename):
         raise 'Input PCAP file not found'
 
-    pargs = [tshark, '-i', iface]
+    pargs = [tshark, '-i', iface, '-2']
     pargs.extend(['-r', input_pcap_filename])
     pargs.extend(['-T', 'pdml'])
 
-    if net_filter != '':
+    if len(net_filter) > 0:
         pargs.extend(['-R', net_filter])
 
-    proc = subprocess.Popen(pargs)
+    # We don't need the output
+    proc = subprocess.Popen(pargs, stdout=subprocess.PIPE)
 
     return proc.communicate()
 

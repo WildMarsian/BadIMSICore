@@ -46,4 +46,4 @@ notifications:
       - zakaria.djebloune@gmail.com
       - alisterwan@gmail.com
       - nicolas77.dossantos@gmail.com
-    on_success: always
+    #on_success: always
