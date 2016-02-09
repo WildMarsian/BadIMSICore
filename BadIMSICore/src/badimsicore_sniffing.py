@@ -90,7 +90,7 @@ def write_to_xml(input_pcap_filename, output_xml_filename, iface, net_filter):
     pargs.extend(['-r', input_pcap_filename])
     pargs.extend(['-T', 'pdml'])
 
-    if net_filter != '':
+    if len(net_filter) > 0:
         pargs.extend(['-R', net_filter])
 
     proc = subprocess.Popen(pargs, stdout=output)
