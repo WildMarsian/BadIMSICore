@@ -34,7 +34,7 @@ script:
 # For the moment, unit tests files are hardcoded
   - nosetests -v -s test/test_badimsicore_openbts_init.py
   - nosetests -v -s test/test_badimsicore_sniffing.py
-  - nosetests -v -s test/test_badimsicore_xml_parsing.py
+  - nosetests -v -s test/test_badimsicore_sniffing_xml_parsing.py
   # - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
 
 
