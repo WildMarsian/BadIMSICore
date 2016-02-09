@@ -35,3 +35,6 @@ class BadimsicoreBtsConfig:
         c.execute("DELETE FROM CONFIG;")
         c.executemany("INSERT INTO CONFIG VALUES (?, ?, ?, ?, ?);", newdat)
         self.conn.commit()
+
+    def close(self):
+        self.conn.close()

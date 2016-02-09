@@ -51,13 +51,14 @@ class BadimsiCoreOpenbtsconfigTest(TestCase):
         old = tuple(list_old)
         self.config.set_config('CLI.Interface', old)
         self.config.write_badimsicore_bts_config()
-        results = self.config.read_badimsicore_bts_config()
+        self.config.read_badimsicore_bts_config()
         # print(results)
         # print(modified_ref)
-        self.assertEquals(results, modified_ref)
+        self.assertEquals(self.config.get_config('CLI.Interface'), ('128.128.128.128', 0, 0, 'Interface for use in communicating between CLI and OpenBTS, use "any" for all interfaces, otherwise, a comma separated list of interfaces'))
         pass
 
     def tearDown(self):
+        self.config.close()
         if os.path.exists(self.target_openbts_db):
             os.remove(self.target_openbts_db)
 
