@@ -26,14 +26,16 @@ before_script:
   - echo "Build starting on " `date`
   # - export LD_LIBRARY_PATH=/usr/local/lib
   # - echo $LD_LIBRARY_PATH
+  - export PYTHONPATH=${PYTHONPATH}:$PWD/BadIMSICore/
 
 
 script:
 # Go to the BadIMSICore to localize all sources
-  - cd $PWD/BadIMSICore/
+  # - cd $PWD/BadIMSICore/
 # For the moment, unit tests files are hardcoded
-  - nosetests -v -s test/badimsicore_openbts_init_test.py
+  - nosetests -v -s test/test_badimsicore_openbts_init.py
   - nosetests -v -s test/test_badimsicore_sniffing.py
+  - nosetests -v -s test/test_badimsicore_xml_parsing.py
   # - xvfb-run --server-args="-screen 0, 1024x768x24" nosetests -s --nologcapture -A 'not slow' -v --with-id --with-xcoverage --with-xunit --verbose --cover-package=qgis2web
 
 
