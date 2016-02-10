@@ -29,6 +29,7 @@ class BadimsicoreBtsService(Daemon):
     @staticmethod
     def send_command(command):
         openbts=["/OpenBts/OpenBtsDo", "-c"]
-        p = subprocess.Popen(openbts.extend(command))
+        openbts.extend(command)
+        p = subprocess.Popen(openbts)
         return p.communicate()
 
