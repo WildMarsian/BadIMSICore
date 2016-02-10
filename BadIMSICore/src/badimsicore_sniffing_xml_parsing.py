@@ -73,10 +73,11 @@ def parse_xml_file(xmlfilename):
                     arfcns = []
     return btsList
 
+
 def main():
     if len(sys.argv) == 2:
         xmlfilename = sys.argv[1]
-        if is_valid_extension(xmlfilename,'.xml'):
+        if is_valid_extension(xmlfilename, '.xml'):
             list_bts = parse_xml_file(xmlfilename)
             for b in list_bts:
                 print(b)
