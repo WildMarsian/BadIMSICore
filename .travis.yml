@@ -33,6 +33,7 @@ script:
   - cd $PWD/BadIMSICore/
 # For the moment, unit tests files are hardcoded
   - nosetests -v -s test/test_badimsicore_openbts_init.py
+  - nosetests -v -s test/test_badimsicore_openbts_config.py
   - nosetests -v -s test/test_badimsicore_sniffing.py
   - nosetests -v -s test/test_badimsicore_sniffing_xml_parsing.py
   - nosetests -v -s test/test_badimsicore_sms_interceptor.py
