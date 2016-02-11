@@ -20,6 +20,11 @@ def csv_dict_reader(file_obj):
 
 
 def get_network_operator_by_arfcn(arfcn):
+    """
+    Give the network operator linked to an arfcn number
+    :param arfcn: the arfcn number.
+    :return: the network operator (String)
+    """
     if(1<=arfcn and arfcn<=62) or (527<=arfcn and arfcn<=645):
         return "Orange"
     if(63<=arfcn and arfcn<=124) or (512<=arfcn and arfcn<=525) or (647<=arfcn and arfcn<=751):
@@ -44,6 +49,22 @@ def print_error(err):
     """
     print(err)
 
+def get_radioBandsByOperator(filename, operator):
+    try:
+        radioBands = []
+        tuple = ()
+        with open(filename) as f_obj:
+            tuples = csv_dict_reader(f_obj)
+
+        for element in sorted(tuples.keys()):
+            if(get_network_operator_by_arfcn(element) == operator):
+                radioBands.append(get_downlink_from_arfcn(tuples,element))
+        return radioBands
+
+    except IOError as err:
+        print_error(err)
+        sys.exit(2)
+
 def parse_csv_file(filename, list_arfcns):
     try:
         radioBands = []
@@ -63,5 +84,16 @@ if __name__ == "__main__":
     filename ='../ressources/all_gsm_channels_arfcn.csv'
     list_arfcns = [1010, 779, 791, 794, 875, 876, 878, 883, 982]
     bands = parse_csv_file(filename, list_arfcns)
+    orange_radioBands = get_radioBandsByOperator(filename,"Orange")
+    bouygues_radioBands = get_radioBandsByOperator(filename, "Bouygues Telecom")
+    sfr_radioBands = get_radioBandsByOperator(filename, "SFR")
+
+    print("With a list of ARFCN: ")
     print("ARFCN: ", list_arfcns)
     print("BANDS: ", bands)
+    print("----------------------")
+
+    print("Searching radio bands by network operator: ")
+    print("Orange bands: ",sorted(orange_radioBands))
+    print("SFR bands: ",sorted(sfr_radioBands))
+    print("Bouygues Telecom bands: ",sorted(bouygues_radioBands))
