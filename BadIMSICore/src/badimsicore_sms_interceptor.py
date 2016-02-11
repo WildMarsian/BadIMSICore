@@ -28,7 +28,7 @@ class BadSMSInterceptor:
             count += 1
             line_words = line.split(" ")
             # If it's a line containing "Decoded", it means it's a SMQueue log entry
-            if "Decoded" in line:
+            if 'Decoded' in line:
                 # If the count is even, that means it's a duplicate
                 if count % 2 == 0:
                     # We remove that extra carrier return for pretty printing
@@ -48,7 +48,7 @@ def main():
     parser.add_option('-i', '--input', dest='input', help='Log file to be analyzed')
     (options, args) = parser.parse_args()
     if options.input is None:
-        parser.error("Input log file is missing")
+        parser.error('Input log file is missing')
     badsmsinterceptor = BadSMSInterceptor()
     bad_list = badsmsinterceptor.intercept(options.input)
     for x in bad_list:
