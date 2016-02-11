@@ -1,6 +1,9 @@
 import csv
+import sys
 
 # ----------------------------------------------------------------- #
+
+
 def csv_dict_reader(file_obj):
     """
     Read a CSV file using csv.DictReader and return it into a dictionary that contains {ARFCN number : informations}
@@ -28,12 +31,27 @@ def get_downlink_from_arfcn(tuples, arfcn):
     tuple_arfcn = tuples[arfcn]
     return tuple_arfcn[1]
 
+def print_error(err):
+    """
+    :param err: the error String message
+    :return: void
+    """
+    print(err)
 
-
-# ----------------------------------------------------------------- #
-if __name__ == "__main__":
-    with open('all_gsm_channels_arfcn.csv') as f_obj:
-        tuples = csv_dict_reader(f_obj)
+def parse_csv_file(filename):
+    try:
+        with open(filename) as f_obj:
+            tuples = csv_dict_reader(f_obj)
         for index in sorted(tuples.keys()):
             print(index, tuples[index])
             print("Downlink", get_downlink_from_arfcn(tuples,index))
+            # Problem while opening the output file
+
+    except IOError as err:
+        print_error(err)
+        sys.exit(2)
+
+# ----------------------------------------------------------------- #
+if __name__ == "__main__":
+    filename ='../ressources/all_gsm_channels_arfcn.csv'
+    parse_csv_file(filename)
