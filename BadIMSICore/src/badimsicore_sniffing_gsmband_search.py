@@ -61,6 +61,8 @@ def get_radioBandsByOperator(filename, operator):
     try:
         radioBands = []
         tuple = ()
+        if(operator == None):
+            return radioBands
         with open(filename) as f_obj:
             tuples = csv_dict_reader(f_obj)
 
@@ -77,6 +79,8 @@ def parse_csv_file(filename, list_arfcns):
     try:
         radioBands = []
         tuple = ()
+        if(len(list_arfcns) == 0):
+            return radioBands
         with open(filename) as f_obj:
             tuples = csv_dict_reader(f_obj)
         for arfcn in list_arfcns:
@@ -94,7 +98,11 @@ def get_downlink_from_arfcn(tuples, arfcn):
     :param arfcn: the arfcn number
     :return: the downlink number of an arfcn
     """
+    if(arfcn > len(tuples)):
+        return None
     tuple_arfcn = tuples[arfcn]
+    if len(tuple_arfcn) == 0:
+        return None
     return tuple_arfcn[1]
 
 
