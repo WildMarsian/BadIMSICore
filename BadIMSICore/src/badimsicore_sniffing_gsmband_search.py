@@ -3,20 +3,29 @@ import sys
 
 
 class RadioBandSearcher:
-    def __init__(self, orange_rb, sfr_rb, bouygues_rb):
-        self.orange_rb = orange_rb
-        self.sfr_rb = sfr_rb
-        self.bouygues_rb = bouygues_rb
+    def __init__(self):
+        filename ='../ressources/all_gsm_channels_arfcn.csv'
+        self.orange_rb = get_radioBandsByOperator(filename,"orange")
+        self.sfr_rb = get_radioBandsByOperator(filename, "sfr")
+        self.bouygues_rb = get_radioBandsByOperator(filename, "bouygues_telecom")
 
     def get_radio_band_by_network_operator(self, operator):
-        if(operator == "Orange"):
+        if(operator == "orange"):
             return self.orange_rb
-        if(operator == "SFR"):
+        if(operator == "sfr"):
             return self.sfr_rb
-        if(operator == "Bouygues Telecom"):
+        if(operator == "bouygues_telecom"):
             return self.bouygues_rb
 
-# --------------------------------------------- -------------------- #
+    def get_network_radio_band_by_range(self, operator, min, max):
+        range_bands = []
+        bands = self.get_radio_band_by_network_operator(operator)
+        for band in bands:
+            if(band>=min and band<=max):
+                range_bands.append(band)
+        return range_bands
+
+# ------------------------------------------------------------------ #
 
 def csv_dict_reader(file_obj):
     """
@@ -38,11 +47,11 @@ def get_network_operator_by_arfcn(arfcn):
     :return: the network operator (String)
     """
     if(1<=arfcn and arfcn<=62) or (527<=arfcn and arfcn<=645):
-        return "Orange"
+        return "orange"
     if(63<=arfcn and arfcn<=124) or (512<=arfcn and arfcn<=525) or (647<=arfcn and arfcn<=751):
-        return "SFR"
+        return "sfr"
     if(753<=arfcn and arfcn<=885) or (975<=arfcn and arfcn<=1023):
-        return "Bouygues Telecom"
+        return "bouygues_telecom"
 
 def print_error(err):
     """
@@ -98,32 +107,22 @@ def get_downlink_from_arfcn(tuples, arfcn):
     :param arfcn: the arfcn number
     :return: the downlink number of an arfcn
     """
-    if(arfcn > len(tuples)):
-        return None
     tuple_arfcn = tuples[arfcn]
     if len(tuple_arfcn) == 0:
         return None
     return tuple_arfcn[1]
 
-
 # ----------------------------------------------------------------- #
 if __name__ == "__main__":
-    filename ='../ressources/all_gsm_channels_arfcn.csv'
 
-    list_arfcns = [1010, 779, 791, 794, 875, 876, 878, 883, 982]
-    bands = parse_csv_file(filename, list_arfcns)
-
-    print("With a list of ARFCN: ")
-    print("ARFCN: ", list_arfcns)
-    print("BANDS: ", bands)
-    print("----------------------")
-
-    orange_radioBands = get_radioBandsByOperator(filename,"Orange")
-    sfr_radioBands = get_radioBandsByOperator(filename, "SFR")
-    bouygues_radioBands = get_radioBandsByOperator(filename, "Bouygues Telecom")
-
-    rbs = RadioBandSearcher(orange_radioBands,sfr_radioBands, bouygues_radioBands)
+    rbs = RadioBandSearcher()
     print("Searching radio bands by network operator: ")
-    print("Orange bands: ",sorted(rbs.get_radio_band_by_network_operator("Orange")))
-    print("SFR bands: ",sorted(rbs.get_radio_band_by_network_operator("SFR")))
-    print("Bouygues Telecom bands: ",sorted(rbs.get_radio_band_by_network_operator("Bouygues Telecom")))
+    print("Orange bands: ",sorted(rbs.get_radio_band_by_network_operator("orange")))
+    print("SFR bands: ",sorted(rbs.get_radio_band_by_network_operator("sfr")))
+    print("Bouygues Telecom bands: ",sorted(rbs.get_radio_band_by_network_operator("bouygues_telecom")))
+
+    print("#---------------------------------------------------------------------------------------#")
+
+    print("Orange bands [890-902] : ",sorted(rbs.get_network_radio_band_by_range("orange",890,902)))
+    print("SFR bands [903-915] : ",sorted(rbs.get_network_radio_band_by_range("sfr",903,915)))
+    print("Bouygues Telecom bands [880-889] : ",sorted(rbs.get_network_radio_band_by_range("bouygues_telecom",880,889)))
