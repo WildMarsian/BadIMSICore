@@ -153,7 +153,7 @@ def setup_parameters():
     parser = argparse.ArgumentParser(description='Configure sniffing parameters')
     group = parser.add_argument_group("grgsm arguments")
     group.add_argument("-g", "--gain", help="Set the amplification value", default=30, type=float)
-    group.add_argument("-p", "--ppm", help="Set PPM Stream Modulation value", default=0 , type=int)
+    group.add_argument("-p", "--ppm", help="Set PPM Stream Modulation value", default=0, type=int)
     group.add_argument("-s", "--samp_rate", help="Set the rate value of the antenna", default=2000000.052982, type=float)
     group.add_argument("-o", "--shiftoff", help="Set the shiftoff value", default=400000, type=float)
     group.add_argument("-f", "--frequencies", help="Set the list of frequencies to scan : 937000000 932950000 ...", default=[937700000], type=float, nargs='+')
