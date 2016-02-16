@@ -135,7 +135,7 @@ def is_valid_extension(filename, ext):
 
 
 def main():
-    parser = OptionParser(usage='Usage: badimsicore_sniffing.py -i <input> -o output -d iface -f \'filter\'')
+    parser = OptionParser(usage='Usage: badimsicore_sniffing_toxml.py -i <input> -o output -d iface -f \'filter\'')
     parser.add_option('-i', '--input', dest='input_filename', help='Input file in PCAP format')
     parser.add_option('-o', '--output', dest='output_filename', help='Output file in XML format')
     parser.add_option('-d', '--device', dest='iface', help='Interface used for listening')
