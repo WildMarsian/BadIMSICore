@@ -157,6 +157,8 @@ def setup_parameters():
     group.add_argument("-s", "--samp_rate", help="Set the rate value of the antenna", default=2000000.052982, type=float)
     group.add_argument("-o", "--shiftoff", help="Set the shiftoff value", default=400000, type=float)
     group.add_argument("-f", "--frequencies", help="Set the list of frequencies to scan : 937000000 932950000 ...", default=[937700000], type=float, nargs='+')
+    group.add_argument("-t", "--scan-time", help="Set the scan time for each frequency", default=2, type=float)
+    group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
     return parser
 
 # Checking arguments values
@@ -168,7 +170,6 @@ def checking_arguments(frequencies, gain, ppm):
     for fc in frequencies:
         if (fc <= 0):
             raise argparse.ArgumentTypeError("No frequency has negative or null value")
-            logging.alert("")
 
 class sniffingHandler:
 
@@ -191,12 +192,12 @@ class sniffingHandler:
         self.grgsm.start()
 
     # For all frequencies in argument sniffing for 2 seconds
-    def run_sniffing(self):
-        while True:
+    def run_sniffing(self, repeat, scan_time):
+        for i in range(1, repeat, scan_time):
             for fc in frequencies:
                 #print("Scanning frequency : " + str(fc))
                 self.tb.set_fc(fc)
-                time.sleep(2)
+                time.sleep(scan_time)
 
     # Stop sniffing process
     def stop_sniffing(self):
@@ -225,7 +226,7 @@ if __name__ == '__main__':
     handler.start_sniffing()
 
     # Running function
-    handler.run_sniffing()
+    handler.run_sniffing(args.repeat, args.scan-time)
 
     # Stopping sniffing threads
     handler.stop_sniffing()
