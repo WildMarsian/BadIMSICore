@@ -8,37 +8,40 @@ You need to construct the new instance using the method get_badimsicore_bts_serv
 """
 class BadimsicoreBtsService:
 
+    def __init(self, sdrDriver):
+        sdrDriver.initSDR()
+
     def start(self):
         """
         Start the daemon
         """
-        subprocess.Popen(["start openbts"])
+        subprocess.call(args="start openbts", shell=True)
 
     def stop(self):
         """
         Stop the daemon
         """
-        subprocess.Popen(["stop openbts"])
+        subprocess.call(args="stop openbts", shell=True)
 
     def restart(self):
         """
         Restart the daemon
         """
-        subprocess.Popen(["restart openbts"])
+        subprocess.call(args="restart openbts", shell=True)
 
     def status(self):
         """
         return the status of the daemon
         """
+        return subprocess.call(args="status openbts", shell=True)
 
     @staticmethod
-    def get_badimsicore_bts_service(exec_context):
+    def get_badimsicore_bts_service():
         """
         BadimsicoreBtsService factory
         :exec_context a string corresponding to the path of the context (the place where the pid file is stored)
         """
-        pid_file = os.path.join(exec_context, "badimsicore_bts.pid")
-        return BadimsicoreBtsService(pid_file)
+        return BadimsicoreBtsService()
 
 
     @staticmethod
@@ -51,3 +54,39 @@ class BadimsicoreBtsService:
         p = subprocess.Popen(openbts)
         return p.communicate()
 
+    # launch the sipauthserve service
+    @staticmethod
+    def init_sipauthserve(self):
+        sortie = subprocess.call(args="start sipauthserve",shell=True, stdout=subprocess.PIPE)
+        return sortie == 0
+
+    # stop the sipauthserve service
+    @staticmethod
+    def stop_sipauthserve(self):
+        sortie = subprocess.call(args="stop sipauthserve",shell=True, stdout=subprocess.PIPE)
+        return sortie == 0
+
+    # launch the smqueue service
+    @staticmethod
+    def init_smqueue(self):
+        exit_code = subprocess.call(args="start smqueue", shell=True, stdout=subprocess.PIPE)
+        return exit_code == 0
+
+    # stop the smqueue service
+    @staticmethod
+    def stop_smqueue(self):
+        exit_code = subprocess.call(args="stop smqueue", shell=True, stdout=subprocess.PIPE)
+        return exit_code == 0
+
+    @staticmethod
+    def init_openbts():
+        # Stop all the services first
+        BadimsicoreBtsService.stop_sipauthserve()
+        BadimsicoreBtsService.stop_smqueue()
+        # load the firmware
+        BadimsicoreBtsService.load_firmware()
+        # Launch the two required services
+        first = BadimsicoreBtsService.init_sipauthserve()
+        second = BadimsicoreBtsService.init_smqueue()
+        # checking if the two sub modules are enabled
+        return first and second and BadimsicoreBtsService.start()
