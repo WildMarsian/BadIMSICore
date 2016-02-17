@@ -27,7 +27,7 @@ class BadIMSICoreListener:
         opts.extend(opt_freq)
         opts.extend(["-t", str(scan_time)])
         opts.extend(["-n", str(repeat)])
-        subprocess.call(args=opts, shell=True)
+        subprocess.call(args=opts)
 
     @staticmethod
     def toxml(xmlFile, duration):
