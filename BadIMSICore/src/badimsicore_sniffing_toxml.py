@@ -117,7 +117,7 @@ def redirect_to_xml(output_xml_filename, iface, net_filter, duration=10):
                 pargs.extend(['-R', net_filter])
 
             proc = subprocess.Popen(pargs, stdout=output)
-            return proc.communicate()
+            #return proc.communicate()
 
     # Problem while opening the output file
     except IOError as err:
