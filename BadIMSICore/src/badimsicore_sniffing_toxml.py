@@ -101,13 +101,17 @@ Write the trafic from the standard input to an XML file
 """
 
 
-def redirect_to_xml(output_xml_filename, iface, net_filter):
-    # TODO : test extension
+def redirect_to_xml(output_xml_filename, iface, net_filter, duration=10):
 
     try:
         with open(output_xml_filename, 'w') as output:
             pargs = [tshark, '-i', iface, '-2']
             pargs.extend(['-T', 'pdml'])
+
+            #TODO verifier duration est un entier
+
+            if duration is not None:
+                pargs.extend(['-a', 'duration: ' + duration.__str__()])
 
             if net_filter is not None:
                 pargs.extend(['-R', net_filter])
@@ -140,6 +144,7 @@ def main():
     parser.add_option('-o', '--output', dest='output_filename', help='Output file in XML format')
     parser.add_option('-d', '--device', dest='iface', help='Interface used for listening')
     parser.add_option('-f', '--filter', dest='filter', help='Filter in wireshark style')
+    parser.add_option('-t', '--time', dest='time', help='duration of the redirection', default=10)
 
     (options, args) = parser.parse_args()
 
@@ -161,7 +166,7 @@ def main():
     elif options.input_filename is None and options.output_filename is not None:
         if is_valid_extension(options.output_filename, '.xml'):
             # The user reads from the standard input and write to an XML file
-            redirect_to_xml(options.output_filename, options.iface, options.filter)
+            redirect_to_xml(options.output_filename, options.iface, options.filter, options.time)
         else:
             parser.error('Invalid format for %s' % options.output_filename)
     else:

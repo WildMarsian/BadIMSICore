@@ -1,57 +1,90 @@
 import csv
-import sys
+
+
+class ARFCN:
+
+    def __init__(self, arfcn, downlink, uplink, band):
+        self.arfcn = arfcn
+        self.downlink = downlink
+        self.uplink = uplink
+        self.band = band
+
+    def get_operator(self):
+        return ARFCN.get_operator_from_arfcn(self.arfcn)
+
+    def __str__(self):
+        return '({self.arfcn}, {self.downlink}, {self.uplink}, {self.band})'.format(self=self)
+
+    def __lt__(self, other):
+        return self.arfcn < other.arfcn
+
+    def __gt__(self, other):
+        return self.arfcn > other.arfcn
+
+
+    @staticmethod
+    def get_operator_from_arfcn(arfcn):
+        """
+        Give the network operator linked to an arfcn number
+        :return the network operator (String)
+        :param arfcn, design the arfcn number (int)
+        """
+        if(1 <= arfcn and arfcn <= 62) or (527 <= arfcn and arfcn <= 645):
+            return "orange"
+        elif(63 <= arfcn and arfcn <= 124) or (512 <= arfcn and arfcn <= 525) or (647 <= arfcn and arfcn <= 751):
+            return "sfr"
+        elif(753 <= arfcn and arfcn <= 885) or (975 <= arfcn and arfcn <= 1023):
+            return "bouygues_telecom"
+        else:
+            return "None"
+
+
+
 
 
 class RadioBandSearcher:
     def __init__(self):
-        filename ='../ressources/all_gsm_channels_arfcn.csv'
-        self.orange_rb = get_radioBandsByOperator(filename,"orange")
-        self.sfr_rb = get_radioBandsByOperator(filename, "sfr")
-        self.bouygues_rb = get_radioBandsByOperator(filename, "bouygues_telecom")
+        filename = '../ressources/all_gsm_channels_arfcn.csv'
+        self.arfcn_dict = csv_arfcn_dict_reader(filename)
 
-    def get_radio_band_by_network_operator(self, operator):
-        if(operator == "orange"):
-            return self.orange_rb
-        if(operator == "sfr"):
-            return self.sfr_rb
-        if(operator == "bouygues_telecom"):
-            return self.bouygues_rb
+    def get_arfcn(self, operator, band):
+        results = self.arfcn_dict.get(band).get(operator)
+        if results is None:
+            return []
+        return list(map(lambda arfcn_object: arfcn_object.downlink, self.arfcn_dict.get(band).get(operator).values()))
 
-    def get_network_radio_band_by_range(self, operator, min, max):
-        range_bands = []
-        bands = self.get_radio_band_by_network_operator(operator)
-        for band in bands:
-            if(band>=min and band<=max):
-                range_bands.append(band)
-        return range_bands
+    def get_bands(self):
+        return self.arfcn_dict.keys()
 
-# ------------------------------------------------------------------ #
-
-def csv_dict_reader(file_obj):
+def csv_arfcn_dict_reader(filename):
     """
     Read a CSV file using csv.DictReader and return it into a dictionary that contains {ARFCN number : informations}
-    :param file_obj: the csv file to read
-    :return: a dictionary
+    :param filename the csv file to read
+    :return: a dictionary containing ARFCN object
     """
-    tuples = {}
-    reader = csv.DictReader(file_obj, delimiter=';')
-    for line in reader:
-        arfcn_number = int(line['arfcn'])
-        tuple = (arfcn_number,float(line['downlink']),float(line['uplink']))
-        tuples[arfcn_number] = tuple
-    return tuples
-def get_network_operator_by_arfcn(arfcn):
-    """
-    Give the network operator linked to an arfcn number
-    :param arfcn: the arfcn number.
-    :return: the network operator (String)
-    """
-    if(1<=arfcn and arfcn<=62) or (527<=arfcn and arfcn<=645):
-        return "orange"
-    if(63<=arfcn and arfcn<=124) or (512<=arfcn and arfcn<=525) or (647<=arfcn and arfcn<=751):
-        return "sfr"
-    if(753<=arfcn and arfcn<=885) or (975<=arfcn and arfcn<=1023):
-        return "bouygues_telecom"
+    arfcn_dict = {}
+    with open(filename) as csvfile:
+        reader = csv.DictReader(csvfile, delimiter=';')
+
+        for line in reader:
+            band_value = line['name']
+            arfcn_value = int(line['arfcn'])
+            uplink_value = float(line['uplink'])
+            downlink_value = float(line['downlink'])
+
+            arfcn_dict_band = arfcn_dict.get(band_value)
+            if arfcn_dict_band is None:
+                arfcn_dict_band = {}
+                arfcn_dict[band_value] = arfcn_dict_band
+
+            afrcn_dict_op = arfcn_dict_band.get(ARFCN.get_operator_from_arfcn(arfcn_value))
+            if afrcn_dict_op is None:
+                afrcn_dict_op = {}
+                arfcn_dict_band[ARFCN.get_operator_from_arfcn(arfcn_value)] = afrcn_dict_op
+
+            afrcn_dict_op[arfcn_value] = ARFCN(arfcn_value, downlink_value, uplink_value, band_value)
+
+        return arfcn_dict
 
 def print_error(err):
     """
@@ -60,69 +93,12 @@ def print_error(err):
     """
     print(err)
 
-def get_radioBandsByOperator(filename, operator):
-    """
-    Gives a list of all GSM bands linked to the network operator given in parameter.
-    :param filename: the csv file
-    :param operator: the network operator (String)
-    :return: a list that contains the network operator bands
-    """
-    try:
-        radioBands = []
-        tuple = ()
-        if(operator == None):
-            return radioBands
-        with open(filename) as f_obj:
-            tuples = csv_dict_reader(f_obj)
-
-        for element in sorted(tuples.keys()):
-            if(get_network_operator_by_arfcn(element) == operator):
-                radioBands.append(get_downlink_from_arfcn(tuples,element))
-        return radioBands
-
-    except IOError as err:
-        print_error(err)
-        sys.exit(2)
-
-def parse_csv_file(filename, list_arfcns):
-    try:
-        radioBands = []
-        tuple = ()
-        if(len(list_arfcns) == 0):
-            return radioBands
-        with open(filename) as f_obj:
-            tuples = csv_dict_reader(f_obj)
-        for arfcn in list_arfcns:
-            tuple = (get_network_operator_by_arfcn(arfcn), get_downlink_from_arfcn(tuples,arfcn))
-            radioBands.append(tuple)
-        return radioBands
-    except IOError as err:
-        print_error(err)
-        sys.exit(2)
-
-def get_downlink_from_arfcn(tuples, arfcn):
-    """
-    Getting the downlink frequency from an arfcn number
-    :param tuples: a dictionnary
-    :param arfcn: the arfcn number
-    :return: the downlink number of an arfcn
-    """
-    tuple_arfcn = tuples[arfcn]
-    if len(tuple_arfcn) == 0:
-        return None
-    return tuple_arfcn[1]
-
-# ----------------------------------------------------------------- #
 if __name__ == "__main__":
 
     rbs = RadioBandSearcher()
+    print(rbs.arfcn_dict)
     print("Searching radio bands by network operator: ")
-    print("Orange bands: ",sorted(rbs.get_radio_band_by_network_operator("orange")))
-    print("SFR bands: ",sorted(rbs.get_radio_band_by_network_operator("sfr")))
-    print("Bouygues Telecom bands: ",sorted(rbs.get_radio_band_by_network_operator("bouygues_telecom")))
+    print("Orange bands: ", sorted(rbs.get_arfcn("orange", "GSM-900")))
+    print("SFR bands: ", sorted(rbs.get_arfcn("sfr", "GSM-900")))
+    print("Bouygues Telecom bands: ", sorted(rbs.get_arfcn("bouygues_telecom", "EGSM-900")))
 
-    print("#---------------------------------------------------------------------------------------#")
-
-    print("Orange bands [890-902] : ",sorted(rbs.get_network_radio_band_by_range("orange",890,902)))
-    print("SFR bands [903-915] : ",sorted(rbs.get_network_radio_band_by_range("sfr",903,915)))
-    print("Bouygues Telecom bands [880-889] : ",sorted(rbs.get_network_radio_band_by_range("bouygues_telecom",880,889)))
