@@ -25,8 +25,8 @@ class BadIMSICoreListener:
         frequencies = list(map(lambda freq: str(freq), frequencies))
         opt_freq.extend(frequencies)
         opts.extend(opt_freq)
-        opts.extend(["-t", scan_time])
-        opts.extend(["-n", repeat])
+        opts.extend(["-t", str(scan_time)])
+        opts.extend(["-n", str(repeat)])
         subprocess.call(args=opts, shell=True)
 
     @staticmethod
