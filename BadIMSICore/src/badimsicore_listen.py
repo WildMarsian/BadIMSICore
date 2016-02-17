@@ -5,7 +5,7 @@ from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
 import argparse
 import badimsicore_sniffing_xml_parsing
-import os
+import time
 
 
 class BadIMSICoreListener:
@@ -60,7 +60,7 @@ def main():
     xmlFile = 'xml_output'
     BadIMSICoreListener.toxml(xmlFile, duration)
     BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs)
-    os.sleep(duration)
+    time.sleep(duration)
 
     btss = BadIMSICoreListener.parse_xml(xmlFile)
 
