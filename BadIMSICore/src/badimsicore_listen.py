@@ -57,6 +57,7 @@ def main():
     xmlFile = 'xml_output'
     BadIMSICoreListener.toxml(xmlFile, duration)
     BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs)
+
     btss = BadIMSICoreListener.parse_xml(xmlFile)
 
     print(btss)
