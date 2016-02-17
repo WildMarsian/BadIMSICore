@@ -22,10 +22,11 @@ class BadIMSICoreListener:
     def scan_frequencies(repeat, scan_time, frequencies):
         opts = ["python", "airprobe_rtlsdr_non_graphical.py"]
         opt_freq = ["-f"]
+        frequencies = list(map(lambda freq: str(freq), frequencies))
         opt_freq.extend(frequencies)
         opts.extend(opt_freq)
-        opts.extend(["-t", 5])
-        opts.extend(["-n", 2])
+        opts.extend(["-t", scan_time])
+        opts.extend(["-n", repeat])
         subprocess.call(args=opts, shell=True)
 
     @staticmethod
