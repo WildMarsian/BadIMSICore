@@ -9,7 +9,7 @@ class TestRadioBandSearcher(TestCase):
 
     def setUp(self):
         self.exec_path = os.path.dirname(__file__)
-        capture = os.path.join(self.exec_path, 'resources/all_gsm_channels_arfcn.csv')
+        capture = os.path.join(self.exec_path, 'ressources/all_gsm_channels_arfcn.csv')
         self.arfcn_csv = os.path.abspath(capture)
 
         self.orange_gsm_900 = [890.2, 890.4, 890.6, 890.8, 891.0, 891.2, 891.4, 891.6, 891.8, 892.0, 892.2, 892.4, 892.6, 892.8, 893.0, 893.2, 893.4, 893.6, 893.8, 894.0, 894.2, 894.4, 894.6, 894.8, 895.0, 895.2, 895.4, 895.6, 895.8, 896.0, 896.2, 896.4, 896.6, 896.8, 897.0, 897.2, 897.4, 897.6, 897.8, 898.0, 898.2, 898.4, 898.6, 898.8, 899.0, 899.2, 899.4, 899.6, 899.8, 900.0, 900.2, 900.4, 900.6, 900.8, 901.0, 901.2, 901.4, 901.6, 901.8, 902.0, 902.2, 902.4]
