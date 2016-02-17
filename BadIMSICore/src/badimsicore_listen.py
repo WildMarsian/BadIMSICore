@@ -31,7 +31,7 @@ class BadIMSICoreListener:
 
     @staticmethod
     def toxml(xmlFile, duration):
-        badimsicore_sniffing_toxml.redirect_to_xml(xmlFile, "lo", "gsmtap && ! icmp", duration)
+        badimsicore_sniffing_toxml.redirect_to_xml(xmlFile, "lo", "gsmtap && ! icmp", str(duration))
 
     @staticmethod
     def parse_xml(xmlFile):
