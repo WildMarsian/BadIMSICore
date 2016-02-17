@@ -42,8 +42,8 @@ def main():
     rds = RadioBandSearcher()
 
     parser = argparse.ArgumentParser()
-    args = parser.parse_args()
     BadIMSICoreListener.set_args(parser)
+    args = parser.parse_args()
     bands = rds.get_bands()
     if args.band == "all":
         freqs = []
