@@ -193,7 +193,7 @@ class sniffingHandler:
 
     # Loop to sniff on each specified frequencies
     def run_sniffing(self, repeat, scan_time):
-        for i in range(1, repeat, scan_time):
+        for i in range(1, repeat):
             for fc in self.frequencies:
                 #print("Scanning frequency : " + str(fc))
                 self.tb.set_fc(fc)

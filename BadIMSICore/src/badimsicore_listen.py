@@ -20,7 +20,7 @@ class BadIMSICoreListener:
 
     @staticmethod
     def scan_frequencies(repeat, scan_time, frequencies):
-        opts = ["python", "airprobe_rtlsdr_non_graphical.py"]
+        opts = ["python", "airprobe/airprobe_rtlsdr_non_graphical.py"]
         opt_freq = ["-f"]
         frequencies = list(map(lambda freq: str(freq), frequencies))
         opt_freq.extend(frequencies)
@@ -40,7 +40,7 @@ class BadIMSICoreListener:
 
 def main():
 
-    rds = RadioBandSearcher()
+    rds = RadioBandSearcher('ressources/all_gsm_channels_arfcn.csv')
 
     parser = argparse.ArgumentParser()
     BadIMSICoreListener.set_args(parser)

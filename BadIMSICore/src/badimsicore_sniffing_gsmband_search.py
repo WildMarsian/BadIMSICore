@@ -43,8 +43,8 @@ class ARFCN:
 
 
 class RadioBandSearcher:
-    def __init__(self):
-        filename = '../ressources/all_gsm_channels_arfcn.csv'
+
+    def __init__(self, filename):
         self.arfcn_dict = csv_arfcn_dict_reader(filename)
 
     def get_arfcn(self, operator, band):
@@ -95,7 +95,7 @@ def print_error(err):
 
 if __name__ == "__main__":
 
-    rbs = RadioBandSearcher()
+    rbs = RadioBandSearcher('resources/all_gsm_channels_arfcn.csv')
     print(rbs.arfcn_dict)
     print("Searching radio bands by network operator: ")
     print("Orange bands: ", sorted(rbs.get_arfcn("orange", "GSM-900")))

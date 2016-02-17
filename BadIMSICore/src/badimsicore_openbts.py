@@ -1,5 +1,5 @@
 
-import os
+
 import subprocess
 
 """
@@ -15,25 +15,25 @@ class BadimsicoreBtsService:
         """
         Start the daemon
         """
-        subprocess.call(args="start openbts", shell=True)
+        subprocess.call(args="start openbts")
 
     def stop(self):
         """
         Stop the daemon
         """
-        subprocess.call(args="stop openbts", shell=True)
+        subprocess.call(args="stop openbts")
 
     def restart(self):
         """
         Restart the daemon
         """
-        subprocess.call(args="restart openbts", shell=True)
+        subprocess.call(args="restart openbts")
 
     def status(self):
         """
         return the status of the daemon
         """
-        return subprocess.call(args="status openbts", shell=True)
+        return subprocess.call(args="status openbts")
 
     @staticmethod
     def get_badimsicore_bts_service():
@@ -57,29 +57,30 @@ class BadimsicoreBtsService:
     # launch the sipauthserve service
     @staticmethod
     def init_sipauthserve(self):
-        sortie = subprocess.call(args="start sipauthserve",shell=True, stdout=subprocess.PIPE)
+        sortie = subprocess.call(args="start sipauthserve", stdout=subprocess.PIPE)
         return sortie == 0
 
     # stop the sipauthserve service
     @staticmethod
     def stop_sipauthserve(self):
-        sortie = subprocess.call(args="stop sipauthserve",shell=True, stdout=subprocess.PIPE)
+        sortie = subprocess.call(args="stop sipauthserve", stdout=subprocess.PIPE)
         return sortie == 0
 
     # launch the smqueue service
     @staticmethod
     def init_smqueue(self):
-        exit_code = subprocess.call(args="start smqueue", shell=True, stdout=subprocess.PIPE)
+        exit_code = subprocess.call(args="start smqueue", stdout=subprocess.PIPE)
         return exit_code == 0
 
     # stop the smqueue service
     @staticmethod
     def stop_smqueue(self):
-        exit_code = subprocess.call(args="stop smqueue", shell=True, stdout=subprocess.PIPE)
+        exit_code = subprocess.call(args="stop smqueue",  stdout=subprocess.PIPE)
         return exit_code == 0
 
     @staticmethod
     def init_openbts():
+        #TODO fix static to class
         # Stop all the services first
         BadimsicoreBtsService.stop_sipauthserve()
         BadimsicoreBtsService.stop_smqueue()
