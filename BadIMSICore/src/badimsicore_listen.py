@@ -40,7 +40,7 @@ class BadIMSICoreListener:
 
 def main():
 
-    rds = RadioBandSearcher('ressources/all_gsm_channels_arfcn.csv')
+    rds = RadioBandSearcher('../ressources/all_gsm_channels_arfcn.csv')
 
     parser = argparse.ArgumentParser()
     BadIMSICoreListener.set_args(parser)
