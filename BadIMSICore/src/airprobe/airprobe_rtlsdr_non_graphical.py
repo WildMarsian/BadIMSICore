@@ -253,6 +253,6 @@ if __name__ == '__main__':
 
     print('Stopping sniffing threads')
     # Stopping sniffing threads
-    #handler.stop_sniffing()
+    handler.stop_sniffing()
     #logging.info('Sniffing finished')
 

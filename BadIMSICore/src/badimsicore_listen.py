@@ -63,7 +63,7 @@ def main():
     duration = 6 + len(freqs) * args.repeat * args.scan_time
     xmlFile = 'xml_output'
 
-    BadIMSICoreListener.toxml(xmlFile, duration)
+    #BadIMSICoreListener.toxml(xmlFile, duration)
     if BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs) != 0:
         print("error scanning for BTS cells, exiting")
         exit(0)
