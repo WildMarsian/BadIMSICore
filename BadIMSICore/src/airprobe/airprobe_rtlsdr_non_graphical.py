@@ -205,7 +205,7 @@ class sniffingHandler:
 
 # Main function
 if __name__ == '__main__':
-
+    print('starting logger')
     # Log system
     logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=logging.INFO)
     logging.info('Logger is lock and loaded')
