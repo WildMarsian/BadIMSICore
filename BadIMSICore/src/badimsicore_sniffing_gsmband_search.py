@@ -92,7 +92,7 @@ def print_error(err):
 
 if __name__ == "__main__":
 
-    rbs = RadioBandSearcher('resources/all_gsm_channels_arfcn.csv')
+    rbs = RadioBandSearcher('../ressources/all_gsm_channels_arfcn.csv')
     print(rbs.arfcn_dict)
     print("Searching radio bands by network operator: ")
     print("Orange bands: ", sorted(rbs.get_arfcn("orange", "GSM-900")))
