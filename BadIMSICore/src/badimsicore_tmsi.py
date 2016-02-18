@@ -4,7 +4,7 @@ from badimsicore_openbts import BadimsicoreBtsService
 class BadIMSICoreTIMSI:
     @staticmethod
     def get_all_timsi():
-        command = ["timsi"]
+        command = ["tmsis"]
         BadimsicoreBtsService.send_command(command)
 
 if __name__ == '__main__':
