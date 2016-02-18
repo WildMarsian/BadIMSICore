@@ -48,7 +48,7 @@ class RadioBandSearcher:
         results = self.arfcn_dict.get(band).get(operator)
         if results is None:
             return []
-        return list(map(lambda arfcn_object: arfcn_object.downlink*1000000, self.arfcn_dict.get(band).get(operator).values()))
+        return list(map(lambda arfcn_object: arfcn_object.downlink*1000000, sorted(self.arfcn_dict.get(band).get(operator).values())))
 
     def get_bands(self):
         return self.arfcn_dict.keys()
