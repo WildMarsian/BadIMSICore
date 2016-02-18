@@ -39,9 +39,6 @@ class ARFCN:
             return "None"
 
 
-
-
-
 class RadioBandSearcher:
 
     def __init__(self, filename):
