@@ -183,13 +183,21 @@ class sniffingHandler:
 
     def __init__(self, frequencies, gain, ppm, samp_rate, shiftoff):
         # Checking parameters values only (not type)
+        print(1)
         checking_arguments(frequencies, gain, ppm)
+        print(2)
         self.frequencies = frequencies
+        print(3)
         self.gain = gain
+        print(4)
         self.ppm = ppm
+        print(5)
         self.samp_rate = samp_rate
+        print(6)
         self.shiftoff = shiftoff
+        print(7)
         self.tb = airprobe_rtlsdr(fc=self.frequencies[0], gain=self.gain, ppm=self.ppm, samp_rate=self.samp_rate, shiftoff=self.shiftoff)
+        print(8)
 
     def start_sniffing(self):
         self.tb.start()
@@ -227,11 +235,6 @@ if __name__ == '__main__':
     # Getting all arguments in variable "args"
     args = parser.parse_args()
     #logging.info('Parsing parameters finished')
-
-    print('Checking arguments values')
-    # Checking arguments values
-    checking_arguments(args.frequencies, args.gain, args.ppm)
-    #logging.info('Checking parameters finished')
 
     print('Creating class to handle gr-gsm process')
     # Creating class to handle gr-gsm process
