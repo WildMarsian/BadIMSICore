@@ -23,6 +23,7 @@ class airprobe_rtlsdr(gr.top_block):
         # Initiating the herited top_block class of the gnuradio project
         gr.top_block.__init__(self, "Airprobe Rtlsdr")
 
+        print('setting up main param')
         # Settting parameters of the class
         self.fc = fc
         self.gain = gain
@@ -30,6 +31,8 @@ class airprobe_rtlsdr(gr.top_block):
         self.samp_rate = samp_rate
         self.shiftoff = shiftoff
 
+
+        print('setting up main param : rtlsdr_source_0')
         # Initialisation of the rtlsdr module to communicate with the device
         self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
         self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
@@ -44,6 +47,7 @@ class airprobe_rtlsdr(gr.top_block):
         self.rtlsdr_source_0.set_antenna("", 0)
         self.rtlsdr_source_0.set_bandwidth(250e3+abs(self.shiftoff), 0)
 
+        print('setting up main param : gsm_sdcch8_demapper_0')
         self.gsm_sdcch8_demapper_0 = grgsm.universal_ctrl_chans_demapper(1, ([0,4,8,12,16,20,24,28,32,36,40,44]), ([8,8,8,8,8,8,8,8,136,136,136,136]))
         self.gsm_receiver_0 = grgsm.receiver(4, ([0]), ([]))
         # Setting block to display received packets in the terminal
@@ -55,7 +59,7 @@ class airprobe_rtlsdr(gr.top_block):
             fc=self.fc,
             samp_rate_in=self.samp_rate,
         )
-
+        print('setting up main param : GSM Packet')
         # Getting the GSM packet decoder
         self.gsm_decryption_0 = grgsm.decryption(([]), 1)
         # Create the control channel decoder to receive GSM packets
@@ -72,6 +76,7 @@ class airprobe_rtlsdr(gr.top_block):
         #self.blocks_socket_pdu_0_0 = blocks.socket_pdu("UDP_SERVER", "127.0.0.1", "4729", 10000)
         self.blocks_rotator_cc_0 = blocks.rotator_cc(-2*pi*self.shiftoff/self.samp_rate)
 
+        print('setting up main param : redirect traffic')
         # Sending received traffic from the device to the BCCH and CCCH channel mapper
         self.msg_connect((self.gsm_receiver_0, 'C0'), (self.gsm_bcch_ccch_demapper_0, 'bursts'))
         # Sending received traffic from the device to the Clock Offset controler
@@ -81,6 +86,7 @@ class airprobe_rtlsdr(gr.top_block):
         # TODO comment
         self.msg_connect((self.gsm_clock_offset_control_0, 'ppm'), (self.gsm_input_0, 'ppm_in'))
 
+        print('setting up main param : redirect SDCCH')
         # Sending SDCCH channel packets decoded to the GSM decrypter
         self.msg_connect((self.gsm_sdcch8_demapper_0, 'bursts'), (self.gsm_decryption_0, 'bursts'))
         # Sending decrypted GSM packets to the channel decoder
@@ -90,6 +96,7 @@ class airprobe_rtlsdr(gr.top_block):
         # Sending readable GSM packets to the client socket
         self.msg_connect((self.gsm_control_channels_decoder_0, 'msgs'), (self.blocks_socket_pdu_0, 'pdus'))
 
+        print('Connection starting')
         self.connect((self.rtlsdr_source_0, 0), (self.blocks_rotator_cc_0, 0))
         self.connect((self.blocks_rotator_cc_0, 0), (self.gsm_input_0, 0))
         self.connect((self.gsm_input_0, 0), (self.gsm_receiver_0, 0))        
