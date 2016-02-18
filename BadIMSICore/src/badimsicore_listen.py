@@ -57,13 +57,14 @@ def main():
             freqs.extend(rds.get_arfcn(args.operator, band))
     else:
         freqs = rds.get_arfcn(args.operator, args.band)
+        freqs = [937800000]
 
     print(freqs)
 
     duration = 6 + len(freqs) * args.repeat * args.scan_time
     xmlFile = 'xml_output'
 
-    BadIMSICoreListener.toxml(xmlFile, duration)
+    #BadIMSICoreListener.toxml(xmlFile, duration)
     if BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs) != 0:
         print("error scanning for BTS cells, exiting")
         exit(0)
