@@ -218,30 +218,37 @@ if __name__ == '__main__':
     ##logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=#logging.INFO)
     ##logging.info('Logger is lock and loaded')
 
+    print('Loading arguments parser')
     # Loading arguments parser
     parser = setup_parameters()
     ##logging.info('Parameters setup finished')
 
+    print('Getting all arguments')
     # Getting all arguments in variable "args"
     args = parser.parse_args()
     #logging.info('Parsing parameters finished')
 
+    print('Checking arguments values')
     # Checking arguments values
     checking_arguments(args.frequencies, args.gain, args.ppm)
     #logging.info('Checking parameters finished')
 
+    print('Creating class to handle gr-gsm process')
     # Creating class to handle gr-gsm process
     handler = sniffingHandler(args.frequencies, args.gain, args.ppm, args.samp_rate, args.shiftoff)
     #logging.info('Handler created')
 
+    print('Lanching sniffing until user stop it')
     # Lanching sniffing until user stop it
     handler.start_sniffing()
     #logging.info('Handler started')
 
+    print('Running function')
     # Running function
     handler.run_sniffing(args.repeat, args.scan_time)
     #logging.info('Sniffing started')
 
+    print('Stopping sniffing threads')
     # Stopping sniffing threads
     handler.stop_sniffing()
     #logging.info('Sniffing finished')
