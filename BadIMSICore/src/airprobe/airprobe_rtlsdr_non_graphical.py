@@ -204,7 +204,7 @@ class sniffingHandler:
 
         # Launch gr-gsm in another thread to avoid putting the main process in "wait state"
         self.grgsm = Thread(target=self.tb.wait)
-        self.grgsm.daemon = False # Stop the thread if the main process is stopped
+        self.grgsm.daemon = True # Stop the thread if the main process is stopped
         self.grgsm.start()
 
     # Loop to sniff on each specified frequencies
@@ -253,6 +253,6 @@ if __name__ == '__main__':
 
     print('Stopping sniffing threads')
     # Stopping sniffing threads
-    handler.stop_sniffing()
+    #handler.stop_sniffing()
     #logging.info('Sniffing finished')
 
