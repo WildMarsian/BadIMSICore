@@ -195,7 +195,7 @@ class sniffingHandler:
         self.samp_rate = samp_rate
         print(6)
         self.shiftoff = shiftoff
-        print(7)
+        print(str(self.frequencies[0]) + " " + str(self.gain) + " " + str(self.ppm) + " " + str(self.samp_rate) + " " + str(self.shiftoff))
         self.tb = airprobe_rtlsdr(fc=self.frequencies[0], gain=self.gain, ppm=self.ppm, samp_rate=self.samp_rate, shiftoff=self.shiftoff)
         print(8)
 
