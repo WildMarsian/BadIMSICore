@@ -55,6 +55,8 @@ def main():
     else:
         freqs = rds.get_arfcn(args.operator, args.band)
 
+    print(freqs)
+
     duration = 6 + len(freqs) * args.repeat * args.scan_time
     xmlFile = 'xml_output'
     BadIMSICoreListener.toxml(xmlFile, duration)
