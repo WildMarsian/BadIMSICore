@@ -28,7 +28,8 @@ class BadIMSICoreListener:
         opts.extend(opt_freq)
         opts.extend(["-t", str(scan_time)])
         opts.extend(["-n", str(repeat)])
-        subprocess.call(args=opts)
+        return subprocess.call(args=opts) != 0
+
 
 
     @staticmethod
@@ -59,13 +60,14 @@ def main():
 
     duration = 6 + len(freqs) * args.repeat * args.scan_time
     xmlFile = 'xml_output'
+
     BadIMSICoreListener.toxml(xmlFile, duration)
-    BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs)
-    time.sleep(duration)
+    if BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs) != 0:
+        print("error scanning for BTS cells, exiting")
+        exit(0)
 
     btss = BadIMSICoreListener.parse_xml(xmlFile)
-
     print(btss)
-
+    exit(1)
 if __name__ == '__main__':
     main()
