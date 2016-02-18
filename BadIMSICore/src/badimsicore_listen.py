@@ -28,7 +28,9 @@ class BadIMSICoreListener:
         opts.extend(opt_freq)
         opts.extend(["-t", str(scan_time)])
         opts.extend(["-n", str(repeat)])
-        return subprocess.popen(args=opts)
+        p = subprocess.Popen(args=opts)
+        p.communicate()
+        return p.returncode
 
 
 
