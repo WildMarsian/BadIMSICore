@@ -99,7 +99,8 @@ class airprobe_rtlsdr(gr.top_block):
         print('Connection starting')
         self.connect((self.rtlsdr_source_0, 0), (self.blocks_rotator_cc_0, 0))
         self.connect((self.blocks_rotator_cc_0, 0), (self.gsm_input_0, 0))
-        self.connect((self.gsm_input_0, 0), (self.gsm_receiver_0, 0))        
+        self.connect((self.gsm_input_0, 0), (self.gsm_receiver_0, 0))
+        print('Connection started')
 
     # Get the sample rate value
     def get_samp_rate(self):
