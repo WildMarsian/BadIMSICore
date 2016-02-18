@@ -57,6 +57,7 @@ def main():
             freqs.extend(rds.get_arfcn(args.operator, band))
     else:
         freqs = rds.get_arfcn(args.operator, args.band)
+        freqs = [937800000]
 
     print(freqs)
 
