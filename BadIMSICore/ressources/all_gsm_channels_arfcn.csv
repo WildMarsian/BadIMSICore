@@ -1,4 +1,4 @@
-arfcn;name;downlink;uplink
+arfcn;name;uplink;downlink
 0;EGSM-900;890;935
 1;GSM-900;890.2;935.2
 2;GSM-900;890.4;935.4
