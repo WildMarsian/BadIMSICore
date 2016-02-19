@@ -1,5 +1,5 @@
 # listing all the networks code
-from pip._vendor.requests.packages.urllib3.packages.six import b
+
 
 network_operators = {'01': 'Orange', '02': 'Orange', '09': 'SFR', '10': 'SFR', '11': 'SFR', '15': 'Free', '16': 'Free',
                      '20': 'Bouygues', '21': 'Bouygues'}
