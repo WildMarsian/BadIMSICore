@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.4
 import subprocess
 
 
@@ -5,7 +6,7 @@ from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
 import argparse
 import badimsicore_sniffing_xml_parsing
-import time
+
 
 
 class BadIMSICoreListener:
@@ -21,7 +22,7 @@ class BadIMSICoreListener:
 
     @staticmethod
     def scan_frequencies(repeat, scan_time, frequencies):
-        opts = ["sudo", "python2.7", "airprobe/airprobe_rtlsdr_non_graphical.py"]
+        opts = ["python2.7", "airprobe_rtlsdr_non_graphical.py"]
         opt_freq = ["-f"]
         frequencies = list(map(lambda freq: str(freq), frequencies))
         opt_freq.extend(frequencies)
@@ -29,9 +30,6 @@ class BadIMSICoreListener:
         opts.extend(["-t", str(scan_time)])
         opts.extend(["-n", str(repeat)])
         return subprocess.call(args=opts)
-
-
-
 
     @staticmethod
     def toxml(xmlFile, duration):
@@ -56,7 +54,6 @@ def main():
             freqs.extend(rds.get_arfcn(args.operator, band))
     else:
         freqs = rds.get_arfcn(args.operator, args.band)
-
 
     duration = 6 + len(freqs) * args.repeat * args.scan_time
     xmlFile = 'xml_output'
