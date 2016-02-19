@@ -23,7 +23,6 @@ class airprobe_rtlsdr(gr.top_block):
         # Initiating the herited top_block class of the gnuradio project
         gr.top_block.__init__(self, "Airprobe Rtlsdr")
 
-        print('setting up main param')
         # Settting parameters of the class
         self.fc = fc
         self.gain = gain
@@ -32,7 +31,6 @@ class airprobe_rtlsdr(gr.top_block):
         self.shiftoff = shiftoff
 
 
-        print('setting up main param : rtlsdr_source_0')
         # Initialisation of the rtlsdr module to communicate with the device
         self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
         self.rtlsdr_source_0.set_sample_rate(self.samp_rate)
@@ -47,7 +45,6 @@ class airprobe_rtlsdr(gr.top_block):
         self.rtlsdr_source_0.set_antenna("", 0)
         self.rtlsdr_source_0.set_bandwidth(250e3+abs(self.shiftoff), 0)
 
-        print('setting up main param : gsm_sdcch8_demapper_0')
         self.gsm_sdcch8_demapper_0 = grgsm.universal_ctrl_chans_demapper(1, ([0,4,8,12,16,20,24,28,32,36,40,44]), ([8,8,8,8,8,8,8,8,136,136,136,136]))
         self.gsm_receiver_0 = grgsm.receiver(4, ([0]), ([]))
         # Setting block to display received packets in the terminal
@@ -59,7 +56,6 @@ class airprobe_rtlsdr(gr.top_block):
             fc=self.fc,
             samp_rate_in=self.samp_rate,
         )
-        print('setting up main param : GSM Packet')
         # Getting the GSM packet decoder
         self.gsm_decryption_0 = grgsm.decryption(([]), 1)
         # Create the control channel decoder to receive GSM packets
@@ -76,7 +72,6 @@ class airprobe_rtlsdr(gr.top_block):
         #self.blocks_socket_pdu_0_0 = blocks.socket_pdu("UDP_SERVER", "127.0.0.1", "4729", 10000)
         self.blocks_rotator_cc_0 = blocks.rotator_cc(-2*pi*self.shiftoff/self.samp_rate)
 
-        print('setting up main param : redirect traffic')
         # Sending received traffic from the device to the BCCH and CCCH channel mapper
         self.msg_connect((self.gsm_receiver_0, 'C0'), (self.gsm_bcch_ccch_demapper_0, 'bursts'))
         # Sending received traffic from the device to the Clock Offset controler
@@ -86,7 +81,6 @@ class airprobe_rtlsdr(gr.top_block):
         # TODO comment
         self.msg_connect((self.gsm_clock_offset_control_0, 'ppm'), (self.gsm_input_0, 'ppm_in'))
 
-        print('setting up main param : redirect SDCCH')
         # Sending SDCCH channel packets decoded to the GSM decrypter
         self.msg_connect((self.gsm_sdcch8_demapper_0, 'bursts'), (self.gsm_decryption_0, 'bursts'))
         # Sending decrypted GSM packets to the channel decoder
@@ -96,11 +90,9 @@ class airprobe_rtlsdr(gr.top_block):
         # Sending readable GSM packets to the client socket
         self.msg_connect((self.gsm_control_channels_decoder_0, 'msgs'), (self.blocks_socket_pdu_0, 'pdus'))
 
-        print('Connection starting')
         self.connect((self.rtlsdr_source_0, 0), (self.blocks_rotator_cc_0, 0))
         self.connect((self.blocks_rotator_cc_0, 0), (self.gsm_input_0, 0))
         self.connect((self.gsm_input_0, 0), (self.gsm_receiver_0, 0))
-        print('Connection started')
 
     # Get the sample rate value
     def get_samp_rate(self):
@@ -108,7 +100,7 @@ class airprobe_rtlsdr(gr.top_block):
 
     # Set the sample rate value
     def set_samp_rate(self, samp_rate):
-        #logging.info('Changing the sample rate from %s to  %s', self.samp_rate, samp_rate)
+        logging.info('Changing the sample rate from %s to  %s', self.samp_rate, samp_rate)
         self.samp_rate = samp_rate
         self.blocks_rotator_cc_0.set_phase_inc(-2*pi*self.shiftoff/self.samp_rate)
         self.gsm_input_0.set_samp_rate_in(self.samp_rate)
@@ -120,7 +112,7 @@ class airprobe_rtlsdr(gr.top_block):
 
     # Set the shiftoff value
     def set_shiftoff(self, shiftoff):
-        #logging.info('Changing the shiftoff from %s to  %s', self.shiftoff, shiftoff)
+        logging.info('Changing the shiftoff from %s to  %s', self.shiftoff, shiftoff)
         self.shiftoff = shiftoff
         self.blocks_rotator_cc_0.set_phase_inc(-2*pi*self.shiftoff/self.samp_rate)
         self.rtlsdr_source_0.set_center_freq(self.fc-self.shiftoff, 0)
@@ -132,7 +124,7 @@ class airprobe_rtlsdr(gr.top_block):
 
     # Set the PPM value
     def set_ppm(self, ppm):
-        #logging.info('Changing the PPM from %s to  %s', self.ppm, ppm)
+        logging.info('Changing the PPM from %s to  %s', self.ppm, ppm)
         self.ppm = ppm
         self.rtlsdr_source_0.set_freq_corr(self.ppm, 0)
 
@@ -142,7 +134,7 @@ class airprobe_rtlsdr(gr.top_block):
 
     # Set the gain value
     def set_gain(self, gain):
-        #logging.info('Changing gain from %s to  %s', self.gain, gain)
+        logging.info('Changing gain from %s to  %s', self.gain, gain)
         self.gain = gain
         self.rtlsdr_source_0.set_gain(self.gain, 0)
 
@@ -152,7 +144,7 @@ class airprobe_rtlsdr(gr.top_block):
 
     # Set the frequency to listen
     def set_fc(self, fc):
-        #logging.info('Changing frequency from %s to %s', self.fc, fc)
+        logging.info('Changing frequency from %s to %s', self.fc, fc)
         self.fc = fc
         self.rtlsdr_source_0.set_center_freq(self.fc-self.shiftoff, 0)
 
@@ -183,21 +175,15 @@ class sniffingHandler:
 
     def __init__(self, frequencies, gain, ppm, samp_rate, shiftoff):
         # Checking parameters values only (not type)
-        print(1)
+
         checking_arguments(frequencies, gain, ppm)
-        print(2)
         self.frequencies = frequencies
-        print(3)
         self.gain = gain
-        print(4)
         self.ppm = ppm
-        print(5)
         self.samp_rate = samp_rate
-        print(6)
         self.shiftoff = shiftoff
-        print(str(self.frequencies[0]) + " " + str(self.gain) + " " + str(self.ppm) + " " + str(self.samp_rate) + " " + str(self.shiftoff))
         self.tb = airprobe_rtlsdr(fc=self.frequencies[0], gain=self.gain, ppm=self.ppm, samp_rate=self.samp_rate, shiftoff=self.shiftoff)
-        print(8)
+
 
     def start_sniffing(self):
         self.tb.start()
@@ -221,38 +207,33 @@ class sniffingHandler:
 
 # Main function
 if __name__ == '__main__':
-    print('starting logger')
     # Log system
-    ##logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=#logging.INFO)
-    ##logging.info('Logger is lock and loaded')
 
-    print('Loading arguments parser')
+    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=logging.INFO)
+    logging.info('Logger is lock and loaded')
+
     # Loading arguments parser
     parser = setup_parameters()
-    ##logging.info('Parameters setup finished')
 
-    print('Getting all arguments')
+    logging.info('Parameters setup finished')
     # Getting all arguments in variable "args"
-    args = parser.parse_args()
-    #logging.info('Parsing parameters finished')
 
-    print('Creating class to handle gr-gsm process')
+    args = parser.parse_args()
+    logging.info('Parsing parameters finished')
+
     # Creating class to handle gr-gsm process
     handler = sniffingHandler(args.frequencies, args.gain, args.ppm, args.samp_rate, args.shiftoff)
-    #logging.info('Handler created')
+    logging.info('Handler created')
 
-    print('Lanching sniffing until user stop it')
     # Lanching sniffing until user stop it
     handler.start_sniffing()
-    #logging.info('Handler started')
+    logging.info('Handler started')
 
-    print('Running function')
     # Running function
     handler.run_sniffing(args.repeat, args.scan_time)
-    #logging.info('Sniffing started')
+    logging.info('Sniffing started')
 
-    print('Stopping sniffing threads')
     # Stopping sniffing threads
     handler.stop_sniffing()
-    #logging.info('Sniffing finished')
+    logging.info('Sniffing finished')
 
