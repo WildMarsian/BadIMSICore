@@ -22,14 +22,14 @@ class BadIMSICoreListener:
 
     @staticmethod
     def scan_frequencies(repeat, scan_time, frequencies):
-        opts = ["python2.7", "airprobe_rtlsdr_non_graphical.py"]
+        opts = ["./airprobe_rtlsdr_non_graphical.py"]
         opt_freq = ["-f"]
         frequencies = list(map(lambda freq: str(freq), frequencies))
         opt_freq.extend(frequencies)
         opts.extend(opt_freq)
         opts.extend(["-t", str(scan_time)])
         opts.extend(["-n", str(repeat)])
-        return subprocess.call(args=opts)
+        return subprocess.call(opts)
 
     @staticmethod
     def toxml(xmlFile, duration):
@@ -48,8 +48,8 @@ def main():
     BadIMSICoreListener.set_args(parser)
     args = parser.parse_args()
     bands = rds.get_bands()
+    freqs = []
     if args.band == "all":
-        freqs = []
         for band in bands:
             freqs.extend(rds.get_arfcn(args.operator, band))
     else:
