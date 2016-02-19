@@ -32,7 +32,7 @@ class BTS:
         return self.MCC == other.MCC and self.MNC == other.MNC and self.LAC == other.LAC and self.ARFCNs == other.ARFCNs and self.CI == other.CI
 
     def nice_display(self):
-        bts_string = "->{},{},{},{},".format(self.MNC, self.MCC, self.LAC, self.CI)
+        bts_string = "-> {},{},{},{},".format(self.MNC, self.MCC, self.LAC, self.CI)
         bts_string += str(self.ARFCNs).strip("[]").replace(' ', '')
         return bts_string
 
