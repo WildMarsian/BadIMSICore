@@ -22,7 +22,7 @@ class BadIMSICoreListener:
 
     @staticmethod
     def scan_frequencies(repeat, scan_time, frequencies):
-        opts = ["./airprobe_rtlsdr_non_graphical.py"]
+        opts = ["/home/badimsibox/BadIMSIBox/BadIMSICore/src/airprobe_rtlsdr_non_graphical.py"]
         opt_freq = ["-f"]
         frequencies = list(map(lambda freq: str(freq), frequencies))
         opt_freq.extend(frequencies)
