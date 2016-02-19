@@ -16,19 +16,19 @@ class BadIMSICoreListener:
         group = parser.add_argument_group("listen")
         group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])
         group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all")
-        group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=float)
+        group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
         group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
 
 
     @staticmethod
     def scan_frequencies(repeat, scan_time, frequencies):
-        opts = ["/home/badimsibox/BadIMSIBox/BadIMSICore/src/airprobe_rtlsdr_non_graphical.py"]
+        opts = ["python3.4", "airprobe_rtlsdr_non_graphical.py"]
         opt_freq = ["-f"]
         frequencies = list(map(lambda freq: str(freq), frequencies))
         opt_freq.extend(frequencies)
         opts.extend(opt_freq)
-        opts.extend(["-t", str(scan_time)])
-        opts.extend(["-n", str(repeat)])
+        opts.extend(['-t', '{: d}'.format(scan_time)])
+        opts.extend(['-n', '{: d}'.format(repeat)])
         return subprocess.call(opts)
 
     @staticmethod

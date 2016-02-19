@@ -157,7 +157,7 @@ def setup_parameters():
     group.add_argument("-s", "--samp_rate", help="Set the rate value of the antenna", default=2000000.052982, type=float)
     group.add_argument("-o", "--shiftoff", help="Set the shiftoff value", default="400000", type=float)
     group.add_argument("-f", "--frequencies", help="Set the list of frequencies to scan : 937000000 932950000 ...", default=[937700000], type=float, nargs='+')
-    group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=float)
+    group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
     group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=5, type=int)
     return parser
 
@@ -195,7 +195,7 @@ class sniffingHandler:
 
     # Loop to sniff on each specified frequencies
     def run_sniffing(self, repeat, scan_time):
-        for i in range(1, repeat):
+        for i in range(0, repeat):
             for fc in self.frequencies:
                 print("Scanning frequency : " + str(fc))
                 self.tb.set_fc(fc)
