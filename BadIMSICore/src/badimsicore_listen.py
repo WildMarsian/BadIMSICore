@@ -66,8 +66,7 @@ def main():
     proc.wait()
     btss = BadIMSICoreListener.parse_xml(xmlFile)
     for bts in btss:
-        bts_string = "->{},{},{},{},".format(bts.MNC, bts.MCC, bts.LAC, bts.CI)
-        bts_string.extend(str(bts.ARFCNs).strip("[]"))
+        print(bts.nice_display())
 
 
     exit(0)
