@@ -65,7 +65,10 @@ def main():
         exit(1)
     proc.wait()
     btss = BadIMSICoreListener.parse_xml(xmlFile)
-    print(btss)
+    for bts in btss:
+        print(bts.nice_display())
+
+
     exit(0)
 if __name__ == '__main__':
     main()
