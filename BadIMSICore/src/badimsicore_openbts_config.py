@@ -2,6 +2,7 @@
 
 import sqlite3
 
+from bts import BTS
 
 class BadimsicoreBtsConfig:
     config = []
@@ -55,6 +56,35 @@ class BadimsicoreBtsConfig:
             c.execute("DELETE FROM CONFIG")
             c.executemany("INSERT INTO CONFIG VALUES (?, ?, ?, ?, ?);", newdat)
             self.conn.commit()
+        except sqlite3.Error as e:
+            self.conn.rollback()
+            raise e
+
+    def update_badimsicore_bts_config(self, bts):
+        """
+        Update the database with the bts config
+        :param bts: An object bts
+        """
+        self.update_database("GSM.Identity.ShortName", bts.shortname)
+        self.update_database("GSM.Identity.MCC", bts.MCC)
+        self.update_database("GSM.Identity.MNC", bts.MNC)
+        self.update_database("GSM.Identity.LAC", bts.LAC)
+        self.update_database("GSM.Identity.CI", bts.CI)
+
+        self.close()
+
+    def update_database(self, keystring, valuestring):
+        """
+        :param keystring: the column name
+        :param valuestring: the value associated to the column name
+        :return:
+        """
+        try:
+            c = self.conn.cursor()
+            query = "UPDATE CONFIG SET VALUESTRING = \""+valuestring+"\" WHERE KEYSTRING = \""+keystring+"\""
+            c.execute(query)
+            self.conn.commit()
+
         except sqlite3.Error as e:
             self.conn.rollback()
             raise e
