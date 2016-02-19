@@ -1,4 +1,6 @@
 # listing all the networks code
+from pip._vendor.requests.packages.urllib3.packages.six import b
+
 network_operators = {'01': 'Orange', '02': 'Orange', '09': 'SFR', '10': 'SFR', '11': 'SFR', '15': 'Free', '16': 'Free',
                      '20': 'Bouygues', '21': 'Bouygues'}
 countries = {'208': 'France'}
@@ -30,5 +32,10 @@ class BTS:
 
     def __eq__(self, other):
         return self.MCC == other.MCC and self.MNC == other.MNC and self.LAC == other.LAC and self.ARFCNs == other.ARFCNs and self.CI == other.CI
+
+    def nice_display(self):
+        bts_string = "->{},{},{},{},".format(self.MNC, self.MCC, self.LAC, self.CI)
+        bts_string += str(self.ARFCNs).strip("[]").replace(' ', '')
+        return bts_string
 
 
