@@ -56,6 +56,10 @@ def main():
     else:
         freqs = rds.get_arfcn(args.operator, args.band)
 
+    if(len(freqs) <= 0):
+        print("error no frequency to scan")
+        exit(2)
+
     duration = 6 + len(freqs) * args.repeat * args.scan_time
     xmlFile = 'xml_output'
 
