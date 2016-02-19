@@ -4,10 +4,6 @@ import argparse
 from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 
 
-
-
-
-
 def set_args(parser):
     group = parser.add_argument_group("listen")
     group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])

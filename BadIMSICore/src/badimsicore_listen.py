@@ -33,7 +33,7 @@ class BadIMSICoreListener:
 
     @staticmethod
     def toxml(xmlFile, duration):
-        badimsicore_sniffing_toxml.redirect_to_xml(xmlFile, "lo", "gsmtap && ! icmp", int(duration+1))
+        return badimsicore_sniffing_toxml.redirect_to_xml(xmlFile, "lo", "gsmtap && ! icmp", int(duration+1))
 
     @staticmethod
     def parse_xml(xmlFile):
@@ -58,11 +58,11 @@ def main():
     duration = 6 + len(freqs) * args.repeat * args.scan_time
     xmlFile = 'xml_output'
 
-    BadIMSICoreListener.toxml(xmlFile, duration)
+    proc = BadIMSICoreListener.toxml(xmlFile, duration)
     if BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs) != 0:
         print("error scanning for BTS cells, exiting")
         exit(1)
-
+    proc.wait()
     btss = BadIMSICoreListener.parse_xml(xmlFile)
     print(btss)
     exit(0)
