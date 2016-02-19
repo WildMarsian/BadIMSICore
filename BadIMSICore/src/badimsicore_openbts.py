@@ -15,7 +15,7 @@ class BadimsicoreBtsService:
         
     def start(self, ci=None, lac=None, mnc=None, mcc=None, message_registration=None):
         #Stop openbts services
-        self.stop()        
+        self.stop()
         #SDR
 
         #Config OpenBTS.db
@@ -25,6 +25,13 @@ class BadimsicoreBtsService:
             openbtsdb = '../test/resources/clean/OpenBTS.db'
             badimsicore_bts_config = BadimsicoreBtsConfig(openbtsdb)
             badimsicore_bts_config.update_badimsicore_bts_config(bts)
+
+        #Start openbts services
+        InitOpenBTS.init_sipauthserve()
+        InitOpenBTS.init_smqueue()
+        InitOpenBTS.init_transceiver()
+        time.sleep(7)
+        InitOpenBTS.init_openbts()
 
     def stop(self):
         InitOpenBTS.stop_openbts()
@@ -51,11 +58,10 @@ def main():
     #Subparser start_parser
     start_parser = subparsers.add_parser('start', help='Start openbts')
     start_parser.set_defaults(func=service.start)
-    # start_parser.add_argument('-o', '--operator', dest='operator', help='A String of the gsm operator')
-    start_parser.add_argument('-i', '--ci',  dest='ci', type=int, help='The ci of the cell')
-    start_parser.add_argument('-l', '--lac', dest='lac', type=int, help='The lac of the cell')   
-    start_parser.add_argument('-M', '--mnc', dest='mnc', type=int, help='The Mobile Network Code of the cell')
-    start_parser.add_argument('-c', '--mcc', dest='mcc', type=int, help='The Mobile Country Code of the cell')
+    start_parser.add_argument('-i', '--ci',  dest='ci', help='The ci of the cell')
+    start_parser.add_argument('-l', '--lac', dest='lac', help='The lac of the cell')
+    start_parser.add_argument('-n', '--mnc', dest='mnc', help='The Mobile Network Code of the cell')
+    start_parser.add_argument('-c', '--mcc', dest='mcc', help='The Mobile Country Code of the cell')
     start_parser.add_argument('-m', '--message-registration', dest='message_registration', help='The message upon registration of a mobile in the fake network')
     #Subparser stop_parser 
     stop_parser = subparsers.add_parser('stop', help='Stop openbts')
