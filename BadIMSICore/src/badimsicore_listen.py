@@ -8,46 +8,68 @@ import argparse
 import badimsicore_sniffing_xml_parsing
 
 
+def set_args(parser):
+    """
+    Set arguments of the command
+    :param parser: an argument parser
+    :return: None
+    """
+    group = parser.add_argument_group("listen")
+    group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])
+    group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all")
+    group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
+    group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
+    group.add_argument("-e", "--errors", help="list errors codes", action='store_true')
 
 
-class BadIMSICoreListener:
+def scan_frequencies(repeat, scan_time, frequencies):
+    """
+    Start searching for BTS
+    :param repeat: Number of scan cycle
+    :param scan_time: Scan time for each ARFCN
+    :param frequencies: List of frequency (ARFCN downlink frequencies) to scan
+    :return: the exit status of the scan
+    """
+    opts = ["python2.7", "airprobe_rtlsdr_non_graphical.py"]
+    opt_freq = ["-f"]
+    frequencies = list(map(lambda freq: str(freq), frequencies))
+    opt_freq.extend(frequencies)
+    opts.extend(opt_freq)
+    opts.extend(['-t', '{: d}'.format(scan_time)])
+    opts.extend(['-n', '{: d}'.format(repeat)])
+    return subprocess.call(opts)
 
-    @staticmethod
-    def set_args(parser):
-        group = parser.add_argument_group("listen")
-        group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])
-        group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all")
-        group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
-        group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
+
+def toxml(xml_file, duration):
+    """
+    Start the redirection of all network gsm traffic from lo interface to an XML file
+    :param xml_file: XML output file
+    :param duration: End of the listening on the interface lo
+    :return: The Popen object of the listening process
+    """
+    return badimsicore_sniffing_toxml.redirect_to_xml(xml_file, "lo", "gsmtap && ! icmp", int(duration + 1))
 
 
-    @staticmethod
-    def scan_frequencies(repeat, scan_time, frequencies):
-        opts = ["python2.7", "airprobe_rtlsdr_non_graphical.py"]
-        opt_freq = ["-f"]
-        frequencies = list(map(lambda freq: str(freq), frequencies))
-        opt_freq.extend(frequencies)
-        opts.extend(opt_freq)
-        opts.extend(['-t', '{: d}'.format(scan_time)])
-        opts.extend(['-n', '{: d}'.format(repeat)])
-        return subprocess.call(opts)
-
-    @staticmethod
-    def toxml(xmlFile, duration):
-        return badimsicore_sniffing_toxml.redirect_to_xml(xmlFile, "lo", "gsmtap && ! icmp", int(duration+1))
-
-    @staticmethod
-    def parse_xml(xmlFile):
-        return badimsicore_sniffing_xml_parsing.parse_xml_file(xmlFile)
+def parse_xml(xml_file):
+    """
+    Parse an XML network dump to get a list of BTS
+    :param xml_file: The XML network dump file
+    :return: a list of BTS cells that have been detected
+    """
+    return badimsicore_sniffing_xml_parsing.parse_xml_file(xml_file)
 
 
 def main():
-
-    rds = RadioBandSearcher('../ressources/all_gsm_channels_arfcn.csv')
-
+    #parsing arguments
     parser = argparse.ArgumentParser()
-    BadIMSICoreListener.set_args(parser)
+    set_args(parser)
     args = parser.parse_args()
+    if args.errors:
+        print("10 : error no frequency to scan")
+        print("20 : error scanning for BTS cells, exiting")
+
+    #Generating the list of frequencies to scan
+    rds = RadioBandSearcher('../ressources/all_gsm_channels_arfcn.csv')
     bands = rds.get_bands()
     freqs = []
     if args.band == "all":
@@ -58,20 +80,27 @@ def main():
 
     if(len(freqs) <= 0):
         print("error no frequency to scan")
-        exit(2)
+        exit(20)
 
+    #scan duration
     duration = 6 + len(freqs) * args.repeat * args.scan_time
-    xmlFile = 'xml_output'
 
-    proc = BadIMSICoreListener.toxml(xmlFile, duration)
-    if BadIMSICoreListener.scan_frequencies(args.repeat, args.scan_time, freqs) != 0:
+    #start the listening on lo interface
+    xml_file = 'xml_output'
+    proc = toxml(xml_file, duration)
+
+    #scan frequencies
+    if scan_frequencies(args.repeat, args.scan_time, freqs) != 0:
         print("error scanning for BTS cells, exiting")
-        exit(1)
+        exit(10)
     proc.wait()
-    btss = BadIMSICoreListener.parse_xml(xmlFile)
+
+    #Parse the XML
+    btss = parse_xml(xml_file)
+
+    #Print the list of BTS
     for bts in btss:
         print(bts.nice_display())
-
 
     exit(0)
 if __name__ == '__main__':
