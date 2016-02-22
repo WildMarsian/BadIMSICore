@@ -3,6 +3,7 @@
 import subprocess
 import argparse
 import time
+import locale
 from badimsicore_openbts_init import InitOpenBTS
 from badimsicore_sdr_uhd import BadIMSICoreUHDDriver
 from bts import BTS
@@ -14,32 +15,62 @@ You need to construct the new instance using the method get_badimsicore_bts_serv
 """
 class BadimsicoreBtsService:
         
-    def start(self, ci=None, lac=None, mnc=None, mcc=None, message_registration=None):
+    def start(self, ci=None, lac=None, mnc=None, mcc=None, message_registratio
+n=None):
+        """
+        Start openbts services
+        :param ci: The Cell ID
+        :param lac: The Location Area Code
+        :param mnc: The Mobile Network Code
+        :param mcc: The Mobile Country Code
+        :param message_resgistration: The message sent to the mobile when it is resgistered to the fake network
+        :return: None
+        """
         #Stop openbts services
         self.stop()
         #SDR
         uhd_handler = BadIMSICoreUHDDriver()
-        uhd_handler.init_bts()
-        #Config OpenBTS.db
-        if ci and lac and mnc and mcc:
-            bts = BTS(mcc, mnc, lac, ci)
-            # inject bts params into OpenBTS
-            openbtsdb = '../test/resources/clean/OpenBTS.db'
-            badimsicore_bts_config = BadimsicoreBtsConfig(openbtsdb)
-            badimsicore_bts_config.update_badimsicore_bts_config(bts)
+        init_bts = uhd_handler.init_bts()
+        if init_bts == 0:
+            #Config OpenBTS.db
+            if ci and lac and mnc and mcc:
+                bts = BTS(mcc, mnc, lac, ci)
+                # inject bts params into OpenBTS
+                openbtsdb = '../test/resources/clean/OpenBTS.db'
+                badimsicore_bts_config = BadimsicoreBtsConfig(openbtsdb)
+                badimsicore_bts_config.update_badimsicore_bts_config(bts)
 
-        #Start openbts services
-        InitOpenBTS.init_sipauthserve()
-        InitOpenBTS.init_smqueue()
-        InitOpenBTS.init_transceiver()
-        time.sleep(7)
-        InitOpenBTS.init_openbts()
+            #Start openbts services
+            InitOpenBTS.init_sipauthserve()
+            InitOpenBTS.init_smqueue()
+            InitOpenBTS.init_transceiver()
+            time.sleep(7)
+            InitOpenBTS.init_openbts()
 
     def stop(self):
+        """
+        Stop openbts services
+        :return: None
+        """
         InitOpenBTS.stop_openbts()
         InitOpenBTS.stop_smqueue()
-        InitOpenBTS.stop_sipauthserve()    
-
+        InitOpenBTS.stop_sipauthserve()
+    
+    @staticmethod
+    def status():
+        """
+        Check if openbts service is started
+        :return: None
+        """
+        encoding = locale.getdefaultlocale()[1]
+        p = subprocess.Popen(['status', 'openbts'], stdout=subprocess.PIPE)
+        out, err = p.communicate()
+        stdout = out.decode(encoding)
+        if 'process' in stdout:   
+            return 0
+        else:
+            return 1
+        
     @staticmethod
     def send_command(command):
         """BadimsicoreBtsService send a command to openbts
