@@ -9,5 +9,4 @@ class BadIMSICoreTIMSI:
 
 if __name__ == '__main__':
     timsi = BadIMSICoreTIMSI()
-    timsi.get_all_timsi()
-
+    return timsi.get_all_timsi()
