@@ -6,9 +6,16 @@ from badimsicore_openbts import BadimsicoreBtsService
 class BadSMSSender:
 
     @staticmethod
-    def send_sms(recipient, sender, message):
-        print("Sending to " + recipient + " from " + sender + ": " + message)
-        command = ["sendsms", recipient, sender, message]
+    def send_sms(imsi_recipient, msisdn_sender, message):
+        """
+        send a sms using a fake BTS
+        :param imsi_recipient:
+        :param msisdn_sender:
+        :param message:
+        :return:
+        """
+        print("Sending to " + imsi_recipient + " from " + msisdn_sender + ": " + message)
+        command = ["sendsms", imsi_recipient, msisdn_sender, message]
         BadimsicoreBtsService.send_command(command)
 
 
