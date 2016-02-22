@@ -6,7 +6,7 @@ from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
 import argparse
 import badimsicore_sniffing_xml_parsing
-
+import logging
 
 def set_args(parser):
     """
@@ -30,7 +30,7 @@ def scan_frequencies(repeat, scan_time, frequencies):
     :param frequencies: List of frequency (ARFCN downlink frequencies) to scan
     :return: the exit status of the scan
     """
-    opts = ["python2.7", "airprobe_rtlsdr_non_graphical.py"]
+    opts = ["python2.7", "scripts/airprobe_rtlsdr_non_graphical.py"]
     opt_freq = ["-f"]
     frequencies = list(map(lambda freq: str(freq), frequencies))
     opt_freq.extend(frequencies)
@@ -104,4 +104,6 @@ def main():
 
     exit(0)
 if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=logging.INFO)
+    logging.info('Logger is lock and loaded')
     main()
