@@ -15,8 +15,7 @@ You need to construct the new instance using the method get_badimsicore_bts_serv
 """
 class BadimsicoreBtsService:
         
-    def start(self, ci=None, lac=None, mnc=None, mcc=None, message_registratio
-n=None):
+    def start(self, ci=None, lac=None, mnc=None, mcc=None, message_registration=None):
         """
         Start openbts services
         :param ci: The Cell ID
