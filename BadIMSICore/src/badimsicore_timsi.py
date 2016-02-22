@@ -5,7 +5,7 @@ class BadIMSICoreTIMSI:
     @staticmethod
     def get_all_timsi():
         command = ["timsi"]
-        BadimsicoreBtsService.send_command(command)
+        return BadimsicoreBtsService.send_command(command)
 
 if __name__ == '__main__':
     timsi = BadIMSICoreTIMSI()
