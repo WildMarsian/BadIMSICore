@@ -4,6 +4,7 @@ import subprocess
 import argparse
 import time
 from badimsicore_openbts_init import InitOpenBTS
+from badimsicore_sdr_uhd import BadIMSICoreUHDDriver
 from bts import BTS
 
 from badimsicore_openbts_config import BadimsicoreBtsConfig
@@ -17,7 +18,8 @@ class BadimsicoreBtsService:
         #Stop openbts services
         self.stop()
         #SDR
-
+        uhd_handler = BadIMSICoreUHDDriver()
+        uhd_handler.init_bts()
         #Config OpenBTS.db
         if ci and lac and mnc and mcc:
             bts = BTS(mcc, mnc, lac, ci)
