@@ -1,6 +1,7 @@
 #!/usr/bin/python3.4
 
 import subprocess
+import sys
 import argparse
 import time
 import locale
@@ -15,13 +16,14 @@ You need to construct the new instance using the method get_badimsicore_bts_serv
 """
 class BadimsicoreBtsService:
         
-    def start(self, ci=None, lac=None, mnc=None, mcc=None, message_registration=None):
+    def start(self, ci=None, lac=None, mnc=None, mcc=None, open_registration=None, message_registration=None):
         """
         Start openbts services
         :param ci: The Cell ID
         :param lac: The Location Area Code
         :param mnc: The Mobile Network Code
         :param mcc: The Mobile Country Code
+        :param open_registration: 
         :param message_resgistration: The message sent to the mobile when it is resgistered to the fake network
         :return: None
         """
@@ -32,18 +34,21 @@ class BadimsicoreBtsService:
         init_bts = uhd_handler.init_bts()
         if init_bts == 0:
             #Config OpenBTS.db
+            openbtsdb = '/etc/OpenBTS/OpenBTS.db'
+            badimsicore_bts_config = BadimsicoreBtsConfig(openbtsdb)
             if ci and lac and mnc and mcc:
                 bts = BTS(mcc, mnc, lac, ci)
-                # inject bts params into OpenBTS
-                openbtsdb = '../test/resources/clean/OpenBTS.db'
-                badimsicore_bts_config = BadimsicoreBtsConfig(openbtsdb)
+                # inject bts params into OpenBTS                
                 badimsicore_bts_config.update_badimsicore_bts_config(bts)
-
+            elif open_registration:
+                badimsicore_bts_config.update_database("Control.LUR.OpenRegistration", open_registration)
+            elif message_registration:
+                badimsicore_bts_config.update_database("Control.LUR.OpenRegistration.Message", message_registration)
             #Start openbts services
             InitOpenBTS.init_sipauthserve()
             InitOpenBTS.init_smqueue()
             InitOpenBTS.init_transceiver()
-            time.sleep(7)
+            time.sleep(6)
             InitOpenBTS.init_openbts()
 
     def stop(self):
@@ -65,7 +70,7 @@ class BadimsicoreBtsService:
         p = subprocess.Popen(['status', 'openbts'], stdout=subprocess.PIPE)
         out, err = p.communicate()
         stdout = out.decode(encoding)
-        if 'process' in stdout:   
+        if 'process' in stdout: 
             return 0
         else:
             return 1
@@ -92,16 +97,21 @@ def main():
     start_parser.set_defaults(func=service.start)
     start_parser.add_argument('-i', '--ci',  dest='ci', help='The ci of the cell')
     start_parser.add_argument('-l', '--lac', dest='lac', help='The lac of the cell')
-    start_parser.add_argument('-n', '--mnc', dest='mnc', help='The Mobile Network Code of the cell')
-    start_parser.add_argument('-c', '--mcc', dest='mcc', help='The Mobile Country Code of the cell')
-    start_parser.add_argument('-m', '--message-registration', dest='message_registration', help='The message upon registration of a mobile in the fake network')
+    start_parser.add_argument('-n', '--mnc', dest='mnc', help='The Mobile Network Code of the cell. Must have 2 digits')
+    start_parser.add_argument('-c', '--mcc', dest='mcc', help='The Mobile Country Code of the cell. Must have 3 digits')
+    start_parser.add_argument('-m', '--message-registration', dest='message_registration', help='The message upon registration of a mobile in the fake network', default="\"\"")
+    start_parser.add_argument('-p', '--open-registration', dest='open_registration', help='The access authorization for the registration on the fake network', default="*")
     #Subparser stop_parser 
     stop_parser = subparsers.add_parser('stop', help='Stop openbts')
     stop_parser.set_defaults(func=service.stop)
 
     args = parser.parse_args()
-    if args.subparser_name == 'start':    
-        args.func(args.ci, args.lac, args.mnc, args.mcc, args.message_registration)
+    if args.subparser_name == 'start':
+        if args.mcc and len(args.mcc) != 3:
+            sys.exit("Error : mcc must have 3 digits")
+        if args.mnc and len(args.mnc) != 2:
+            sys.exit("Error : mnc must have 2 digits")
+        args.func(args.ci, args.lac, args.mnc, args.mcc, args.open_registration, args.message_registration)
     elif args.subparser_name == 'stop':
         args.func()
 
