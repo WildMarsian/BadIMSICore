@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.4
 import subprocess
-
+import os
 
 from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
@@ -16,7 +16,7 @@ def set_args(parser):
     """
     group = parser.add_argument_group("listen")
     group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])
-    group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all")
+    group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all", choices=["GSM-900", "GSM-850", "GSM-450", "TGSM-810", "GSM-750", "GSM-1900", "GSM-1800", "RGSM-900", "EGSM-900"])
     group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
     group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
     group.add_argument("-e", "--errors", help="list errors codes", action='store_true')
@@ -30,7 +30,7 @@ def scan_frequencies(repeat, scan_time, frequencies):
     :param frequencies: List of frequency (ARFCN downlink frequencies) to scan
     :return: the exit status of the scan
     """
-    opts = ["python2.7", "scripts/airprobe_rtlsdr_non_graphical.py"]
+    opts = ["python2.7", "airprobe_rtlsdr_non_graphical.py"]
     opt_freq = ["-f"]
     frequencies = list(map(lambda freq: str(freq), frequencies))
     opt_freq.extend(frequencies)
@@ -86,6 +86,7 @@ def main():
     duration = 6 + len(freqs) * args.repeat * args.scan_time
 
     #start the listening on lo interface
+    os.remove("xml_output")
     xml_file = 'xml_output'
     proc = toxml(xml_file, duration)
 
