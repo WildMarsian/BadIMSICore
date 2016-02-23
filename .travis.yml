@@ -30,7 +30,7 @@ before_script:
 
 script:
 # Go to the BadIMSICore to localize all sources
-  - cd $PWD/BadIMSICore/
+  # - cd $PWD/BadIMSICore/
 # For the moment, unit tests files are hardcoded
   # - nosetests -v -s test/test_badimsicore_openbts_init.py
   # - nosetests -v -s test/test_badimsicore_openbts_config.py
