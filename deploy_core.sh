@@ -30,8 +30,9 @@ function install(){
 
 function clean(){
 	sudo rm -rf $coredir
-	sudo rm -rf $linkdir/badimsicore_*
-	sudo rm -rf $linkrootdir/badimsicore_*
+	sudo rm $linkdir/badimsicore_*
+	sudo rm $linkrootdir/badimsicore_*
+	sudo rm $linkdir/airprobe_rtlsdr_non_graphical
 }
 
 clean
