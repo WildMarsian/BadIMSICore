@@ -15,12 +15,12 @@ function install(){
 	sudo cp -r ./BadIMSICore/src $coredir
 	sudo cp -r ./BadIMSICore/resources $coredir
 	
-	sudo chmod u+x $srcdir/badimsicore_listen.py            $linkrootdir/badimsicore_listen
-	sudo chmod u+x $srcdir/badimsicore_openbts.py           $linkrootdir/badimsicore_openbts
-	sudo chmod a+x $srcdir/airprobe_rtlsdr_non_graphical.py $linkdir/airprobe_rtlsdr_non_graphical
-	sudo chmod a+x $srcdir/badimsicore_sms_interceptor.py   $linkdir/badimsicore_sms_interceptor
-	sudo chmod a+x $srcdir/badimsicore_sms_sender.py        $linkdir/badimsicore_sms_sender
-	sudo chmod a+x $srcdir/badimsicore_tmsis.py             $linkdir/badimsicore_tmsis
+	sudo chmod 711 $srcdir/badimsicore_listen.py            $linkrootdir/badimsicore_listen
+	sudo chmod 711 $srcdir/badimsicore_openbts.py           $linkrootdir/badimsicore_openbts
+	sudo chmod 755 $srcdir/airprobe_rtlsdr_non_graphical.py $linkdir/airprobe_rtlsdr_non_graphical
+	sudo chmod 755 $srcdir/badimsicore_sms_interceptor.py   $linkdir/badimsicore_sms_interceptor
+	sudo chmod 755 $srcdir/badimsicore_sms_sender.py        $linkdir/badimsicore_sms_sender
+	sudo chmod 755 $srcdir/badimsicore_tmsis.py             $linkdir/badimsicore_tmsis
 	
 	sudo ln -s $srcdir/badimsicore_listen.py            $linkrootdir/badimsicore_listen
 	sudo ln -s $srcdir/badimsicore_openbts.py           $linkrootdir/badimsicore_openbts
