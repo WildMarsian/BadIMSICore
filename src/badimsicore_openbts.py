@@ -48,7 +48,7 @@ class BadimsicoreBtsService:
             InitOpenBTS.init_sipauthserve()
             InitOpenBTS.init_smqueue()
             InitOpenBTS.init_transceiver()
-            time.sleep(6)
+            time.sleep(7)
             InitOpenBTS.init_openbts()
 
     def stop(self):
@@ -107,13 +107,14 @@ def main():
 
     args = parser.parse_args()
     if args.subparser_name == 'start':
-        if args.ci and (args.ci.isnumeric() or int(args.ci) < 0 or int(args.ci) > 65535):
+        if args.ci and (not args.ci.isnumeric() or int(args.ci) < 0 or int(args.ci) > 65535):
+            print(int(args.ci))
             sys.exit("Error : Cell ID must be a number betwen 0 and 65535")
-        if args.lac and args.lac.isnumeric():
+        if args.lac and not args.lac.isnumeric():
             sys.lac("Error : LAC must be a number")
-        if args.mcc and (len(args.mcc) != 3 or args.mcc.isnumeric()):
+        if args.mcc and (len(args.mcc) != 3 or not args.mcc.isnumeric()):
             sys.exit("Error : mcc must have 3 digits")
-        if args.mnc and (len(args.mnc) != 2 or args.mcc.isnumeric()):
+        if args.mnc and (len(args.mnc) != 2 or not args.mcc.isnumeric()):
             sys.exit("Error : mnc must have 2 digits")
         args.func(args.ci, args.lac, args.mnc, args.mcc, args.open_registration, args.message_registration)
     elif args.subparser_name == 'stop':
