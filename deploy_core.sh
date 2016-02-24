@@ -6,14 +6,12 @@ linkrootdir=/usr/local/sbin
 linkdir=/usr/local/bin
 
 
-function get(){
-	git clone https://github.com/WarenUT/BadIMSICore.git -b master
-}
+
 
 function install(){
 	sudo mkdir $coredir
-	sudo cp -r ./BadIMSICore/src $coredir
-	sudo cp -r ./BadIMSICore/resources $coredir
+	sudo cp -r ./src $coredir
+	sudo cp -r ./resources $coredir
 	
 	sudo chmod 711 $srcdir/badimsicore_listen.py            $linkrootdir/badimsicore_listen
 	sudo chmod 711 $srcdir/badimsicore_openbts.py           $linkrootdir/badimsicore_openbts
@@ -37,5 +35,4 @@ function clean(){
 }
 
 clean
-get
 install
