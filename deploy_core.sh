@@ -1,6 +1,6 @@
 #!/bin/bash
 
-coredir=/opt/BadIMSIBox/BadIMSICore
+coredir=/opt/badimsibox/badimsicore
 srcdir=$coredir/src
 linkrootdir=/usr/local/sbin
 linkdir=/usr/local/bin
@@ -9,7 +9,7 @@ linkdir=/usr/local/bin
 
 
 function install(){
-	sudo mkdir $coredir
+	sudo mkdir $coredir -p
 	sudo cp -r ./src $coredir
 	sudo cp -r ./resources $coredir
 	
