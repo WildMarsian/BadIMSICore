@@ -8,7 +8,7 @@ import argparse
 import badimsicore_sniffing_xml_parsing
 import logging
 
-def set_args(parser):
+def set_args(parser, bands):
     """
     Set arguments of the command
     :param parser: an argument parser
@@ -16,7 +16,7 @@ def set_args(parser):
     """
     group = parser.add_argument_group("listen")
     group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])
-    group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all", choices=["GSM-900", "GSM-850", "GSM-450", "TGSM-810", "GSM-750", "GSM-1900", "GSM-1800", "RGSM-900", "EGSM-900"])
+    group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all", choices=bands)
     group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
     group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
     group.add_argument("-e", "--errors", help="list errors codes", action='store_true')
@@ -61,16 +61,17 @@ def parse_xml(xml_file):
 
 def main():
     #parsing arguments
+    rds = RadioBandSearcher('../ressources/all_gsm_channels_arfcn.csv')
+    bands = rds.get_bands()
+
     parser = argparse.ArgumentParser()
-    set_args(parser)
+    set_args(parser, bands)
     args = parser.parse_args()
     if args.errors:
         print("10 : error no frequency to scan")
-        print("20 : error scanning for BTS cells, exiting")
+        print("20 : error scanning for BTS cells")
 
     #Generating the list of frequencies to scan
-    rds = RadioBandSearcher('../ressources/all_gsm_channels_arfcn.csv')
-    bands = rds.get_bands()
     freqs = []
     if args.band == "all":
         for band in bands:
@@ -79,7 +80,7 @@ def main():
         freqs = rds.get_arfcn(args.operator, args.band)
 
     if(len(freqs) <= 0):
-        print("error no frequency to scan")
+        print("error no frequency to scan, exiting")
         exit(20)
 
     #scan duration
