@@ -1,0 +1,10 @@
+Feb  2 11:31:17 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:17.2 smqueue.h:505:get_text: Decoded text: Mllm
+Feb  2 11:31:17 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:17.4 smqueue.h:505:get_text: Decoded text: Mllm
+Feb  2 11:31:26 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:26.6 smqueue.h:505:get_text: Decoded text: Ghhf
+Feb  2 11:31:26 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:26.8 smqueue.h:505:get_text: Decoded text: Ghhf
+Feb  2 11:31:33 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:33.2 smqueue.h:505:get_text: Decoded text: Fiff
+Feb  2 11:31:33 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:33.4 smqueue.h:505:get_text: Decoded text: Fiff
+Feb  2 11:31:42 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:42.4 smqueue.h:505:get_text: Decoded text: Fiff
+Feb  2 11:31:42 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:42.6 smqueue.h:505:get_text: Decoded text: Fiff
+Feb  2 11:31:57 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:57.0 smqueue.h:505:get_text: Decoded text: Frfj
+Feb  2 11:31:57 badimsibox-N56VJ smqueue: NOTICE 1314:1372 2016-02-02T11:31:57.2 smqueue.h:505:get_text: Decoded text: Frfj
