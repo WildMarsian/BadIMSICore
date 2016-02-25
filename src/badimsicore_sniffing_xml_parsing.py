@@ -39,7 +39,7 @@ def parse_xml_file(xmlfilename):
     type1 = False
     type3 = False
     type4 = False
-    arfcns = set()
+    arfcns = []
     for packet in tree.getroot():
         for proto in packet.iter('proto'):
             protoField = proto.attrib.get('name')
@@ -66,11 +66,11 @@ def parse_xml_file(xmlfilename):
 
             if (type1 == True) and (type3 == True) and (type4 == True):
                 if (len(arfcns) > 0):
-                    btsObj = bts.BTS(tmp_lai[0], tmp_lai[1], tmp_lai[2], cellId.group(1), set(arfcns))
+                    btsObj = bts.BTS(tmp_lai[0], tmp_lai[1], tmp_lai[2], cellId.group(1), arfcns)
                     if btslist.get(cellId.group(1)) is None:
                         btslist[cellId.group(1)] = btsObj
                     else:
-                        btslist[cellId.group(1)].ARFCNs = btslist[cellId.group(1)].ARFCNs.union(btsObj.ARFCNs)
+                        btslist[cellId.group(1)].add_arfcns(arfcns)
 
                     type1 = False
                     type3 = False

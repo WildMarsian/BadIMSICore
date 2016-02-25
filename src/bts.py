@@ -14,13 +14,13 @@ class BTS:
 
     countries = {'208': 'France'}
 
-    def __init__(self, MCC, MNC, LAC, CI, ARFCNs=set()):
+    def __init__(self, MCC, MNC, LAC, CI, ARFCNs=[]):
         self.MCC = MCC
         self.MNC = MNC
         self.shortname = self.network_operators[self.MNC]
         self.LAC = LAC
         self.CI = CI
-        self.ARFCNs = sorted(ARFCNs)
+        self.ARFCNs = sorted(set(ARFCNs))
 
     def __str__(self):
         s = ""
@@ -35,5 +35,11 @@ class BTS:
         bts_string = "-> {},{},{},{},".format(self.MNC, self.MCC, self.LAC, self.CI)
         bts_string += str(self.ARFCNs).strip("[]").replace(' ', '')
         return bts_string
+
+    def add_arfcns(self, arfcns):
+        self.ARFCNs = sorted(set(self.ARFCNs.extend(arfcns)))
+
+
+
 
 
