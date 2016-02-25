@@ -87,8 +87,7 @@ def main():
     duration = 6 + len(freqs) * args.repeat * args.scan_time
 
     #start the listening on lo interface
-    os.remove("xml_output")
-    xml_file = 'xml_output'
+    xml_file = '/tmp/xml_output'
     proc = toxml(xml_file, duration)
 
     #scan frequencies
