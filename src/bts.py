@@ -37,7 +37,8 @@ class BTS:
         return bts_string
 
     def add_arfcns(self, arfcns):
-        self.ARFCNs = sorted(set(self.ARFCNs.extend(arfcns)))
+        self.ARFCNs.extend(arfcns)
+        self.ARFCNs = sorted(set(self.ARFCNs))
 
 
 

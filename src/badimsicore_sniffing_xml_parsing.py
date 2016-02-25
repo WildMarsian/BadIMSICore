@@ -52,7 +52,7 @@ def parse_xml_file(xmlfilename):
                         if (info is not None) and ("List of ARFCNs" in info):
                             arfcn = re.findall(r'\d+', info)
                             for a in (arfcn):
-                                arfcns.add(a)
+                                arfcns.append(a)
                             type1 = True
                         # For Type 4 packets
                         if (info is not None) and ("Location Area Identification (LAI) - " in info):
@@ -75,7 +75,7 @@ def parse_xml_file(xmlfilename):
                     type1 = False
                     type3 = False
                     type4 = False
-                    arfcns = set()
+                    arfcns = []
     return btslist
 
 
