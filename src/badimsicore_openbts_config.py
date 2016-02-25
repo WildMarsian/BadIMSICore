@@ -41,6 +41,7 @@ class BadimsicoreBtsConfig:
 
     def update_database(self, keystring, valuestring):
         """
+        Update the database with pair (keystring, valuestring)
         :param keystring: the column name
         :param valuestring: the value associated to the column name
         :return: None
@@ -60,7 +61,7 @@ class BadimsicoreBtsConfig:
 
     def close(self):
         """
-        Cole the config
+        Close the connection
         """
-        if conn:
+        if self.conn:
             self.conn.close()
