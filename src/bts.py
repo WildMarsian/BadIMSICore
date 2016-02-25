@@ -37,6 +37,14 @@ class BTS:
         return bts_string
 
     def add_arfcns(self, arfcns):
+        """
+        fuse a list of arfcn with the one of the bts object
+        Args:
+            arfcns: the arfcn to add
+
+        Returns:
+
+        """
         self.ARFCNs.extend(arfcns)
         self.ARFCNs = sorted(set(self.ARFCNs))
 
