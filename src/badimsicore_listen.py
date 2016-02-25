@@ -43,6 +43,8 @@ def scan_frequencies(repeat, scan_time, frequencies):
 def toxml(xml_file, duration):
     """
     Start the redirection of all network gsm traffic from lo interface to an XML file
+    By default, received traffic is sent to the loopback interface (lo). The traffic
+    is filtered by the string "gsmtap && ! icmp".
     :param xml_file: XML output file
     :param duration: End of the listening on the interface lo
     :return: The Popen object of the listening process
@@ -70,6 +72,7 @@ def main():
     if args.errors:
         print("10 : error no frequency to scan")
         print("20 : error scanning for BTS cells")
+        exit(0)
 
     #Generating the list of frequencies to scan
     freqs = []
