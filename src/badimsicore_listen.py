@@ -30,7 +30,7 @@ def scan_frequencies(repeat, scan_time, frequencies):
     :param frequencies: List of frequency (ARFCN downlink frequencies) to scan
     :return: the exit status of the scan
     """
-    opts = ["python2.7", "airprobe_rtlsdr_non_graphical"]
+    opts = ["airprobe_rtlsdr_non_graphical"]
     opt_freq = ["-f"]
     frequencies = list(map(lambda freq: str(freq), frequencies))
     opt_freq.extend(frequencies)
