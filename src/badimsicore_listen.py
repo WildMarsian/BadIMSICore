@@ -61,7 +61,7 @@ def parse_xml(xml_file):
 
 def main():
     #parsing arguments
-    rds = RadioBandSearcher('/opt/badimsibox/resources/all_gsm_channels_arfcn.csv')
+    rds = RadioBandSearcher('/opt/badimsibox/badimsicore/resources/all_gsm_channels_arfcn.csv')
     bands = rds.get_bands()
 
     parser = argparse.ArgumentParser()
