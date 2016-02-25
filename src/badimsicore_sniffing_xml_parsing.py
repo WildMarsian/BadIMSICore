@@ -67,7 +67,7 @@ def parse_xml_file(xmlfilename):
             if (type1 == True) and (type3 == True) and (type4 == True):
                 if (len(arfcns) > 0):
                     btsObj = bts.BTS(tmp_lai[0], tmp_lai[1], tmp_lai[2], cellId.group(1), set(arfcns))
-                    if btslist[cellId.group(1)] is None:
+                    if btslist.get(cellId.group(1)) is None:
                         btslist[cellId.group(1)] = btsObj
                     else:
                         btslist[cellId.group(1)].ARFCNs = btslist[cellId.group(1)].ARFCNs.union(btsObj.ARFCNs)
