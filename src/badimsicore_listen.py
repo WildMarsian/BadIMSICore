@@ -2,11 +2,27 @@
 import subprocess
 import os
 
+"""
+    This module provides some functions to listen to the GSM traffic.
+    Available operators are :
+    - SFR
+    - Orange
+    - Bouygues Telecom
+    
+    With the given CSV file referencing all ARFCNs channels by operator (all_gsm_channels_arfcn.csv),
+    We can choose specific bands.
+"""
+
 from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
 import argparse
 import badimsicore_sniffing_xml_parsing
 import logging
+
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyrigth 2016, MIMSI team" 
 
 def set_args(parser, bands):
     """
