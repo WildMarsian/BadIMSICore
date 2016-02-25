@@ -1,11 +1,22 @@
+#!/usr/bin/env python3.4
 
+"""
+    This module configures the openBTS database. This one
+    is an sqlite3 type. After opening the connection, we
+    can either configure the BTS according to deploy a fake BTS,
+    using the function update_badimsicore_bts_config(), or any other entries by
+    calling update_database().
+"""
 
 import sqlite3
-
 from bts import BTS
 
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team" 
+
 class BadimsicoreBtsConfig:
-    config = []
 
     def __init__(self, config_db):
         """
@@ -13,52 +24,7 @@ class BadimsicoreBtsConfig:
         """
         self.db = config_db
         self.conn = sqlite3.connect(self.db)
-        self.data = {}
 
-    def read_badimsicore_bts_config(self):
-        """
-        Read from the OpenBTS db config file into the BadimsicoreBtsConfig object
-        """
-        c = self.conn.cursor()
-        c.execute("SELECT * FROM CONFIG;")
-        results = c.fetchall()
-
-        for conf in results:
-            self.data[conf[0]] = conf[1:]
-
-        return results
-
-    def get_config(self, key):
-        """
-        Get a config parameter
-        :param key, the key designing the data
-        """
-        return self.data.get(key)
-
-    def set_config(self, key, data):
-        """
-        Set a config parameter
-        :param key, the key designing the data
-        :param data, the tuple data representing a OpenBTS config parameter
-        """
-        self.data[key] = data
-
-    def write_badimsicore_bts_config(self):
-        """
-        Write the config to the database
-        """
-        newdat = []
-        for k, v in self.data.items():
-            newdat.append(tuple([k]) + v)
-
-        try:
-            c = self.conn.cursor()
-            c.execute("DELETE FROM CONFIG")
-            c.executemany("INSERT INTO CONFIG VALUES (?, ?, ?, ?, ?);", newdat)
-            self.conn.commit()
-        except sqlite3.Error as e:
-            self.conn.rollback()
-            raise e
 
     def update_badimsicore_bts_config(self, bts):
         """
@@ -71,13 +37,14 @@ class BadimsicoreBtsConfig:
         self.update_database("GSM.Identity.LAC", bts.LAC)
         self.update_database("GSM.Identity.CI", bts.CI)
 
-        self.close()
+        #self.close()
 
     def update_database(self, keystring, valuestring):
         """
+        Update the database with pair (keystring, valuestring)
         :param keystring: the column name
         :param valuestring: the value associated to the column name
-        :return:
+        :return: None
         """
         try:
             c = self.conn.cursor()
@@ -88,9 +55,13 @@ class BadimsicoreBtsConfig:
         except sqlite3.Error as e:
             self.conn.rollback()
             raise e
+        finally:
+            if c:
+                c.close()
 
     def close(self):
         """
-        Cole the config
+        Close the connection
         """
-        self.conn.close()
+        if self.conn:
+            self.conn.close()
