@@ -4,7 +4,7 @@
 import xml.etree.ElementTree as ET
 import bts
 import sys, re, os
-import sets
+
 
 
 regex = re.compile(".*?\((.*?)\)")

@@ -55,16 +55,7 @@ def scan_frequencies(repeat, scan_time, frequencies):
     opts.extend(['-t', '{: d}'.format(scan_time)])
     opts.extend(['-n', '{: d}'.format(repeat)])
 
-    encoding = locale.getdefaultlocale()[1]
-    p = subprocess.Popen(opts, stdout=subprocess.PIPE)
-    out, err = p.communicate()
-    stdout = out.decode(encoding)
-    if 'FATAL' in stdout:
-        p.kill()
-        return 10
-    else:
-        p.wait()
-    return 0
+    return subprocess.call(opts)
 
 
 def toxml(xml_file, duration):
