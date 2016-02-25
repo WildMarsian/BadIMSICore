@@ -1,20 +1,20 @@
 #!/usr/bin/env python3.4
 
+
 """
     This module provides some functions to listen to the GSM traffic.
     Available operators are :
     - SFR
     - Orange
     - Bouygues Telecom
-    
+
     With the given CSV file referencing all ARFCNs channels by operator (all_gsm_channels_arfcn.csv),
     We can choose specific bands.
 """
-
 import subprocess
-import os
-import argparse
 import logging
+import locale
+import argparse
 from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
 import badimsicore_sniffing_xml_parsing
@@ -23,7 +23,7 @@ import badimsicore_sniffing_xml_parsing
 __authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
 __maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
 __licence__ = "GPL v3"
-__copyright__ = "Copyrigth 2016, MIMSI team" 
+__copyright__ = "Copyright 2016, MIMSI team"
 
 def set_args(parser, bands):
     """
@@ -54,7 +54,17 @@ def scan_frequencies(repeat, scan_time, frequencies):
     opts.extend(opt_freq)
     opts.extend(['-t', '{: d}'.format(scan_time)])
     opts.extend(['-n', '{: d}'.format(repeat)])
-    return subprocess.call(opts)
+
+    encoding = locale.getdefaultlocale()[1]
+    p = subprocess.Popen(opts, stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    stdout = out.decode(encoding)
+    if 'FATAL' in stdout:
+        p.kill()
+        return 10
+    else:
+        p.wait()
+    return 0
 
 
 def toxml(xml_file, duration):
@@ -124,7 +134,6 @@ def main():
         print(bts.nice_display())
 
     exit(0)
-    
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=logging.INFO)
     logging.info('Logger is lock and loaded')
