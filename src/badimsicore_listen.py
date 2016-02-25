@@ -1,6 +1,4 @@
 #!/usr/bin/env python3.4
-import subprocess
-import os
 
 """
     This module provides some functions to listen to the GSM traffic.
@@ -13,11 +11,14 @@ import os
     We can choose specific bands.
 """
 
+import subprocess
+import os
+import argparse
+import logging
 from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
-import argparse
 import badimsicore_sniffing_xml_parsing
-import logging
+
 
 __authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
 __maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
@@ -123,6 +124,7 @@ def main():
         print(bts.nice_display())
 
     exit(0)
+    
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=logging.INFO)
     logging.info('Logger is lock and loaded')
