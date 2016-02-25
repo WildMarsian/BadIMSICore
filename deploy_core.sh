@@ -4,14 +4,16 @@ coredir=/opt/badimsibox/badimsicore
 srcdir=$coredir/src
 linkrootdir=/usr/local/sbin
 linkdir=/usr/local/bin
+etcdir=/etc/badimsicore
 
 
 
 
 function install(){
 	sudo mkdir $coredir -p
+	sudo mkdir $etcdir -p
 	sudo cp -r ./src $coredir
-	sudo cp -r ./resources $coredir
+	sudo cp -r ./resources/* $etcdir
 	
 	sudo chmod 711 $srcdir/badimsicore_listen.py
 	sudo chmod 711 $srcdir/badimsicore_openbts.py
