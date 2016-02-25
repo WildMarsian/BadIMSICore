@@ -14,7 +14,7 @@ class BTS:
 
     countries = {'208': 'France'}
 
-    def __init__(self, MCC, MNC, LAC, CI, ARFCNs=[]):
+    def __init__(self, MCC, MNC, LAC, CI, ARFCNs=set()):
         self.MCC = MCC
         self.MNC = MNC
         self.shortname = self.network_operators[self.MNC]
@@ -29,7 +29,7 @@ class BTS:
         return "BTS: "+self.MNC+" "+self.MCC+" "+self.LAC+" "+self.CI+" -- "+self.shortname+" "+s
 
     def __eq__(self, other):
-        return self.MCC == other.MCC and self.MNC == other.MNC and self.LAC == other.LAC and self.ARFCNs == other.ARFCNs and self.CI == other.CI
+        return self.CI == other.CI
 
     def nice_display(self):
         bts_string = "-> {},{},{},{},".format(self.MNC, self.MCC, self.LAC, self.CI)

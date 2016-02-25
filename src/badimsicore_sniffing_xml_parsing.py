@@ -4,13 +4,14 @@
 import xml.etree.ElementTree as ET
 import bts
 import sys, re, os
+import sets
 
 
 regex = re.compile(".*?\((.*?)\)")
 """
     BTS list
 """
-btsList = []
+
 
 def usage():
     """
@@ -33,11 +34,12 @@ def parse_xml_file(xmlfilename):
     :param xmlfilename: the xml file that contains all information on the sniffing
     :return: a list that contains BTS Objects
     """
+    btslist = {}
     tree = ET.parse(xmlfilename)
     type1 = False
     type3 = False
     type4 = False
-    arfcns = []
+    arfcns = set()
     for packet in tree.getroot():
         for proto in packet.iter('proto'):
             protoField = proto.attrib.get('name')
@@ -50,7 +52,7 @@ def parse_xml_file(xmlfilename):
                         if (info is not None) and ("List of ARFCNs" in info):
                             arfcn = re.findall(r'\d+', info)
                             for a in (arfcn):
-                                arfcns.append(a)
+                                arfcns.add(a)
                             type1 = True
                         # For Type 4 packets
                         if (info is not None) and ("Location Area Identification (LAI) - " in info):
@@ -63,15 +65,18 @@ def parse_xml_file(xmlfilename):
                             type3 = True
 
             if (type1 == True) and (type3 == True) and (type4 == True):
-                if (len(set(arfcns)) > 0):
+                if (len(arfcns) > 0):
                     btsObj = bts.BTS(tmp_lai[0], tmp_lai[1], tmp_lai[2], cellId.group(1), set(arfcns))
-                    if btsObj not in btsList:
-                        btsList.append(btsObj)
+                    if btslist[cellId.group(1)] is None:
+                        btslist[cellId.group(1)] = btsObj
+                    else:
+                        btslist[cellId.group(1)].ARFCNs = btslist[cellId.group(1)].ARFCNs.union(btsObj.ARFCNs)
+
                     type1 = False
                     type3 = False
                     type4 = False
-                    arfcns = []
-    return btsList
+                    arfcns = set()
+    return btslist
 
 
 def main():
