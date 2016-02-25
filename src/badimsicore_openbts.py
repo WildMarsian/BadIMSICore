@@ -1,4 +1,9 @@
-#!/usr/bin/python3.4
+#!/usr/bin/env python3.4
+
+"""
+This class is used to control the openbts service
+You need to construct the new instance using the method get_badimsicore_bts_service(exec_context)
+"""
 
 import subprocess
 import sys
@@ -8,17 +13,18 @@ import locale
 from badimsicore_openbts_init import InitOpenBTS
 from badimsicore_sdr_uhd import BadIMSICoreUHDDriver
 from bts import BTS
-
 from badimsicore_openbts_config import BadimsicoreBtsConfig
-"""
-This class is used to control the openbts service
-You need to construct the new instance using the method get_badimsicore_bts_service(exec_context)
-"""
+
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team" 
+
 class BadimsicoreBtsService:
         
     def start(self, ci=None, lac=None, mnc=None, mcc=None, open_registration=None, message_registration=None):
         """
-        Start openbts services
+        Start openbts services. Default values are those defined in the OpenBTS database file. 
         :param ci: The Cell ID
         :param lac: The Location Area Code
         :param mnc: The Mobile Network Code
@@ -64,7 +70,7 @@ class BadimsicoreBtsService:
     def status():
         """
         Check if openbts service is started
-        :return: None
+        :return: 0 if OpenBTS is running, otherwise 
         """
         encoding = locale.getdefaultlocale()[1]
         p = subprocess.Popen(['status', 'openbts'], stdout=subprocess.PIPE)
@@ -77,7 +83,9 @@ class BadimsicoreBtsService:
         
     @staticmethod
     def send_command(command):
-        """BadimsicoreBtsService send a command to openbts
+        """
+        BadimsicoreBtsService send a command to openbts,
+        Using OpenBTSDo utility.
         :command a list of string corresponding to the command fragment (split(" "))
         """
         openbts=["/OpenBTS/OpenBTSDo", "-c"]
