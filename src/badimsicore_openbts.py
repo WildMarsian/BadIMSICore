@@ -50,6 +50,7 @@ class BadimsicoreBtsService:
                 badimsicore_bts_config.update_database("Control.LUR.OpenRegistration", open_registration)
             elif message_registration:
                 badimsicore_bts_config.update_database("Control.LUR.OpenRegistration.Message", message_registration)
+            badimsicore_bts_config.close()
             #Start openbts services
             InitOpenBTS.init_sipauthserve()
             InitOpenBTS.init_smqueue()

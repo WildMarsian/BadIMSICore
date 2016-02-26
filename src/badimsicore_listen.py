@@ -13,7 +13,6 @@
 """
 import subprocess
 import logging
-import locale
 import argparse
 from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
@@ -80,6 +79,11 @@ def parse_xml(xml_file):
 
 
 def main():
+    ret = subprocess.call('badimsicore_check_hackrf_connection')
+    if ret != 0:
+        print("Error no sdr device found")
+        exit(30)
+
     #parsing arguments
     rds = RadioBandSearcher('/opt/badimsibox/badimsicore/resources/all_gsm_channels_arfcn.csv')
     bands = rds.get_bands()
@@ -90,6 +94,7 @@ def main():
     if args.errors:
         print("10 : error no frequency to scan")
         print("20 : error scanning for BTS cells")
+        print("30 : badimsicore_check_hackrf_connection")
         exit(0)
 
     #Generating the list of frequencies to scan
