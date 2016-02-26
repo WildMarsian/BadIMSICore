@@ -1,39 +1,46 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.4
 # -*- coding: utf-8 -*-
 
+"""
+   This module performs the XML parsing in order
+   to extract infos from the given captured file.
+"""
+
+
 import xml.etree.ElementTree as ET
-
-import bts
 import sys, re, os
+import bts
 
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
 
 
 regex = re.compile(".*?\((.*?)\)")
-"""
-    BTS list
-"""
 
 
 def usage():
     """
-        The error output message on stdout
+        Displays the error output message on stdout
     """
     print("You must put a xml file in args")
     print("badimsicore_sniffing_xml_parsing.py <xml-file>")
 
 def is_valid_extension(filename, ext):
     """
-    :param filename: the file
-    :param ext: an extension like '.xml'
-    :return: boolean to verify if extension is correct
+        Check if the file has the good extension.
+        :param filename: the file
+        :param ext: an extension like '.xml'
+        :return: boolean to verify if extension is correct
     """
     filename, extension = os.path.splitext(filename)
     return extension == ext
 
 def parse_xml_file(xmlfilename):
     """
-    :param xmlfilename: the xml file that contains all information on the sniffing
-    :return: a list that contains BTS Objects
+        :param xmlfilename: the xml file that contains all information on the sniffing
+        :returns: a list that contains BTS Objects
     """
     btslist = {}
     tree = ET.parse(xmlfilename)
