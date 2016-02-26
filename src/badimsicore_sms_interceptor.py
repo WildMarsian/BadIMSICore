@@ -1,9 +1,19 @@
-#!/usr/bin/python3.4
+#!/usr/bin/env python3.4
 
 # Usage: badimsicore_sms_interceptor.py -i <inputlog>
 
+"""
+    This module intercepts sent SMS from the target mobile.
+    SMS, managed by smqueue service, are logged in /var/log/syslog.
+"""
+
 from pytail import PyTail
 from optparse import OptionParser
+
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
 
 
 class BadSMSInterceptor:
