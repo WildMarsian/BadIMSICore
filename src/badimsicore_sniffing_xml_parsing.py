@@ -78,7 +78,6 @@ def parse_xml_file(xmlfilename):
                     type3 = False
                     type4 = False
                     arfcns = []
-        print(btslist)
     return btslist
 
 
