@@ -1,6 +1,7 @@
 #!/bin/bash
 
-coredir=/opt/badimsibox/badimsicore
+boxrootdir=/opt/badimsibox
+coredir=$boxrootdir/badimsicore
 srcdir=$coredir/src
 linkrootdir=/usr/local/sbin
 linkdir=/usr/local/bin
@@ -12,7 +13,8 @@ function install(){
 	sudo mkdir $coredir -p
 	sudo cp -r ./src $coredir
 	sudo cp -r ./resources $coredir
-	
+	sudo chmod 755 -R $boxrootdir
+
 	sudo chmod 711 $srcdir/badimsicore_listen.py
 	sudo chmod 711 $srcdir/badimsicore_openbts.py
 	sudo chmod 755 $srcdir/airprobe_rtlsdr_non_graphical.py
