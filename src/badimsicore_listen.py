@@ -94,7 +94,7 @@ def main():
     if args.errors:
         print("10 : error no frequency to scan")
         print("20 : error scanning for BTS cells")
-        print("30 : badimsicore_check_hackrf_connection")
+        print("30 : Error no sdr device found")
         exit(0)
 
     #Generating the list of frequencies to scan
