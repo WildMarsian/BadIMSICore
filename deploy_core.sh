@@ -27,7 +27,7 @@ function install(){
 	sudo ln -s $srcdir/badimsicore_listen.py                  $linkrootdir/badimsicore_listen
 	sudo ln -s $srcdir/badimsicore_openbts.py                 $linkrootdir/badimsicore_openbts
 	sudo ln -s $srcdir/badimsicore_reload_usb_usrp.sh         $linkrootdir/badimsicore_reload_usb_usrp
-	sudo ln -s $srcdir/badimsicore_check_hackrf_connection.py $linkdir/badimsicore_check_hackrf_connection
+	sudo ln -s $srcdir/badimsicore_check_hackrf_connection.sh $linkdir/badimsicore_check_hackrf_connection
 	sudo ln -s $srcdir/airprobe_rtlsdr_non_graphical.py       $linkdir/airprobe_rtlsdr_non_graphical
 	sudo ln -s $srcdir/badimsicore_sms_interceptor.py         $linkdir/badimsicore_sms_interceptor
 	sudo ln -s $srcdir/badimsicore_sms_sender.py              $linkdir/badimsicore_sms_sender
