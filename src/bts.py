@@ -1,13 +1,13 @@
 #!/usr/bin/env python3.4
 
- """
-    Class defining a complete BTS with all informations given from several packets
-    The BTS is defined by :
-    - LAC
-    - Operator
-    - Country
-    - Cell ID
-    - List of ARFCNs
+"""
+Class defining a complete BTS with all informations given from several packets
+The BTS is defined by :
+- LAC
+- Operator
+- Country
+- Cell ID
+- List of ARFCNs
 """
 
 __authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
