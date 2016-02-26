@@ -121,7 +121,7 @@ def main():
     btss = parse_xml(xml_file)
 
     #Print the list of BTS
-    for key, bts in btss:
+    for key, bts in btss.iteritems():
         print(bts.nice_display())
 
     exit(0)
