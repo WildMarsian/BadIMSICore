@@ -131,6 +131,6 @@ def main():
 
     exit(0)
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', level=logging.INFO)
     logging.info('Logger is lock and loaded')
     main()
