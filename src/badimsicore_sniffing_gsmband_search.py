@@ -1,5 +1,24 @@
+#!/usr/bin/env python3.4
+
+"""
+    This module is the main component of the sniffing step.
+    Indeed, during the sniffing, a good way to identify
+    BTS is to save all captured ARFCNs.
+    
+    ARFCNs are owned by operators, and officially declared.
+    All ARFCNs are written in a CSV file. The first class
+    sets a dictionnary, representing these infos.
+    
+    From this structure data, the class RadioBandSearcher gets
+    ARFCNs from an operator and band of frequency.
+"""
+
 import csv
 
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
 
 class ARFCN:
 
@@ -10,6 +29,10 @@ class ARFCN:
         self.band = band
 
     def get_operator(self):
+        """
+            Get the operator from the current ARFCN
+            :return : the operator, in string representation
+        """
         return ARFCN.get_operator_from_arfcn(self.arfcn)
 
     def __str__(self):
@@ -45,13 +68,22 @@ class RadioBandSearcher:
         self.arfcn_dict = csv_arfcn_dict_reader(filename)
 
     def get_arfcn(self, operator, band):
+        """
+           Return ARFCNs from an operator and band
+           :return : list of ARFCNs
+        """
         results = self.arfcn_dict.get(band).get(operator)
         if results is None:
             return []
         return list(map(lambda arfcn_object: arfcn_object.downlink*1000000, sorted(self.arfcn_dict.get(band).get(operator).values())))
 
     def get_bands(self):
+        """
+            Return all bands of frequencies.
+            :return : list of bands
+        """
         return self.arfcn_dict.keys()
+
 
 def csv_arfcn_dict_reader(filename):
     """
