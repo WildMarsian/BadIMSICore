@@ -70,17 +70,15 @@ def parse_xml_file(xmlfilename):
                     btsObj = bts.BTS(tmp_lai[0], tmp_lai[1], tmp_lai[2], cellId.group(1), arfcns)
                     if btslist.get(cellId.group(1)) is None:
                         btslist[cellId.group(1)] = btsObj
-                        print("Ajout du BTS : " + btsObj.nice_display())
                     else:
                         get_bts = btslist.get(cellId.group(1))
-                        print("Mise a jour du BTS : " + btsObj.nice_display())
                         get_bts.add_arfcns(arfcns)
-                        print("Apres mise a jour : " + btsObj.nice_display())
 
                     type1 = False
                     type3 = False
                     type4 = False
                     arfcns = []
+        print(btslist)
     return btslist
 
 
