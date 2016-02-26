@@ -1,16 +1,28 @@
-#!/usr/bin/python3.4
+#!/usr/bin/env python3.4
+
+"""
+    BadIMSICoreUHDDriver attempts to load the UHD driver
+    on the SDR card, using an USB connection. Sometimes,
+    when the card is mount, the connection is lost. The goal
+    of this module consists of establishing the connection.
+"""
 
 import os
 import time
 import subprocess
 from badimsicore_sdr_driver import BadIMSICoreSdrDriver
 
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
+
 class BadIMSICoreUHDDriver(BadIMSICoreSdrDriver):
 
     def uhd_software_reconnect(self, uhd_version):
         """
             Detect and try to unbind then bind the UHD device
-            Return:
+            :return :
                 -2 if there was a critical error with the UHD Device
                 -1 if the device was not deteted by the system
                  0 if there was no problem
@@ -64,6 +76,15 @@ class BadIMSICoreUHDDriver(BadIMSICoreSdrDriver):
         return exit_code
             
     def init_bts(self):
+    	"""
+    		Initialize the SDR connection with the host.
+    		:return :
+    		-2 if there was a critical error with the UHD Device
+                -1 if the device was not deteted by the system
+                 0 if there was no problem
+                 1 if the script didn't have root permission
+                 2 if the IdProduct argument was empty or null
+    	"""
         uhd_version="0020"
         minimal_kernel="2.6.38"
         retry=6
