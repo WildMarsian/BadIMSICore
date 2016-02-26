@@ -29,7 +29,7 @@ class BadIMSICoreUHDDriver(BadIMSICoreSdrDriver):
                  1 if the script didn't have root permission
                  2 if the IdProduct argument was empty or null
         """
-        args = ["./reload_usb_usrp.sh", uhd_version]
+        args = ["badimsicore_reload_usb_usrp", uhd_version]
         exit_code = subprocess.call(args)
         if (exit_code == 0):
             print("UHD device USB reload successful")
