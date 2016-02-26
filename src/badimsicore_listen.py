@@ -34,7 +34,7 @@ def set_args(parser, bands):
     group = parser.add_argument_group("listen")
     group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])
     group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all", choices=bands)
-    group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
+    group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=1, type=int)
     group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
     group.add_argument("-e", "--errors", help="list errors codes", action='store_true')
 
