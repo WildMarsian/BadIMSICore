@@ -1,6 +1,12 @@
 #!/usr/bin/python3.4 -tt
 # -*- coding: utf-8 -*-
 
+"""
+    Module to allow for reading lines from a continuously-growing file
+    (such as a system log). Handles log files that get rotated/trucated out
+    from under us. Inspired by the Perl File::Tail module.
+"""
+
 from __future__ import print_function
 from os import stat
 from os.path import exists, getsize
@@ -10,6 +16,10 @@ import gzip
 from optparse import OptionParser
 
 __version__ = '1.0'
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
 
 text_type = str
 
