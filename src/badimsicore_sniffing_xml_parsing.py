@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import xml.etree.ElementTree as ET
-from idlelib.SearchEngine import get
 
 import bts
 import sys, re, os
