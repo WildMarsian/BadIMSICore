@@ -92,7 +92,8 @@ class BadimsicoreBtsService:
         openbts=["/OpenBTS/OpenBTSDo", "-c"]
         openbts.extend(command)
         p = subprocess.Popen(openbts)
-        return p.communicate()
+        out, err = p.communicate()
+        return out
 
 
 def main():
@@ -109,7 +110,7 @@ def main():
     start_parser.add_argument('-n', '--mnc', dest='mnc', help='The Mobile Network Code of the cell. Must have 2 digits')
     start_parser.add_argument('-c', '--mcc', dest='mcc', help='The Mobile Country Code of the cell. Must have 3 digits')
     start_parser.add_argument('-m', '--message-registration', dest='message_registration', help='The message upon registration of a mobile in the fake network', default="\"\"")
-    start_parser.add_argument('-p', '--open-registration', dest='open_registration', help='The access authorization for the registration on the fake network', default="*")
+    start_parser.add_argument('-p', '--open-registration', dest='open_registration', help='The access authorization for the registration on the fake network', default="\".*\"")
     #Subparser stop_parser 
     stop_parser = subparsers.add_parser('stop', help='Stop openbts')
     stop_parser.set_defaults(func=service.stop)

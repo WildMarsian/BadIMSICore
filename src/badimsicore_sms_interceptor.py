@@ -35,19 +35,19 @@ class BadSMSInterceptor:
         last_index_of_smqueue_line = 12
 
         for line in PyTail(input_log):
-            count += 1
             line_words = line.split(" ")
             # If it's a line containing "Decoded", it means it's a SMQueue log entry
             if 'Decoded' in line:
+                count += 1
                 # If the count is even, that means it's a duplicate
                 if count % 2 == 0:
                     # We remove that extra carrier return for pretty printing
                     parsed_entry_delimiter = line_words[last_index_of_smqueue_line - 1]
                     # Print instance of smqueue
-                    # parsed_entry_instance = line_words[7]
+                    # parsed_entry_instance = line_words[7]
                     # print(parsed_entry_instance + ": " + line.split(parsed_entry_delimiter)[2][:-1])
-                    sms_list.append(line.split(parsed_entry_delimiter)[2][:-1])
-                    date_list.append(line_words[2] + " " + line_words[0] + " at " + line_words[3])
+                    sms_list.append(parsed_entry_delimiter[:-1])
+                    date_list.append(line_words[1] + " " + line_words[0] + " at " + line_words[2])
         # Concatenate the date and the sms.
         complete_list = zip(date_list, sms_list)
         return complete_list
