@@ -37,6 +37,7 @@ When the script is successfully launched, we have to following commands :
 
 ## 3. Usage 
 For each command, you can display the required/optional arguments by the option -h
+
 **badimsicore_listen**
 ```
 sudo badimsicore_listen -h
