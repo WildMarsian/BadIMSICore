@@ -36,3 +36,129 @@ When the script is successfully launched, we have to following commands :
 * badimsicore_tmsis
 
 ## 3. Usage 
+For each command, you can display the required/optional arguments by the option -h
+* badimsicore_listen
+```
+sudo badimsicore_listen -h
+usage: badimsicore_listen [-h] [-o {orange,sfr,bouygues_telecom}]
+                          [-b {GSM-1900,GSM-850,TGSM-810,GSM-1800,GSM-750,EGSM-900,GSM-900,RGSM-900,GSM-450,GSM-480}]
+                          [-t SCAN_TIME] [-n REPEAT] [-e]
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+listen:
+  -o {orange,sfr,bouygues_telecom}, --operator {orange,sfr,bouygues_telecom}
+                        search bts of this operator
+  -b {GSM-1900,GSM-850,TGSM-810,GSM-1800,GSM-750,EGSM-900,GSM-900,RGSM-900,GSM-450,GSM-480}, --band {GSM-1900,GSM-850,TGSM-810,GSM-1800,GSM-750,EGSM-900,GSM-900,RGSM-900,GSM-450,GSM-480}
+                        search bts in this band of frequency
+  -t SCAN_TIME, --scan_time SCAN_TIME
+                        Set the scan time for each frequency
+  -n REPEAT, --repeat REPEAT
+                        Set the number of repeat of the scanning cycle
+  -e, --errors          list errors codes
+
+```
+
+* badimsicore_openbts {start | stop}
+```
+sudo badimsicore_openbts -h
+usage: badimsicore_openbts [-h] {start,stop} ...
+
+Usage of openbts
+
+positional arguments:
+  {start,stop}
+    start       Start openbts
+    stop        Stop openbts
+
+optional arguments:
+  -h, --help    show this help message and exit
+  
+sudo badimsicore_openbts start -h
+usage: badimsicore_openbts start [-h] [-i CI] [-l LAC] [-n MNC] [-c MCC]
+                                 [-m MESSAGE_REGISTRATION]
+                                 [-p OPEN_REGISTRATION]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i CI, --ci CI        The Cell ID of the cell
+  -l LAC, --lac LAC     The LAC of the cell
+  -n MNC, --mnc MNC     The Mobile Network Code of the cell. Must have 2
+                        digits
+  -c MCC, --mcc MCC     The Mobile Country Code of the cell. Must have 3
+                        digits
+  -m MESSAGE_REGISTRATION, --message-registration MESSAGE_REGISTRATION
+                        The message upon registration of a mobile in the fake
+                        network
+  -p OPEN_REGISTRATION, --open-registration OPEN_REGISTRATION
+                        The access authorization for the registration on the
+                        fake network  
+  
+sudo badimsicore_openbts stop -h 
+usage: badimsicore_openbts stop [-h]
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+* airprobe_rtlsdr_non_graphical
+```
+sudo airprobe_rtlsdr_non_graphical -h
+linux; GNU C++ version 4.8.4; Boost_105400; UHD_003.010.git-119-g42a3eeb6
+
+usage: airprobe_rtlsdr_non_graphical [-h] [-g GAIN] [-p PPM] [-s SAMP_RATE]
+                                     [-o SHIFTOFF]
+                                     [-f FREQUENCIES [FREQUENCIES ...]]
+                                     [-t SCAN_TIME] [-n REPEAT]
+
+Configure sniffing parameters
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+grgsm arguments:
+  -g GAIN, --gain GAIN  Set the amplification value
+  -p PPM, --ppm PPM     Set PPM Stream Modulation value
+  -s SAMP_RATE, --samp_rate SAMP_RATE
+                        Set the rate value of the antenna
+  -o SHIFTOFF, --shiftoff SHIFTOFF
+                        Set the shiftoff value
+  -f FREQUENCIES [FREQUENCIES ...], --frequencies FREQUENCIES [FREQUENCIES ...]
+                        Set the list of frequencies to scan : 937000000
+                        932950000 ...
+  -t SCAN_TIME, --scan_time SCAN_TIME
+                        Set the scan time for each frequency
+  -n REPEAT, --repeat REPEAT
+                        Set the number of repeat of the scanning cycle
+```
+
+* badimsicore_sms_interceptor
+```
+badimsicore_sms_interceptor -h
+Usage: badimsicore_sms_interceptor -i <input>
+
+Options:
+  -h, --help            show this help message and exit
+  -i INPUT, --input=INPUT
+                        Log file to be analyzed
+```
+
+* badimsicore_sms_sender
+```
+badimsicore_sms_sender -h
+Usage: badimsicore_sms_sender -r <recipient> -s <sender> -m <message>
+
+Options:
+  -h, --help            show this help message and exit
+  -r RECIPIENT, --recipient=RECIPIENT
+                        Recipient of the message
+  -s SENDER, --sender=SENDER
+                        Sender of the message
+  -m MESSAGE, --message=MESSAGE
+                        Message to be sent (160 chars max.)
+```
+
+* badimsicore_tmsis
+```
+badimsicore_tmsis
+```
