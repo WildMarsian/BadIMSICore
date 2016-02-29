@@ -6,6 +6,7 @@ You need to construct the new instance using the method get_badimsicore_bts_serv
 """
 
 import subprocess
+import os
 import sys
 import argparse
 import time
@@ -35,6 +36,17 @@ class BadimsicoreBtsService:
         """
         #Stop openbts services
         self.stop()
+
+        # Destruction of sms files
+        smslog1 = "/var/log/smslog"
+        smslog2 = "/var/log/smslog.offset"
+
+        try:
+            os.remove(smslog1)
+            os.remove(smslog2)
+        except OSError:
+            pass
+
         #SDR
         uhd_handler = BadIMSICoreUHDDriver()
         init_bts = uhd_handler.init_bts()
