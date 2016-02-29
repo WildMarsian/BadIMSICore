@@ -9,6 +9,7 @@
 
 from pytail import PyTail
 from optparse import OptionParser
+import os
 
 __authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
 __maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
@@ -26,6 +27,9 @@ class BadSMSInterceptor:
         :param input_log -- The log to be analyzed and returned
         :returns complete_list -- The zipped nested list of sms with date
         """
+
+        # Defensive copy of only decoded SMS
+        os.system("cat " + input_log + " | grep Decoded > smslog")
         # We use a counter to skip every other line since the log duplicates SMQueue entries
         count = 0
         sms_list = []
@@ -34,7 +38,7 @@ class BadSMSInterceptor:
         # There is 13 entries in SMQueue line log. With a list the last index is 12
         last_index_of_smqueue_line = 12
 
-        for line in PyTail(input_log):
+        for line in PyTail("smslog"):
             line_words = line.split(" ")
             # If it's a line containing "Decoded", it means it's a SMQueue log entry
             if 'Decoded' in line:
