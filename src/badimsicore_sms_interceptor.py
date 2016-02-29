@@ -29,7 +29,7 @@ class BadSMSInterceptor:
         """
 
         # Defensive copy of only decoded SMS
-        os.system("cat " + input_log + " | grep Decoded > smslog")
+        os.system("cat " + input_log + " | grep Decoded > /var/log/smslog")
         # We use a counter to skip every other line since the log duplicates SMQueue entries
         count = 0
         sms_list = []
@@ -38,8 +38,9 @@ class BadSMSInterceptor:
         # There is 13 entries in SMQueue line log. With a list the last index is 12
         last_index_of_smqueue_line = 12
 
-        for line in PyTail("smslog"):
-            line_words = line.split(" ")
+        for line in PyTail("/var/log/smslog"):
+            line_words = line.lstrip().split(" ")
+            line_text = line.split("Decoded text: ")
             # If it's a line containing "Decoded", it means it's a SMQueue log entry
             if 'Decoded' in line:
                 count += 1
@@ -47,10 +48,12 @@ class BadSMSInterceptor:
                 if count % 2 == 0:
                     # We remove that extra carrier return for pretty printing
                     parsed_entry_delimiter = line_words[last_index_of_smqueue_line - 1]
+                    # print(line_text[1])
                     # Print instance of smqueue
                     # parsed_entry_instance = line_words[7]
                     # print(parsed_entry_instance + ": " + line.split(parsed_entry_delimiter)[2][:-1])
-                    sms_list.append(parsed_entry_delimiter[:-1])
+                    #text_decoded = line.split(parsed_entry_delimiter)
+                    sms_list.append(line_text[1][:-1])
                     date_list.append(line_words[1] + " " + line_words[0] + " at " + line_words[2])
         # Concatenate the date and the sms.
         complete_list = zip(date_list, sms_list)

@@ -24,7 +24,7 @@ __copyright__ = "Copyright 2016, MIMSI team"
 text_type = str
 
 
-def force_text(s, encoding='utf-8', errors='strict'):
+def force_text(s, encoding='ISO-8859-1', errors='strict'):
     if isinstance(s, text_type):
         return s
     return s.decode(encoding, errors)
@@ -60,7 +60,7 @@ class PyTail(object):
 
         # if offset file exists and non-empty, open and parse it
         if exists(self._offset_file) and getsize(self._offset_file):
-            offset_fh = open(self._offset_file, "r")
+            offset_fh = open(self._offset_file, "r", encoding = "ISO-8859-1")
             (self._offset_file_inode, self._offset) = \
                 [int(line.strip()) for line in offset_fh]
             offset_fh.close()
@@ -151,9 +151,9 @@ class PyTail(object):
         if not self._fh or self._is_closed():
             filename = self._rotated_logfile or self.filename
             if filename.endswith('.gz'):
-                self._fh = gzip.open(filename, 'r')
+                self._fh = gzip.open(filename, 'r', encoding = "ISO-8859-1")
             else:
-                self._fh = open(filename, "r", 1)
+                self._fh = open(filename, "r", 1, encoding = "ISO-8859-1")
             self._fh.seek(self._offset)
 
         return self._fh
@@ -166,7 +166,7 @@ class PyTail(object):
             self.on_update = not self.on_update
         offset = self._filehandle().tell()
         inode = stat(self.filename).st_ino
-        fh = open(self._offset_file, "w")
+        fh = open(self._offset_file, "w", encoding = "ISO-8859-1")
         fh.write("%s\n%s\n" % (inode, offset))
         fh.close()
         self._since_update = 0
