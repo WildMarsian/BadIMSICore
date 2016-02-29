@@ -37,7 +37,7 @@ When the script is successfully launched, we have to following commands :
 
 ## 3. Usage 
 For each command, you can display the required/optional arguments by the option -h
-* badimsicore_listen
+** badimsicore_listen **
 ```
 sudo badimsicore_listen -h
 usage: badimsicore_listen [-h] [-o {orange,sfr,bouygues_telecom}]
@@ -60,7 +60,7 @@ listen:
 
 ```
 
-* badimsicore_openbts {start | stop}
+** badimsicore_openbts {start | stop} **
 ```
 sudo badimsicore_openbts -h
 usage: badimsicore_openbts [-h] {start,stop} ...
@@ -101,7 +101,7 @@ usage: badimsicore_openbts stop [-h]
 optional arguments:
   -h, --help  show this help message and exit
 ```
-* airprobe_rtlsdr_non_graphical
+** airprobe_rtlsdr_non_graphical **
 ```
 sudo airprobe_rtlsdr_non_graphical -h
 linux; GNU C++ version 4.8.4; Boost_105400; UHD_003.010.git-119-g42a3eeb6
@@ -132,7 +132,7 @@ grgsm arguments:
                         Set the number of repeat of the scanning cycle
 ```
 
-* badimsicore_sms_interceptor
+** badimsicore_sms_interceptor **
 ```
 badimsicore_sms_interceptor -h
 Usage: badimsicore_sms_interceptor -i <input>
@@ -143,7 +143,7 @@ Options:
                         Log file to be analyzed
 ```
 
-* badimsicore_sms_sender
+** badimsicore_sms_sender **
 ```
 badimsicore_sms_sender -h
 Usage: badimsicore_sms_sender -r <recipient> -s <sender> -m <message>
@@ -158,7 +158,7 @@ Options:
                         Message to be sent (160 chars max.)
 ```
 
-* badimsicore_tmsis
+** badimsicore_tmsis **
 ```
 badimsicore_tmsis
 ```
