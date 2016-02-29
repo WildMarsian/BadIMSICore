@@ -49,15 +49,11 @@ optional arguments:
   -h, --help            show this help message and exit
 
 listen:
-  -o {orange,sfr,bouygues_telecom}, --operator {orange,sfr,bouygues_telecom}
-                        search bts of this operator
-  -b {GSM-1900,GSM-850,TGSM-810,GSM-1800,GSM-750,EGSM-900,GSM-900,RGSM-900,GSM-450,GSM-480}, --band {GSM-1900,GSM-850,TGSM-810,GSM-1800,GSM-750,EGSM-900,GSM-900,RGSM-900,GSM-450,GSM-480}
-                        search bts in this band of frequency
-  -t SCAN_TIME, --scan_time SCAN_TIME
-                        Set the scan time for each frequency
-  -n REPEAT, --repeat REPEAT
-                        Set the number of repeat of the scanning cycle
-  -e, --errors          list errors codes
+  -o, --operator {orange,sfr,bouygues_telecom} search bts of this operator
+  -b, --band {GSM-1900,GSM-850,TGSM-810,GSM-1800,GSM-750,EGSM-900,GSM-900,RGSM-900,GSM-450,GSM-480} search bts in this band of frequency
+  -t, --scan_time SCAN_TIME   Set the scan time for each frequency
+  -n, --repeat REPEAT         Set the number of repeat of the scanning cycle
+  -e, --errors                list errors codes
 
 ```
 
@@ -83,16 +79,16 @@ usage: badimsicore_openbts start [-h] [-i CI] [-l LAC] [-n MNC] [-c MCC]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -i CI, --ci CI        The Cell ID of the cell
-  -l LAC, --lac LAC     The LAC of the cell
-  -n MNC, --mnc MNC     The Mobile Network Code of the cell. Must have 2
+  -i, --ci CI        The Cell ID of the cell
+  -l, --lac LAC     The LAC of the cell
+  -n, --mnc MNC     The Mobile Network Code of the cell. Must have 2
                         digits
-  -c MCC, --mcc MCC     The Mobile Country Code of the cell. Must have 3
+  -c, --mcc MCC     The Mobile Country Code of the cell. Must have 3
                         digits
-  -m MESSAGE_REGISTRATION, --message-registration MESSAGE_REGISTRATION
+  -m, --message-registration MESSAGE_REGISTRATION
                         The message upon registration of a mobile in the fake
                         network
-  -p OPEN_REGISTRATION, --open-registration OPEN_REGISTRATION
+  -p, --open-registration OPEN_REGISTRATION
                         The access authorization for the registration on the
                         fake network  
   
@@ -118,18 +114,18 @@ optional arguments:
   -h, --help            show this help message and exit
 
 grgsm arguments:
-  -g GAIN, --gain GAIN  Set the amplification value
-  -p PPM, --ppm PPM     Set PPM Stream Modulation value
-  -s SAMP_RATE, --samp_rate SAMP_RATE
+  -g, --gain GAIN  Set the amplification value
+  -p, --ppm PPM     Set PPM Stream Modulation value
+  -s, --samp_rate SAMP_RATE
                         Set the rate value of the antenna
-  -o SHIFTOFF, --shiftoff SHIFTOFF
+  -o, --shiftoff SHIFTOFF
                         Set the shiftoff value
-  -f FREQUENCIES [FREQUENCIES ...], --frequencies FREQUENCIES [FREQUENCIES ...]
+  -f, --frequencies FREQUENCIES [FREQUENCIES ...]
                         Set the list of frequencies to scan : 937000000
                         932950000 ...
-  -t SCAN_TIME, --scan_time SCAN_TIME
+  -t, --scan_time SCAN_TIME
                         Set the scan time for each frequency
-  -n REPEAT, --repeat REPEAT
+  -n, --repeat REPEAT
                         Set the number of repeat of the scanning cycle
 ```
 
