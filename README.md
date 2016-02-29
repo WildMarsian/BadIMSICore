@@ -39,6 +39,7 @@ When the script is successfully launched, we have to following commands :
 For each command, you can display the required/optional arguments by the option -h
 
 **badimsicore_listen**
+This script uses the command 'airprobe_rtlsdr_non_graphical' which is a global script that listen to the GSM network and eventually record some GSM packets.  
 ```
 sudo badimsicore_listen -h
 usage: badimsicore_listen [-h] [-o {orange,sfr,bouygues_telecom}]
@@ -146,6 +147,12 @@ grgsm arguments:
   -n, --repeat REPEAT
                         Set the number of repeat of the scanning cycle
 ```
+To use this script to listen on 937.7, 890 and 935.2 MHz, we launch it as :
+``` 
+airprobe_rtlsdr_non_graphical.py -f 937700000 890800000 935200000
+``` 
+See more documentation in the sniffing Wiki.
+
 
 **badimsicore_sms_interceptor**
 ```
@@ -156,6 +163,10 @@ Options:
   -h, --help            show this help message and exit
   -i INPUT, --input=INPUT
                         Log file to be analyzed
+```
+All the sms sent by the target are saved in the host's /var/log/syslog file.If we want to catch all the sms :
+```
+badimsicore_sms_interceptor -i /var/log/syslog 
 ```
 
 **badimsicore_sms_sender**
@@ -172,8 +183,14 @@ Options:
   -m MESSAGE, --message=MESSAGE
                         Message to be sent (160 chars max.)
 ```
+To send a sms to the target mobile with the IMSI 208023944449510 with the source number : 0633449966, and the following message : "I love it" :
+```
+badimsicore_sms_sender -r 208023944449510 -s 0633449966 -m "I love it"
+```
 
 **badimsicore_tmsis**
+Launch this command to get all tmsis connected to our fake bts.
 ```
 badimsicore_tmsis
 ```
+
