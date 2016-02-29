@@ -63,6 +63,5 @@ def main():
     bad_list = badsmsinterceptor.intercept(options.input)
     for x in bad_list:
         print(x)
-
 if __name__ == '__main__':
     main()
