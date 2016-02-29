@@ -56,6 +56,10 @@ listen:
   -e, --errors                list errors codes
 
 ```
+i.e : I want to launch the sniffing to get all GSM-900 BTS from Orange Network Operator and repeat the sniffing 3 times :
+```
+sudo badimsicore_listen -o Orange -b GSM-900 -n 3
+```
 
 **badimsicore_openbts {start | stop}**
 ```
@@ -91,13 +95,27 @@ optional arguments:
   -p, --open-registration OPEN_REGISTRATION
                         The access authorization for the registration on the
                         fake network  
-  
+```
+```
 sudo badimsicore_openbts stop -h 
 usage: badimsicore_openbts stop [-h]
 
 optional arguments:
   -h, --help  show this help message and exit
 ```
+To start the fake BTS with the following arguments :
+- CI = 4534
+- LAC = 45
+- MNC = 01 (For Orange)
+- MCC = 208 (France)
+- The message registration = "Welcome to our network"
+- OpenRegistration : open to everyone. (the correct syntax is '.*')
+
+The right command would be:
+```
+sudo badimsicore_openbts start -i 4534 -l 45 -c 208 -n 01 -m "Welcome to our network" -p ".*"
+```
+
 **airprobe_rtlsdr_non_graphical**
 ```
 sudo airprobe_rtlsdr_non_graphical -h
