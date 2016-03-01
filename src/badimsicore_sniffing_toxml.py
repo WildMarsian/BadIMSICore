@@ -1,9 +1,20 @@
-#!/usr/bin/python3.4
+#!/usr/bin/env python3.4
+
+
+"""
+    This module gets utilities to capture the GSM traffic.
+    For that, we using tshark.
+"""
 
 import os
 import subprocess
 import sys
 from optparse import OptionParser
+
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
 
 tshark = '/usr/bin/tshark'
 
@@ -13,13 +24,18 @@ def print_error(err):
 
 
 def live_listening(iface, net_filter):
+    """
+        Listens in real time the traffic in the
+        iface, filtered by net_filter.
+        :param : iface the interface to monitor
+        :param : net_filter the network filter
+    """
     pargs = [tshark, '-i', iface]
     pargs.extend(['-T', 'pdml'])
 
     if net_filter is not None:
         pargs.extend(['-R', net_filter])
 
-    # print(pargs)
     proc = subprocess.Popen(pargs)
 
     return proc.communicate()
@@ -31,6 +47,13 @@ Reads a PCAP file
 
 
 def read_from_pcap(input_pcap_filename, iface, net_filter):
+    """
+        Reads the input file in PCAP format and redirects it
+        to the input of new process.
+        :param : input_pcap_filename the input file
+        :param : iface the interface to monitor in the file
+        :param : net_filter the filter
+    """
     if not os.path.isfile(input_pcap_filename):
         raise FileNotFoundError('Input PCAP file not found')
 
@@ -65,12 +88,15 @@ def write_to_pcap(output_pcap_filename, iface, net_filter):
     return proc.communicate()
 """
 
-"""
- Write the traffic from an PCAP file to an XML file
-"""
-
-
 def write_to_xml(input_pcap_filename, output_xml_filename, iface, net_filter):
+    """
+        Reads the input file in PCAP format and write it
+        to a file in XML format.
+        :param : input_pcap_filename the input file
+        :param : output_xml_filename the output file
+        :param : iface the interface to monitor in the file
+        :param : net_filter the filter
+    """
     try:
         with open(output_xml_filename, 'w') as output:
 
@@ -96,13 +122,16 @@ def write_to_xml(input_pcap_filename, output_xml_filename, iface, net_filter):
         sys.exit(2)
 
 
-"""
-Write the trafic from the standard input to an XML file
-"""
-
 
 def redirect_to_xml(output_xml_filename, iface, net_filter, duration=10):
-
+    """
+        Redirects the live traffice from the network interface and
+        write it to a file in XML format.
+        :param : output_xml_filename the output file
+        :param : iface the interface to monitor in the file
+        :param : net_filter the filter
+        :param : duration the time of listenning
+    """
     try:
         with open(output_xml_filename, 'w') as output:
             pargs = [tshark, '-i', iface, '-2']
@@ -125,21 +154,19 @@ def redirect_to_xml(output_xml_filename, iface, net_filter, duration=10):
         sys.exit(2)
 
 
-"""
-Tests if the filename is to ext format.
-    :param   filename the filename to check
-    :returns    True if ext is valid
-    :returns    False otherwise
-"""
-
-
 def is_valid_extension(filename, ext):
+    """
+        Tests if the filename is to ext format.
+        :param   filename the filename to check
+        :returns:    True if ext is valid,
+        False otherwise
+    """
     filename, extension = os.path.splitext(filename)
     return extension == ext
 
 
 def main():
-    parser = OptionParser(usage='Usage: badimsicore_sniffing_toxml.py -i <input> -o output -d iface -f \'filter\'')
+    parser = OptionParser(usage='Usage: %prog -i <input> -o output -d iface -f \'filter\'')
     parser.add_option('-i', '--input', dest='input_filename', help='Input file in PCAP format')
     parser.add_option('-o', '--output', dest='output_filename', help='Output file in XML format')
     parser.add_option('-d', '--device', dest='iface', help='Interface used for listening')

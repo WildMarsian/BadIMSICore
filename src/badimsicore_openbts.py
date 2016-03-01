@@ -1,6 +1,12 @@
-#!/usr/bin/python3.4
+#!/usr/bin/env python3.4
+
+"""
+This class is used to control the openbts service
+You need to construct the new instance using the method get_badimsicore_bts_service(exec_context)
+"""
 
 import subprocess
+import os
 import sys
 import argparse
 import time
@@ -8,17 +14,18 @@ import locale
 from badimsicore_openbts_init import InitOpenBTS
 from badimsicore_sdr_uhd import BadIMSICoreUHDDriver
 from bts import BTS
-
 from badimsicore_openbts_config import BadimsicoreBtsConfig
-"""
-This class is used to control the openbts service
-You need to construct the new instance using the method get_badimsicore_bts_service(exec_context)
-"""
+
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team" 
+
 class BadimsicoreBtsService:
         
     def start(self, ci=None, lac=None, mnc=None, mcc=None, open_registration=None, message_registration=None):
         """
-        Start openbts services
+        Start openbts services. Default values are those defined in the OpenBTS database file. 
         :param ci: The Cell ID
         :param lac: The Location Area Code
         :param mnc: The Mobile Network Code
@@ -29,6 +36,17 @@ class BadimsicoreBtsService:
         """
         #Stop openbts services
         self.stop()
+
+        # Destruction of sms files
+        smslog1 = "/var/log/smslog"
+        smslog2 = "/var/log/smslog.offset"
+
+        try:
+            os.remove(smslog1)
+            os.remove(smslog2)
+        except OSError:
+            pass
+
         #SDR
         uhd_handler = BadIMSICoreUHDDriver()
         init_bts = uhd_handler.init_bts()
@@ -44,6 +62,7 @@ class BadimsicoreBtsService:
                 badimsicore_bts_config.update_database("Control.LUR.OpenRegistration", open_registration)
             elif message_registration:
                 badimsicore_bts_config.update_database("Control.LUR.OpenRegistration.Message", message_registration)
+            badimsicore_bts_config.close()
             #Start openbts services
             InitOpenBTS.init_sipauthserve()
             InitOpenBTS.init_smqueue()
@@ -64,7 +83,7 @@ class BadimsicoreBtsService:
     def status():
         """
         Check if openbts service is started
-        :return: None
+        :return: 0 if OpenBTS is running, otherwise 
         """
         encoding = locale.getdefaultlocale()[1]
         p = subprocess.Popen(['status', 'openbts'], stdout=subprocess.PIPE)
@@ -77,13 +96,16 @@ class BadimsicoreBtsService:
         
     @staticmethod
     def send_command(command):
-        """BadimsicoreBtsService send a command to openbts
+        """
+        BadimsicoreBtsService send a command to openbts,
+        Using OpenBTSDo utility.
         :command a list of string corresponding to the command fragment (split(" "))
         """
         openbts=["/OpenBTS/OpenBTSDo", "-c"]
         openbts.extend(command)
         p = subprocess.Popen(openbts)
-        return p.communicate()
+        out, err = p.communicate()
+        return out
 
 
 def main():
@@ -99,8 +121,8 @@ def main():
     start_parser.add_argument('-l', '--lac', dest='lac', help='The LAC of the cell')
     start_parser.add_argument('-n', '--mnc', dest='mnc', help='The Mobile Network Code of the cell. Must have 2 digits')
     start_parser.add_argument('-c', '--mcc', dest='mcc', help='The Mobile Country Code of the cell. Must have 3 digits')
-    start_parser.add_argument('-m', '--message-registration', dest='message_registration', help='The message upon registration of a mobile in the fake network', default="\"\"")
-    start_parser.add_argument('-p', '--open-registration', dest='open_registration', help='The access authorization for the registration on the fake network', default="*")
+    start_parser.add_argument('-m', '--message-registration', dest='message_registration', help='The message upon registration of a mobile in the fake network', default="")
+    start_parser.add_argument('-p', '--open-registration', dest='open_registration', help='The access authorization for the registration on the fake network', default=".*")
     #Subparser stop_parser 
     stop_parser = subparsers.add_parser('stop', help='Stop openbts')
     stop_parser.set_defaults(func=service.stop)

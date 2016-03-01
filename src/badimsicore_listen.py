@@ -1,12 +1,28 @@
 #!/usr/bin/env python3.4
-import subprocess
-import os
 
+
+"""
+    This module provides some functions to listen to the GSM traffic.
+    Available operators are :
+    - SFR
+    - Orange
+    - Bouygues Telecom
+
+    With the given CSV file referencing all ARFCNs channels by operator (all_gsm_channels_arfcn.csv),
+    We can choose specific bands.
+"""
+import subprocess
+import logging
+import argparse
 from badimsicore_sniffing_gsmband_search import RadioBandSearcher
 import badimsicore_sniffing_toxml
-import argparse
 import badimsicore_sniffing_xml_parsing
-import logging
+
+
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
 
 def set_args(parser, bands):
     """
@@ -17,7 +33,7 @@ def set_args(parser, bands):
     group = parser.add_argument_group("listen")
     group.add_argument("-o", "--operator", help="search bts of this operator", default="orange", choices=["orange", "sfr", "bouygues_telecom"])
     group.add_argument("-b", "--band", help="search bts in this band of frequency", default="all", choices=bands)
-    group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=2, type=int)
+    group.add_argument("-t", "--scan_time", help="Set the scan time for each frequency", default=1, type=int)
     group.add_argument("-n", "--repeat", help="Set the number of repeat of the scanning cycle", default=1, type=int)
     group.add_argument("-e", "--errors", help="list errors codes", action='store_true')
 
@@ -30,19 +46,22 @@ def scan_frequencies(repeat, scan_time, frequencies):
     :param frequencies: List of frequency (ARFCN downlink frequencies) to scan
     :return: the exit status of the scan
     """
-    opts = ["python2.7", "airprobe_rtlsdr_non_graphical.py"]
+    opts = ["airprobe_rtlsdr_non_graphical"]
     opt_freq = ["-f"]
     frequencies = list(map(lambda freq: str(freq), frequencies))
     opt_freq.extend(frequencies)
     opts.extend(opt_freq)
     opts.extend(['-t', '{: d}'.format(scan_time)])
     opts.extend(['-n', '{: d}'.format(repeat)])
+
     return subprocess.call(opts)
 
 
 def toxml(xml_file, duration):
     """
     Start the redirection of all network gsm traffic from lo interface to an XML file
+    By default, received traffic is sent to the loopback interface (lo). The traffic
+    is filtered by the string "gsmtap && ! icmp".
     :param xml_file: XML output file
     :param duration: End of the listening on the interface lo
     :return: The Popen object of the listening process
@@ -60,8 +79,13 @@ def parse_xml(xml_file):
 
 
 def main():
+    ret = subprocess.call('badimsicore_check_hackrf_connection')
+    if ret != 0:
+        print("Error no sdr device found")
+        exit(30)
+
     #parsing arguments
-    rds = RadioBandSearcher('../resources/all_gsm_channels_arfcn.csv')
+    rds = RadioBandSearcher('/opt/badimsibox/badimsicore/resources/all_gsm_channels_arfcn.csv')
     bands = rds.get_bands()
 
     parser = argparse.ArgumentParser()
@@ -70,6 +94,8 @@ def main():
     if args.errors:
         print("10 : error no frequency to scan")
         print("20 : error scanning for BTS cells")
+        print("30 : Error no sdr device found")
+        exit(0)
 
     #Generating the list of frequencies to scan
     freqs = []
@@ -87,8 +113,7 @@ def main():
     duration = 6 + len(freqs) * args.repeat * args.scan_time
 
     #start the listening on lo interface
-    os.remove("xml_output")
-    xml_file = 'xml_output'
+    xml_file = '/tmp/xml_output'
     proc = toxml(xml_file, duration)
 
     #scan frequencies
@@ -101,11 +126,11 @@ def main():
     btss = parse_xml(xml_file)
 
     #Print the list of BTS
-    for bts in btss:
+    for key, bts in btss.items():
         print(bts.nice_display())
 
     exit(0)
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', filemod='w', level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', filename='sniffing.log', level=logging.INFO)
     logging.info('Logger is lock and loaded')
     main()

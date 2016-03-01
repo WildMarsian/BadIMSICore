@@ -1,9 +1,14 @@
 #!/usr/bin/env python2
 ##################################################
-# GNU Radio Python Flow Graph
-# Title: Airprobe Rtlsdr
-# Generated: Wed Fev 10 17:27:21 2016
+# Title: Airprobe Rtlsdr non graphical
+# Created by: MIMSI team
 ##################################################
+
+"""
+   This module is a fork of GNU Radio Flow graph script generator.
+   In this version, the graphical part was removed, to have a
+   BadIMSIBox program entirely in command line.
+"""
 
 from gnuradio import blocks
 from gnuradio import gr
@@ -16,6 +21,11 @@ import time
 import logging
 from threading import Thread
 import argparse
+
+__authors__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__maintener__ = "Arthur Besnard, Philippe Chang, Zakaria Djebloune, Nicolas Dos Santos, Thibaut Garcia and John Wan Kut Kai"
+__licence__ = "GPL v3"
+__copyright__ = "Copyright 2016, MIMSI team"
 
 class airprobe_rtlsdr(gr.top_block):
 

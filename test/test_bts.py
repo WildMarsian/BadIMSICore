@@ -10,6 +10,10 @@ class btsTess(TestCase):
         self.btss.append(BTS("210", "15", "LAC3", "CI3", [12,13,45,556]))
         self.btss.append(BTS("210", "15", "LAC3", "CI3"))
 
+    def test_add_arfcn(self):
+        self.btss[0].add_arfcns([3,4,5])
+        self.assertEquals(self.btss[0].ARFCNs, [1, 2, 3, 4, 5, 11, 12, 13])
+
     def test_input_not_in_pcap_format(self):
         print(self.btss[0].nice_display())
         print(self.btss[1].nice_display())
