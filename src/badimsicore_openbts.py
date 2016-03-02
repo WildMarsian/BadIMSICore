@@ -41,6 +41,7 @@ class BadimsicoreBtsService:
         smslog1 = "/var/log/smslog"
         smslog2 = "/var/log/smslog.offset"
 
+        subprocess.call(["dd", "if=/dev/null", "of=/var/log/syslog"])
         try:
             os.remove(smslog1)
             os.remove(smslog2)
